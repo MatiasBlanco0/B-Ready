@@ -1,0 +1,61 @@
+*{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    position: fixed;
+    margin: 0;
+    padding: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #1071e5; 
+    box-shadow: 0.5rem -1rem 1rem 1rem #000;
+    border-color: #000;
+    border-style: solid; 
+}
+
+header ul{
+    display: flex;
+    list-style: none;
+}
+
+header li a{
+    text-decoration: none;
+    color: #000;
+}
+
+header li a:hover{
+    text-shadow: #000;
+}
+
+header li{
+    margin: 1%;
+}
+
+.logo{
+    position: relative;
+    width: 10%;
+    height: 10%;
+    margin: 0;
+    left: 0.5rem;
+    padding-top: 0.5rem;
+}
+
+body {
+    background-color: #dfe3e8;
+    width: 2rem;
+    height: 2rem;
+    background-size: cover;
+}
+
+section{
+    padding-top: 6rem;
+    width: 100%;
+}
+
+.Introducción h1{
+    
+}    
