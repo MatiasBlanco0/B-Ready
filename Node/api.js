@@ -1,24 +1,30 @@
 let mysql = require('mysql');
 
-let con = mysql.createConnection({
+let pool = mysql.createPool({
   host: "localhost",
   user: "root",
   password: "rootroot",
   database: "b-ready"
 });
 
-con.connect(function(err) {
-  if (err) throw err;
-  console.log("Connected!");
+function logIn(name, password){
+    let conResult;
+    let sql = "SELECT usuario.Email FROM usuario WHERE usuario.Nombre = ? AND usuario.Contrasenia = ?";
+    pool.query(sql, [name, password], (err, result) => {
+        if (err) throw err;
+        console.log("result: ");
+        console.table(result);
+        conResult = result;
+    })
 
-  let sql = "SELECT * FROM usuario";
-  con.query(sql, (err, result) => {
-    if (err) throw err;
-    return console.log(result);
-  })
+    pool.end((err) => {
+        if(err) throw err;
+        console.log("Closing pool");
+    });
 
-  con.end((err) => {
-    if (err) console.log(err);
-    return console.log("Close the database connection");
-  });
-});
+    console.log("conResult: ");
+    console.table(conResult);
+    return "Ayuda nacho no funciona";
+}
+
+console.log("El resultado es: " + logIn("Test", "incorrecta"));
