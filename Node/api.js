@@ -7,14 +7,17 @@ let pool = mysql.createPool({
   database: "b-ready"
 });
 
+function closePool(){
+    pool.end((err) =>{
+        if(err) throw err;
+        console.log("Closing pool");
+    });
+}
+
 async function sqlQuery (query){
     console.log("Running query");
     let promise = new Promise((resolve, reject) => {
         pool.query(query, (err, result) => {
-            pool.end((err) =>{
-                if(err) throw err;
-                console.log("Closing pool");
-            });
             if(err) throw err;
             resolve(result);
         });
