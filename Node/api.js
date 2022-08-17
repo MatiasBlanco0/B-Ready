@@ -7,29 +7,40 @@ let pool = mysql.createPool({
   database: "b-ready"
 });
 
-async function logIn(name, password){
+async function sqlQuery (query){
+    console.log("Running query");
     let promise = new Promise((resolve, reject) => {
-        let sql = "SELECT usuario.Email FROM usuario WHERE usuario.Nombre = ? AND usuario.Contrasenia = ?";
-        pool.query(sql, [name, password], (err, result) => {
-            if (err) reject(err);
-            console.log("result: ");
-            console.table(result);
-            resolve(result);
-        });
-    })
-
-    let conResult = await promise;
-
-    promise.finally(() => {
-        pool.end((err) => {
+        pool.query(query, (err, result) => {
+            pool.end((err) =>{
+                if(err) throw err;
+                console.log("Closing pool");
+            });
             if(err) throw err;
-            console.log("Closing pool");
+            resolve(result);
         });
     });
 
-    console.log("conResult: ");
-    console.table(conResult);
-    return conResult.result;
+    return await promise;
 }
 
-console.log("El resultado es: " + logIn("Test", "incorrecta"));
+function nameLogIn(name, password){
+    let value = false;
+    let sql = "SELECT 1 FROM usuario WHERE usuario.nombre = " + mysql.escape(name) + " AND usuario.contrasenia = " + mysql.escape(password);
+    sqlQuery(sql).then(result => {
+        console.log("------------------------------");
+        console.log(name + ", " + password);
+        console.table(result);
+        console.log(result.length > 0),
+        console.log("------------------------------");
+        value = result.length > 0;
+    });
+    return value;
+}
+
+console.log("------------------------------");
+console.log("Name: Hola\nPassword: test");
+console.log(nameLogIn("Hola", "test"));
+console.log("------------------------------");
+console.log("Name: Test\nPassword: incorrecta");
+console.log(nameLogIn("Test", "incorrecta"));
+console.log("------------------------------");
