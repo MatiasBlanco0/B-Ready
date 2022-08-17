@@ -7,24 +7,29 @@ let pool = mysql.createPool({
   database: "b-ready"
 });
 
-function logIn(name, password){
-    let conResult;
-    let sql = "SELECT usuario.Email FROM usuario WHERE usuario.Nombre = ? AND usuario.Contrasenia = ?";
-    pool.query(sql, [name, password], (err, result) => {
-        if (err) throw err;
-        console.log("result: ");
-        console.table(result);
-        conResult = result;
+async function logIn(name, password){
+    let promise = new Promise((resolve, reject) => {
+        let sql = "SELECT usuario.Email FROM usuario WHERE usuario.Nombre = ? AND usuario.Contrasenia = ?";
+        pool.query(sql, [name, password], (err, result) => {
+            if (err) reject(err);
+            console.log("result: ");
+            console.table(result);
+            resolve(result);
+        });
     })
 
-    pool.end((err) => {
-        if(err) throw err;
-        console.log("Closing pool");
+    let conResult = await promise;
+
+    promise.finally(() => {
+        pool.end((err) => {
+            if(err) throw err;
+            console.log("Closing pool");
+        });
     });
 
     console.log("conResult: ");
     console.table(conResult);
-    return "Ayuda nacho no funciona";
+    return conResult.result;
 }
 
 console.log("El resultado es: " + logIn("Test", "incorrecta"));
