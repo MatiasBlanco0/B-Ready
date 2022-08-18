@@ -1,61 +1,206 @@
 *{
     font-family: Arial, Helvetica, sans-serif;
-}
-
-header {
-    display: flex;
-    justify-content: space-between;
-    position: fixed;
     margin: 0;
     padding: 0;
-    top: 0;
-    left: 0;
+    box-sizing: border-box;
+}
+
+header{
     width: 100%;
-    background-color: #1071e5; 
-    box-shadow: 0.5rem -1rem 1rem 1rem #000;
-    border-color: #000;
-    border-style: solid; 
-}
-
-header ul{
+    background-color: #1071e5;
+    border: 4px solid #000;
     display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: sticky;
+    justify-content: space-between;
+    padding: 10px 10px 10px 5px;
+    z-index: 10000000000000;
+}
+
+nav{
+    display: flex;
+}
+
+nav ul{
     list-style: none;
+    display: inline-flex;
 }
 
-header li a{
+ul a{
+    margin-right: 15px;
+    padding: 5px 10px 5px 10px;
     text-decoration: none;
+    font-size: 35px;
     color: #000;
+    background: 10px #cfe4ff;
+    border-radius: 500px;
 }
 
-header li a:hover{
-    text-shadow: #000;
-}
-
-header li{
-    margin: 1%;
+ul a:hover{
+    text-shadow: 1px 2px #000;
 }
 
 .logo{
-    position: relative;
-    width: 10%;
-    height: 10%;
-    margin: 0;
-    left: 0.5rem;
-    padding-top: 0.5rem;
-}
-
-body {
-    background-color: #dfe3e8;
-    width: 2rem;
-    height: 2rem;
-    background-size: cover;
+    width: 200px;
+    height: 80px;
 }
 
 section{
-    padding-top: 6rem;
+    width: 100%;
+    background-image: url(fondo.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.P1{
     width: 100%;
 }
 
-.Introducción h1{
+.texto{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 35px;
+}
+
+.texto *{
+    text-align: center;
+    padding-top: 20px;
+    text-shadow: 2px 1px #fff;
+}
+
+.formulario{
+    padding-top: 400px;
+    display: inline-block;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 400px;
+}
+
+.FI{
+    border-radius: 20%;
+    flex-direction: column;
+    width: 450px;
+    height: 600px;
+    background-color: #cfe4ff;
+    text-align: center;
+}
+
+.FI form input{
+    height: 40px;
+    text-align: center;
+    border-radius: 15%;
+}
+
+#mail{
+    margin-right: 10px;
+}
+
+#Enviar:active{
+    background-color: #008134;
+}
+
+#imagen{
+    margin-left: 100px;
+    flex-direction: row;
+    width: 600px;
+    height: 300px;
+    border: 2px solid #000;
+}
+
+.formulario *{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.P2{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-image: url(fondo2.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+}
+
+.P2 *{
+    display: flex;
+    justify-content: center;
+}
+
+.arriba{
+    padding-top: 100px;
+    display: flex;
+    flex: row;
+}
+
+.abajo{
+    padding-top: 100px;
+    padding-bottom: 100px;
+    flex-direction: row;
+    display: flex;
+}
+
+.textos{
+    flex-direction: column;
+    text-align: center;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.P2 img{
+    max-width: 100%;
+    width: 450px;
+    height: 200px;
+}
+
+footer{
+    border-top: 4px solid #000;
+    width: 100%;
+    display: flex;
+    background-color: #1071e5;
+    flex-direction: column;
+}
+
+footer img{
+    display: flex;
+    height: 100px;
+    width: 100px;
+}
+
+#imgI{
+    width: 150px;
+}
+
+footer div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+@media screen and (max-width: 320px) {
+
+}
+
+@media screen and (max-width: 480px) {
     
-}    
+}
+
+@media screen and (max-width: 720px) {
+    *{
+        max-width: 50%;
+        max-height: 50%;
+        font-size: 80%;
+    }
+
+    nav ul{
+        display: none;
+    }
+}
