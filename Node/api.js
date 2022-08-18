@@ -14,10 +14,11 @@ function closePool(){
     });
 }
 
-async function sqlQuery (query){
+async function sqlQuery (query, values){
     console.log("Running query");
-    let promise = new Promise((resolve, reject) => {
-        pool.query(query, (err, result) => {
+    let promise = new Promise((resolve) => {
+        pool.query(query, values, (err, result) => {
+            closePool();
             if(err) throw err;
             resolve(result);
         });
@@ -26,24 +27,26 @@ async function sqlQuery (query){
     return await promise;
 }
 
-function nameLogIn(name, password){
-    let value = false;
-    let sql = "SELECT 1 FROM usuario WHERE usuario.nombre = " + mysql.escape(name) + " AND usuario.contrasenia = " + mysql.escape(password);
-    sqlQuery(sql).then(result => {
-        console.log("------------------------------");
-        console.log(name + ", " + password);
-        console.table(result);
-        console.log(result.length > 0),
-        console.log("------------------------------");
-        value = result.length > 0;
-    });
+async function nameLogIn(name, password){
+    let value = "No se usar promesas";
+    let sql = "SELECT 1 FROM usuario WHERE usuario.nombre = ? AND usuario.contrasenia = ?";
+    let values = [name, password];
+    let promise = await sqlQuery(sql, values);
+    console.log("------------------------------\nInside nameLogIn: ")
+    console.log("Promise:");
+    console.table(promise);
+    value = promise.length > 0;
+    console.log("Value: " + value);
     return value;
 }
 
-console.log("------------------------------");
-console.log("Name: Hola\nPassword: test");
-console.log(nameLogIn("Hola", "test"));
-console.log("------------------------------");
-console.log("Name: Test\nPassword: incorrecta");
-console.log(nameLogIn("Test", "incorrecta"));
-console.log("------------------------------");
+let nombre = "Test";
+let contrasenia = "incorrecta";
+console.log("\n------------------------------\nnameLogIn Call:")
+console.log("Name: " + nombre + "\nContrasenia: " + contrasenia);
+let logIn;
+nameLogIn(nombre, contrasenia).then((value) => {
+    logIn = value;
+});
+console.log("LogIn?: " + logIn);
+console.table(logIn);
