@@ -19,31 +19,83 @@
     <link rel="icon" href="LOGO.png">
     <link rel="stylesheet" href="style.css">
 
+    <!--Cookies-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+
 </head>
 <body>
     <header>
-        <img src="LOGO.png" alt="Logo" class="logo"><!--Boton que te manda a la pagina por defecto, falta la imagen nueva que hizo alex-->
+        <img src="LOGO.png" alt="Logo" class="logo">
         <nav>
             <ul>
-                <li><a href="" class="apartados"><b>Log In</b></a></li>
-                <li><a href="" class="apartados"><b>Register</b></a></li>
+                <li><a href=""><b>Log In</b></a></li>
+                <li><a href=""><b>Register</b></a></li>
             </ul>
         </nav>
     </header>
     <section>
-        <div class="Introducción">
-            <h1><b>La mejor manera de organizarte <br>a vos y a tus tareas</b></h1>
-            <img src="LOGO.png" alt="Logo de la pagina" title="Bienvenido">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique dolorum inventore magni odio a ipsa dolorem itaque nostrum obcaecati unde! Dicta velit esse voluptas suscipit labore aperiam? Nam, voluptate delectus!</p><!--Descripción del proyecto-->
+        <div class="P1">
+            <div class="texto">
+                <h1 id="titulo"><b>La mejor manera de organizarte <br>a vos y a tus tareas</b></h1>
+                <h3 id="desc">Una agenda inteligente que busca facilitar tu dia a dia<br> organizando tus tareas para que vos<br> no tengas que perder el tiempo</h3>
+            </div>
+            <div class="formulario">
+                <div class="FI">
+                    <h3 id="prop">Unete a nuestra comunidad <br> y haz de tu vida algo mucho mas<br> facil, a que estas <br>esperando xd? :o (cara sorprendida)</h3>
+                    <br><br><br>
+                    <form>
+                        <input size="40" type="email" id="mail" name="mail" placeholder="Escribe tu gmail aqui">
+                        <input id="Enviar" type="submit" value="Registrarse">
+                    </form>
+                </div>
+                <img id="imagen" src="pibardos.jpg">
+            </div>
         </div>
-        <div class="">
-            <p></p> <!--Información general o extras-->
-            <img src="" alt="" title="">
+        <div class="P2">
+            <div class="arriba">
+                <div class="textos">
+                    <h3><br><b>¿Quienes somos?</b></h3>
+                    <p>B-Ready es un proyecto de 4to año diseñando<br> por Ilan Repiso, Marco Canton, Alex Carpel y Matias Blanco <br>con el objetivo de facilitar la organizacion<br> de las tareas de uno para<br> realizarlas de manera mas eficaz<br> y evitando estres innecesario</p>
+                </div>
+                <img src="LOGO.png" alt="Integrantes">
+            </div>
+            <div class="abajo">
+                <img src="fotoCalendario.png" alt="">
+                <div class="textos">
+                    <h3><br><b>¿De que se trata el proyecto?</b><br></h3>
+                    <p>La idea es crear una pagina web con un <br>calendario personal que permite ingresar tareas <br> y las organiza dependiendo diversos factores<br> de una manera que cada uno pueda saber<br> cuanto tiempo hay que invertir y cuando para resolverlo</p>
+                </div>
+            </div>
         </div>
     </section>
     <footer>
         <h3>Todos los derechos reservados</h3><!--No tenemos derechos igual pero es para rellenar-->
-        <p>Quieres saber mas sobre <b>nosotros</b>? En ese caso haz click <a href="">aqui</a><br>Necesitas ayuda con algun problema? No te preocupes, click <a href="">aqui</a> para que te podamos ayudar!</p>
+        <p>Quieres saber mas sobre <b>nosotros</b>? En ese caso haz click <a href="">aqui</a></p>
+        <p>Necesitas ayuda con algun problema? No te preocupes, click <a href=""> aqui </a> para que te podamos ayudar!</p>
+        <div>
+            <img id="imgI" src="copyrightMalvado.png" alt="logo Tic Ort">
+            <img id="imgD" src="emblemaTic.jpg" alt="logo Tic"> 
+        </div>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+<script>
+window.cookieconsent.initialise({
+  "palette": {
+    "popup": {
+      "background": "#edeff5",
+      "text": "#838391"
+    },
+    "button": {
+      "background": "#4b81e8"
+    }
+  },
+  "theme": "classic",
+  "content": {
+    "message": "Nuestra pagina web utiliza cookies para que tu experiencia sea lo mejor posible",
+    "dismiss": "Ok!",
+    "link": "Saber mas"
+  }
+});
+</script>
 </body>
 </html>
