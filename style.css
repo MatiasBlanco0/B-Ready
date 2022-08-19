@@ -30,6 +30,7 @@ nav ul{
 ul a{
     margin-right: 15px;
     padding: 5px 10px 5px 10px;
+    letter-spacing: 1px;
     text-decoration: none;
     font-size: 35px;
     color: #000;
@@ -48,9 +49,21 @@ ul a:hover{
 
 section{
     width: 100%;
-    background-image: url(fondo.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
+    background: linear-gradient(45deg,lightblue,blue,purple);
+    background-size: 500%;
+    position: relative;
+    animation: fondoAnimado 5s ease-in-out infinite;
+}
+
+/*animacion*/
+@keyframes fondoAnimado{
+    0%{
+        background-position: 0% 50%;
+    }
+    50% {background-position: 100% 50%;
+    }
+    100% {background-position: 0% 50%;
+    }
 }
 
 .P1{
@@ -66,9 +79,10 @@ section{
 }
 
 .texto *{
+    color: #fff;
     text-align: center;
     padding-top: 20px;
-    text-shadow: 2px 1px #fff;
+    text-shadow: 3px 4px #000;
 }
 
 .formulario{
@@ -84,24 +98,56 @@ section{
 .FI{
     border-radius: 20%;
     flex-direction: column;
-    width: 450px;
+    width: 500px;
     height: 600px;
-    background-color: #cfe4ff;
+    border: 3px solid #fff;
+    font-size: 28px;
     text-align: center;
+    box-shadow: 2px 3px #000;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+}
+
+form input::placeholder{
+    color: #fff;
+}
+
+#prop{
+    color: #fff;
 }
 
 .FI form input{
-    height: 40px;
+    height: 60px;
     text-align: center;
-    border-radius: 15%;
+    border-radius: 500px;
+    border: 2px solid #fff;
+    box-shadow: 2px 3px #000;
+    background: transparent;
+    
 }
 
 #mail{
     margin-right: 10px;
+    font-size: 17px;
 }
 
 #Enviar:active{
     background-color: #008134;
+}
+
+#Enviar{
+    border-radius: 500px;
+    margin-top: 20px;
+    font-size: 17px;
+    color: #fff;
+    padding: 5px 20px 5px 20px;
+}
+
+#mail:focus{
+    background-color: #fff;
 }
 
 #imagen{
@@ -109,7 +155,7 @@ section{
     flex-direction: row;
     width: 600px;
     height: 300px;
-    border: 2px solid #000;
+    border: 3px solid #fff;
 }
 
 .formulario *{
@@ -122,7 +168,7 @@ section{
     width: 100%;
     display: flex;
     flex-direction: column;
-    background-image: url(fondo2.jpg);
+    background-color: #cfe4ff;
     background-repeat: no-repeat;
     background-size: cover;
     justify-content: center;
