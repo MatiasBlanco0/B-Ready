@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 17-08-2022 a las 16:28:19
+-- Tiempo de generación: 22-08-2022 a las 12:54:41
 -- Versión del servidor: 5.7.17-log
 -- Versión de PHP: 5.6.30
 
@@ -83,16 +83,15 @@ CREATE TABLE `tarea` (
 CREATE TABLE `usuario` (
   `Nombre` varchar(20) NOT NULL,
   `Email` varchar(40) NOT NULL,
-  `Contrasenia` varchar(25) NOT NULL,
-  `Telefono` varchar(15) NOT NULL
+  `Contrasenia` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`Nombre`, `Email`, `Contrasenia`, `Telefono`) VALUES
-('Test', 'Test@test.test', 'incorrecta', '1156980375');
+INSERT INTO `usuario` (`Nombre`, `Email`, `Contrasenia`) VALUES
+('Test', 'Test@test.test', 'incorrecta');
 
 --
 -- Índices para tablas volcadas
