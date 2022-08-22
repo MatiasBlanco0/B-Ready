@@ -18,8 +18,6 @@ async function sqlQuery (query, values){
     console.log("Running query");
     return await new Promise((resolve) => {
         pool.query(query, values, (err, result) => {
-            // Solo esta para el testeo de la funcion, sino queda el programa corriendo
-            closePool();
             if(err) throw err;
             resolve(result);
         });
@@ -27,15 +25,31 @@ async function sqlQuery (query, values){
 }
 
 async function nameLogIn(name, password){
-    let value = "No se usar promesas";
     let sql = "SELECT 1 FROM usuario WHERE usuario.nombre = ? AND usuario.contrasenia = ?";
     let promise = await sqlQuery(sql, [name, password]);
-    value = promise.length > 0;
-    return value;
+    return promise.length > 0;
+}
+
+async function emailLogIn(email, password){
+    let sql = "SELECT 1 FROM usuario WHERE usuario.email = ? AND usuario.contrasenia = ?";
+    let promise = await sqlQuery(sql, [email, password]);
+    return promise.length > 0;
 }
 
 let nombre = "Test";
+let email = "test@test.test";
 let contrasenia = "incorrecta";
 nameLogIn(nombre, contrasenia).then((value) => {
-    console.log("LogIn?: " + value);
+    console.group("NameLogIn");
+    console.log("Name: " + nombre);
+    console.log("Password: " + contrasenia);
+    console.log("nameLogIn?: " + value);
+    console.groupEnd();
+});
+emailLogIn(email, contrasenia).then((value) => {
+    console.group("EmailLogIn");
+    console.log("Email: " + email);
+    console.log("Password: " + contrasenia);
+    console.log("emailLogIn?: " + value);
+    console.groupEnd();
 });
