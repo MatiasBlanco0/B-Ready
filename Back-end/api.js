@@ -15,52 +15,61 @@ function closePool(){
 }
 
 async function sqlQuery (query, values){
-    console.log("Running query");
-    return await new Promise((resolve) => {
-        pool.query(query, values, (err, result) => {
-            if(err) throw err;
-            resolve(result);
+    try{
+        console.log("Running query");
+        return await new Promise((resolve, reject) => {
+            pool.query(query, values, (err, result) => {
+                if(err) reject(err);
+                resolve(result);
+            });
         });
-    });
+    } catch (err){
+        return err;
+    }
 }
 
 async function nameLogIn(name, password){
-    let sql = "SELECT 1 FROM usuario WHERE usuario.nombre = ? AND usuario.contrasenia = ?";
-    let promise = await sqlQuery(sql, [name, password]);
-    return promise.length > 0;
+    try{
+        let sql = "SELECT 1 FROM usuario WHERE usuario.nombre = ? AND usuario.contrasenia = ?";
+        let promise = await sqlQuery(sql, [name, password]);
+        return promise.length > 0;
+    } catch (err) {
+        return err;
+    }
 }
 
 async function emailLogIn(email, password){
-    let sql = "SELECT 1 FROM usuario WHERE usuario.email = ? AND usuario.contrasenia = ?";
-    let promise = await sqlQuery(sql, [email, password]);
-    return promise.length > 0;
+    try {
+        let sql = "SELECT 1 FROM usuario WHERE usuario.email = ? AND usuario.contrasenia = ?";
+        let promise = await sqlQuery(sql, [email, password]);
+        if(promise instanceof Error){
+            return promise
+        } else {
+            return promise.length > 0;
+        }
+    } catch(err){
+        return err;
+    }
 }
 
 async function register(name, email, password){
     try {
-        let sql = "INSERT INTO usuario(nombre, email, password) VALUES(?, ?, ?)";
+        let sql = "INSERT INTO usuario(nombre, email, contrasenia) VALUES(?, ?, ?)";
         let promise = await sqlQuery(sql, [name, email, password]);
-        return true;
+        if(promise instanceof Error){
+            return promise
+        } else {
+            return promise.affectedRows;
+        }
     } catch(err){
         return err;
     }
-
 }
 
 let nombre = "Test";
 let email = "test@test.test";
 let contrasenia = "incorrecta";
-nameLogIn(nombre, contrasenia).then((value) => {
-    console.group("NameLogIn");
-    console.log("Name: " + nombre);
-    console.log("Password: " + contrasenia);
-    console.log("nameLogIn?: " + value);
-    console.groupEnd();
-});
-emailLogIn(email, contrasenia).then((value) => {
-    console.group("EmailLogIn");
-    console.log("Email: " + email);
-    console.log("Password: " + contrasenia);
-    console.log("emailLogIn?: " + value);
-    console.groupEnd();
+register(nombre, email, contrasenia).then((value) => {
+    console.log("Result of register: ");
+    console.table(value);
 });
