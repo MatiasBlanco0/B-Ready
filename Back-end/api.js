@@ -36,6 +36,17 @@ async function emailLogIn(email, password){
     return promise.length > 0;
 }
 
+async function register(name, email, password){
+    try {
+        let sql = "INSERT INTO usuario(nombre, email, password) VALUES(?, ?, ?)";
+        let promise = await sqlQuery(sql, [name, email, password]);
+        return true;
+    } catch(err){
+        return err;
+    }
+
+}
+
 let nombre = "Test";
 let email = "test@test.test";
 let contrasenia = "incorrecta";
