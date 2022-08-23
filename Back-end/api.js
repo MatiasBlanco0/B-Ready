@@ -55,17 +55,36 @@ async function register(name, email, password){
         if(promise instanceof Error){
             return promise
         } else {
-            return promise.affectedRows;
+            return true;
         }
     } catch(err){
         return err;
     }
 }
 
-let nombre = "Test";
+async function addSubject(name, userEmail){
+    try{
+        let sql = "INSERT INTO materia(nombre) VALUES(?)";
+        let promise = await sqlQuery(sql, [name]);
+        if (promise instanceof Error){
+            return promise;
+        }
+        sql = "INSERT INTO 'relacion materia/usuario'(email, materia) VALUES (?, ?)";
+        let promise1 = await sqlQuery(sql, [userEmail, promise.insertId]);
+        if (promise1 instanceof Error){
+            return promise1;
+        }
+        else {
+            return true;
+        }
+    } catch(err) {
+        return err;
+    }
+}
+
+let nombre = "Testeo";
 let email = "test@test.test";
-let contrasenia = "incorrecta";
-register(nombre, email, contrasenia).then((value) => {
-    console.log("Result of register: ");
+addSubject(nombre, email).then((value) => {
+    console.log("Result of addSubject: ");
     console.table(value);
 });
