@@ -42,11 +42,7 @@ async function emailLogIn(email, password){
     try {
         let sql = "SELECT 1 FROM usuario WHERE usuario.email = ? AND usuario.contrasenia = ?";
         let promise = await sqlQuery(sql, [email, password]);
-        if(promise instanceof Error){
-            return promise
-        } else {
-            return promise.length > 0;
-        }
+        return promise.length > 0;
     } catch(err){
         return err;
     }
