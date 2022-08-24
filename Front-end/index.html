@@ -4,7 +4,7 @@
     <!--Parte basica, incluyendo tipos de caracteres, titulo, autores y etiquetas-->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta name="author" content="Marco Canton">
     <meta name="description" content="B-Ready es una aplicación web que ayuda a la gente a organizar sus tareas de manera eficaz y ordenada">
     <meta name="Copyright" content="None"><!--Este es el copyright, honestamente no creo que haga falta poner uno pero en todo caso podemos poner el de ort-->
@@ -24,59 +24,65 @@
 
 </head>
 <body>
-    <header>
-        <img src="LOGO.png" alt="Logo" class="logo">
-        <nav>
-            <ul>
-                <li><a href=""><b>Log In</b></a></li>
-                <li><a href=""><b>Register</b></a></li>
-            </ul>
-        </nav>
-    </header>
-    <section>
-        <div class="P1">
-            <div class="texto">
-                <h1 id="titulo"><b>La mejor manera de organizarte <br>a vos y a tus tareas</b></h1>
-                <h3 id="desc">Una agenda inteligente que busca facilitar tu dia a dia<br> organizando tus tareas para que vos<br> no tengas que perder el tiempo</h3>
-            </div>
-            <div class="formulario">
-                <div class="FI">
-                    <h3 id="prop">Unete a nuestra comunidad <br> y haz de tu vida algo mucho mas<br> facil, a que estas <br>esperando xd? :o (cara sorprendida)</h3>
-                    <br><br><br>
-                    <form>
-                        <input size="40" type="email" id="mail" name="mail" placeholder="Escribe tu gmail aqui">
-                        <input id="Enviar" type="submit" value="Registrarse">
-                    </form>
-                </div>
-                <img id="imagen" src="pibardos.jpg">
-            </div>
+    <div class="contenedorWeb">
+        <div class="headerP">
+            <header>
+                <img src="LOGO.png" alt="Logo" class="logo">
+                <nav>
+                    <ul>
+                        <li><a href=""><b>Log in</b></a></li>
+                        <li><a href=""><b>Register</b></a></li>
+                    </ul>
+                </nav>
+            </header>
         </div>
-        <div class="P2">
-            <div class="arriba">
-                <div class="textos">
-                    <h3><br><b>¿Quienes somos?</b></h3>
-                    <p>B-Ready es un proyecto de 4to año diseñando<br> por Ilan Repiso, Marco Canton, Alex Carpel y Matias Blanco <br>con el objetivo de facilitar la organizacion<br> de las tareas de uno para<br> realizarlas de manera mas eficaz<br> y evitando estres innecesario</p>
+        
+        <section>
+            <div class="P1">
+                <div class="texto">
+                    <h1 id="titulo"><b>B-Ready, la mejor agenda accesible <br>de organización</b></h1>
+                    <h3 id="desc">Una agenda inteligente para facilitar la <br>organización de tus tareas, solo o con compañeros<br> Usa un calendario interactivo, personaliza tu<br> cuenta y organízate de la forma que quieras</h3>
                 </div>
-                <img src="LOGO.png" alt="Integrantes">
-            </div>
-            <div class="abajo">
-                <img src="fotoCalendario.png" alt="">
-                <div class="textos">
-                    <h3><br><b>¿De que se trata el proyecto?</b><br></h3>
-                    <p>La idea es crear una pagina web con un <br>calendario personal que permite ingresar tareas <br> y las organiza dependiendo diversos factores<br> de una manera que cada uno pueda saber<br> cuanto tiempo hay que invertir y cuando para resolverlo</p>
+                <div class="formulario">
+                    <div class="FI">
+                        <h3 id="prop">Registrate y empieza un ciclo lectivo de<br> organización e ideas, colabora, manejate de la forma que quieras,<br> organízate solo o en grupo y trabaja mejor que nunca.<br> B-Ready está para hacer todas las tareas más<br> fáciles, ¡date una mano y registrate!</h3>
+                        <br><br><br>
+                        <form>
+                            <input size="40" type="email" id="mail" name="mail" placeholder="Escribe tu gmail aqui">
+                            <input id="Enviar" type="submit" value="Registrarse">
+                        </form>
+                    </div>
+                    <img id="imagen" src="facilitate.png">
                 </div>
             </div>
-        </div>
-    </section>
-    <footer>
-        <h3>Todos los derechos reservados</h3><!--No tenemos derechos igual pero es para rellenar-->
-        <p>Quieres saber mas sobre <b>nosotros</b>? En ese caso haz click <a href="">aqui</a></p>
-        <p>Necesitas ayuda con algun problema? No te preocupes, click <a href=""> aqui </a> para que te podamos ayudar!</p>
-        <div>
-            <img id="imgI" src="copyrightMalvado.png" alt="logo Ort">
-            <img id="imgD" src="emblemaTic.jpg" alt="logo Tic"> 
-        </div>
-    </footer>
+            <div class="P2">
+                <div class="arriba">
+                    <div class="textos">
+                        <h3><br><b>¿Quiénes somos?</b></h3>
+                        <p>B-Ready es un proyecto de 4to año diseñando<br> por Ilan Repiso, Marco Canton, Alex Karpel y Matías Blanco <br>con el objetivo de facilitar la organización<br> de las tareas de uno para<br> realizarlas de manera más eficaz<br> y evitando estrés innecesario</p>
+                    </div>
+                    <br>
+                    <img src="organismo.png" alt="" id="img1">
+                </div>
+                <div class="abajo">
+                    <img src="grupo.png" alt="" id="img2">
+                    <div class="textos">
+                        <h3><br><b>¿De qué se trata el proyecto?</b></h3>
+                        <p>La idea es crear una página web con un <br>calendario personal que permite ingresar tareas <br> y las organiza dependiendo diversos factores<br> de una manera que cada uno pueda saber<br> cuanto tiempo hay que invertir y cuando para resolverlo</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <footer>
+            <br>
+            <h3>Todos los derechos reservados</h3><!--No tenemos derechos igual pero es para rellenar-->
+            <p>Quieres saber más sobre <b>nosotros</b>? En ese caso haz click <a href="">aquí</a></p>
+            <p>Necesitas ayuda con algún problema? No te preocupes, click <a href=""> aquí </a> para que te podamos ayudar!</p>
+            <div>
+                <img id="imgI" src="copyrightMalvado.png" alt="logo Ort">
+                <img id="imgD" src="emblemaTic.jpg" alt="logo Tic"> 
+            </div>
+        </footer>
     <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
 <script>
 window.cookieconsent.initialise({
@@ -97,5 +103,6 @@ window.cookieconsent.initialise({
   }
 });
 </script>
+    </div>
 </body>
 </html>
