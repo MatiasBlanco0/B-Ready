@@ -62,19 +62,32 @@ async function register(name, email, password){
     }
 }
 
-async function addSubject(name, userEmail){
-    try{
-        let sql = "INSERT INTO materia(nombre) VALUES(?)";
-        let promise = await sqlQuery(sql, [name]);
-        if (promise instanceof Error){
+async function addAssignment(userEmail, name, description, excercices, doneExcercices, subject, dueDate, difficulty){
+    try {
+        let sql = "INSERT INTO tarea(nombre, descripcion, cantej, cantejhechos, materia, fechaentrega, dificultad) VALUES(?, ?, ?, ?, ?, ?, ?)";
+        let promise = await sqlQuery(sql, [name, description, excercices, doneExcercices, subject, dueDate, difficulty]);
+        if(promise instanceof Error){
             return promise;
+        } else {
+           let result = await addUserToAssignment(userEmail, promise.insertId);
+           if(result instanceof Error){
+            return result;
+           } else {
+            return true;
+           }
         }
-        sql = "INSERT INTO 'relacion materia/usuario'(email, materia) VALUES (?, ?)";
-        let promise1 = await sqlQuery(sql, [userEmail, promise.insertId]);
-        if (promise1 instanceof Error){
-            return promise1;
-        }
-        else {
+    } catch(err) {
+        return err;
+    }
+}
+
+async function addUserToAssignment(userEmail, assignmentID){
+    try {
+        let sql = "INSERT INTO `relacion usuario/tarea`(email, tarea) VALUES (?, ?)";
+        let promise = await sqlQuery(sql, [userEmail, assignmentID]);
+        if(promise instanceof Error){
+            return promise;
+        } else {
             return true;
         }
     } catch(err) {
@@ -82,9 +95,11 @@ async function addSubject(name, userEmail){
     }
 }
 
-let nombre = "Testeo";
-let email = "test@test.test";
-addSubject(nombre, email).then((value) => {
-    console.log("Result of addSubject: ");
-    console.table(value);
-});
+let nombre = "Proyecto";
+let descripcion = "Proyecto B-ready B)";
+let ejercicos = 10;
+let ejercicosHechos = 2;
+let materia = "TIC";
+let fechaEntrega = new Date(2022, 10, 20);
+let dificultad = 127;
+
