@@ -95,6 +95,7 @@ async function addUserToAssignment(userEmail, assignmentID){
     }
 }
 
+let email = "test@test.test";
 let nombre = "Proyecto";
 let descripcion = "Proyecto B-ready B)";
 let ejercicos = 10;
@@ -103,3 +104,9 @@ let materia = "TIC";
 let fechaEntrega = new Date(2022, 10, 20);
 let dificultad = 127;
 
+addAssignment(email, nombre, descripcion, ejercicos, ejercicosHechos, materia, fechaEntrega, dificultad).then(
+    (value) => {
+        console.log("Resultado de addAssignment: ");
+        console.table(value);
+    }
+);
