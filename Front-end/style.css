@@ -38,6 +38,12 @@ nav ul{
     display: inline-flex;
 }
 
+nav img{
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
 ul a{
     margin-right: 15px;
     padding: 5px 10px 5px 10px;
@@ -152,7 +158,7 @@ form input::placeholder{
     flex-direction: row;
     width: 600px;
     height: 300px;
-    box-shadow: 3px 3px #000;
+    box-shadow: 3px 3px 30px #000;
 }
 
 .formulario *{
@@ -260,7 +266,7 @@ footer div{
     }
 
     #imagen{
-        margin-top: 30px;
+        margin-top: 50px;
         margin-left: 0px;
         justify-content: center;
         align-items: center ;
