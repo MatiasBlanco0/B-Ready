@@ -95,18 +95,32 @@ async function addUserToAssignment(userEmail, assignmentID){
     }
 }
 
-let email = "test@test.test";
-let nombre = "Proyecto";
-let descripcion = "Proyecto B-ready B)";
-let ejercicos = 10;
-let ejercicosHechos = 2;
-let materia = "TIC";
-let fechaEntrega = new Date(2022, 10, 20);
-let dificultad = 127;
-
-addAssignment(email, nombre, descripcion, ejercicos, ejercicosHechos, materia, fechaEntrega, dificultad).then(
-    (value) => {
-        console.log("Resultado de addAssignment: ");
-        console.table(value);
+async function getAssignment(userEmail){
+    try {
+        let sql = "SELECT tarea.id, tarea.nombre, tarea.descripcion, tarea.cantej, tarea.cantejhechos, tarea.materia, \
+        tarea.materia, tarea.fechaentrega, tarea.dificultad, `relacion usuario/tarea`.email FROM tarea \
+        INNER JOIN `relacion usuario/tarea` ON tarea.id = `relacion usuario/tarea`.tarea WHERE \
+        `relacion usuario/tarea`.email = ?";
+        return await sqlQuery(sql, [userEmail]);
+    } catch(err) {
+        return err;
     }
-);
+}
+
+async function getAssignmentUsers(id) {
+    try {
+        let sql = "SELECT rel.email FROM `relacion usuario/tarea` AS rel WHERE rel.tarea = ?"
+        return await sqlQuery(sql, [id]);
+    } catch(err) {
+        return err;
+    }
+}
+
+getAssignment("test@test.test").then((value) => {
+    console.log("Tareas: ");
+    console.table(value);
+    getAssignmentUsers(value[0].id).then((value1) => {
+        console.log("Integrantes: ");
+        console.table(value1);
+    });
+});
