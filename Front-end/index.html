@@ -25,19 +25,18 @@
 </head>
 <body>
     <div class="contenedorWeb">
-        <div class="headerP">
             <header>
-                <img src="LOGO.png" alt="Logo" class="logo">
-                <nav>
-                    <ul>
-                        <li><a href=""><b>Log in</b></a></li>
-                        <li><a href=""><b>Register</b></a></li>
-                    </ul>
-                    <img src="iconoMenu.png" alt="icono del menu">
-                </nav>
+                <div class="headerP">
+                    <img src="LOGO.png" alt="Logo" id="logo">
+                    <nav>
+                        <ul>
+                            <li id="logB"><a href="reg.html"><b>Log in</b></a></li>
+                            <li id="regB"><a href="reg.html"><b>Register</b></a></li>
+                        </ul>
+                        <img src="iconoMenu.png" alt="icono del menu">
+                    </nav>
+                </div>
             </header>
-        </div>
-        
         <section>
             <div class="P1">
                 <div class="texto">
@@ -75,14 +74,17 @@
             </div>
         </section>
         <footer>
-            <br>
-            <h3>Todos los derechos reservados</h3><!--No tenemos derechos igual pero es para rellenar-->
-            <p>Quieres saber más sobre <b>nosotros</b>? En ese caso haz click <a href="">aquí</a></p>
-            <p>Necesitas ayuda con algún problema? No te preocupes, click <a href=""> aquí </a> para que te podamos ayudar!</p>
-            <div>
-                <img id="imgI" src="copyrightMalvado.png" alt="logo Ort">
-                <img id="imgD" src="emblemaTic.jpg" alt="logo Tic"> 
+            <div class="footerP">
+                <br>
+                <h3>Todos los derechos reservados</h3><!--No tenemos derechos igual pero es para rellenar-->
+                <p>Quieres saber más sobre <b>nosotros</b>? En ese caso haz click <a href="">aquí</a></p>
+                <p>Necesitas ayuda con algún problema? No te preocupes, click <a href=""> aquí </a> para que te podamos ayudar!</p>
+                <div>
+                    <img id="imgI" src="copyrightMalvado.png" alt="logo Ort">
+                    <img id="imgD" src="emblemaTic.jpg" alt="logo Tic"> 
+                </div>
             </div>
+            
         </footer>
     <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
 <script>
@@ -104,6 +106,7 @@ window.cookieconsent.initialise({
   }
 });
 </script>
+<script src="pagP.js"></script>
     </div>
 </body>
 </html>

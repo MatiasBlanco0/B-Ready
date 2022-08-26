@@ -24,8 +24,12 @@ header{
 }
 
 .headerP{
-    max-width: 1200%;
+    max-width: 1200px;
+    width: 100%;
     margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 nav{
@@ -59,9 +63,13 @@ ul a:hover{
     text-shadow: 1px 2px #000;
 }
 
-.logo{
+#logo{
     width: 200px;
     height: 80px;
+}
+
+#logo:hover{
+    cursor: pointer;
 }
 
 section{
@@ -172,8 +180,6 @@ form input::placeholder{
     display: flex;
     flex-direction: column;
     background-color: #cfe4ff;
-    background-repeat: no-repeat;
-    background-size: cover;
     justify-content: center;
     align-items: center;
     font-size: 20px;
@@ -221,6 +227,14 @@ footer{
     flex-direction: column;
 }
 
+.footerP{
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px;
+    margin: auto;
+    width: 100%;
+}
+
 footer *{
     font-family: Arial, Helvetica, sans-serif;
 }
@@ -241,22 +255,21 @@ footer div{
     justify-content: space-between;
 }
 
-@media all and (max-width: 320px) {
-
-}
-
-@media all and (max-width: 480px) {
-    
-}
-
 @media all and (max-width: 720px) {
     
     nav ul{
         display: none;
     }
 
+    nav img{
+        display: flex;
+        width: 70px;
+        height: 70px;
+    }
+
     .texto{
         font-size: 25px;
+        padding: 5px 5px 5px 5px;
     }
 
     .formulario{
@@ -305,6 +318,73 @@ footer div{
     }
 
     #img2{
-        margin-top: -30px;
+        margin-top: 30px;
+    }
+
+    .abajo{
+        display: flex;
+        flex-direction: column-reverse;
+    }
+}
+
+@media all and (max-width: 480px) {
+    
+    
+    .texto{
+        font-size: 20px;
+        padding: 7px 7px 7px 7px;
+    }
+
+    .texto *{
+        text-shadow: 3px 3px #000;
+    }
+
+    .FI{
+        width: 350px;
+    }
+
+    #prop{
+        font-size: 20px;
+        padding: 3px 3px 3px 3px;
+    }
+
+    #mail{
+        width: 300px;
+    }
+
+    #Enviar{
+        width: 100px;
+    }
+
+    #imagen{
+        width: 350px;
+        margin-bottom: -100px;
+    }
+}
+
+@media all and (max-width: 320px) {
+    .texto{
+        font-size: 15px;
+    }
+
+    .texto *{
+        text-shadow: 1px 2px #000;
+    }
+
+    .FI{
+        width: 300px;
+    }
+
+    #prop{
+        font-size: 18px;
+    }
+
+    #mail{
+        width: 250px;
+    }
+
+    #imagen {
+        width: 300px;
+        height: 200px;
     }
 }

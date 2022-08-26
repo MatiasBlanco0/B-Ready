@@ -1,0 +1,97 @@
+@font-face{
+    font-family: SundayFont;
+    src: url(SUNDAY.ttf);
+}
+
+*{
+    font-family: SundayFont, Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header{
+    width: 100%;
+    background-color: #4990e7d0;
+    border: 4px solid #000;
+    display: flex;
+    align-items: center;
+    padding: 10px 10px 10px 5px;
+    z-index: 9999;
+}
+
+.navegador{
+    max-width: 1200px;
+    width: 100%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+}
+
+nav{
+    display: flex;
+}
+
+#logo{
+    width: 200px;
+    height: 80px;
+}
+
+#logo:hover{
+    cursor: pointer;
+}
+
+section{
+    background-color: #6db1ff;
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+
+.contenedorForm{
+    background-color: #cfe4ff;
+    box-shadow: 3px 3px 30px #000;
+    border-radius: 20%;
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    justify-content: center;
+    align-items: center;
+}
+
+footer{
+    border-top: 4px solid #000;
+    width: 100%;
+    display: flex;
+    background-color: #4990e7d0;
+    flex-direction: column;
+}
+
+.footerP{
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px;
+    margin: auto;
+    width: 100%;
+}
+
+footer *{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+footer img{
+    display: flex;
+    height: 100px;
+    width: 100px;
+}
+
+#imgI{
+    width: 150px;
+}
+
+footer div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+/*consultar con nacho el toggle de w3schools porque usa tanto posicion relativa como absoluta e incluso otro tipo de display aparte de flex*/
