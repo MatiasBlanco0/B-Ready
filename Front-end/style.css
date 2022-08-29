@@ -13,7 +13,7 @@
 header{
     width: 100%;
     background-color: #4990e7d0;
-    border: 4px solid #000;
+    box-shadow: 0px 0px 4px 1px #000;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -34,7 +34,6 @@ header{
 
 nav{
     display: flex;
-    position: sticky;
 }
 
 nav ul{
@@ -220,7 +219,6 @@ form input::placeholder{
 }
 
 footer{
-    border-top: 4px solid #000;
     width: 100%;
     display: flex;
     background-color: #4990e7d0;
@@ -247,6 +245,14 @@ footer img{
 
 #imgI{
     width: 150px;
+}
+
+#imgI:hover{
+    cursor: pointer;
+}
+
+#imgD:hover{
+    cursor: pointer;
 }
 
 footer div{
