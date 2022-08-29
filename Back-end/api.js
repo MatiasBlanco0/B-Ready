@@ -98,6 +98,18 @@ async function getAssignments(userEmail){
     }
 }
 
+async function getAssignmentInfo(id) {
+    try {
+        let sql = "SELECT tarea.id, tarea.nombre, tarea.descripcion, tarea.cantej, \
+        tarea.cantejhechos, tarea.materia, tarea.fechaentrega, tarea.dificultad, \
+        `relacion usuario/tarea`.email FROM tarea INNER JOIN `relacion usuario/tarea` \
+        ON tarea.id = `relacion usuario/tarea`.tarea WHERE tarea.id = ?";
+        return await sqlQuery(sql, [id]);
+    } catch(err) {
+        return err;
+    }
+ }
+
 async function getAssignmentUsers(id) {
     try {
         let sql = "SELECT rel.email FROM `relacion usuario/tarea` AS rel WHERE rel.tarea = ?"
