@@ -119,11 +119,9 @@ async function getAssignmentUsers(id) {
     }
 }
 
-nameLogIn("Juan", "123456")
-.then(result => {
-    console.log(result);
-}).catch(err => {
-    console.log(err);
-}).finally(() => {
-    closePool();
-});
+// Testing
+
+getAssignmentInfo(1)
+.then(result => console.table(result))
+.catch(err => console.log(err))
+.finally(() => closePool());
