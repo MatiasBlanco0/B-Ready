@@ -29,16 +29,6 @@ async function sqlQuery (query, values){
     }
 }
 
-async function nameLogIn(name, password){
-    try{
-        let sql = "SELECT 1 FROM usuario WHERE usuario.nombre = ? AND usuario.contrasenia = ?";
-        let promise = await sqlQuery(sql, [name, sha256(password)]);
-        return promise.length > 0;
-    } catch (err) {
-        return err;
-    }
-}
-
 async function emailLogIn(email, password){
     try {
         let sql = "SELECT 1 FROM usuario WHERE usuario.email = ? AND usuario.contrasenia = ?";
