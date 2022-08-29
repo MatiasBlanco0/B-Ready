@@ -1,4 +1,5 @@
 const mysql = require('mysql');
+const sha256 = require('js-sha256');
 
 const pool = mysql.createPool({
   host: "localhost",
@@ -31,7 +32,7 @@ async function sqlQuery (query, values){
 async function nameLogIn(name, password){
     try{
         let sql = "SELECT 1 FROM usuario WHERE usuario.nombre = ? AND usuario.contrasenia = ?";
-        let promise = await sqlQuery(sql, [name, password]);
+        let promise = await sqlQuery(sql, [name, sha256(password)]);
         return promise.length > 0;
     } catch (err) {
         return err;
@@ -41,7 +42,7 @@ async function nameLogIn(name, password){
 async function emailLogIn(email, password){
     try {
         let sql = "SELECT 1 FROM usuario WHERE usuario.email = ? AND usuario.contrasenia = ?";
-        let promise = await sqlQuery(sql, [email, password]);
+        let promise = await sqlQuery(sql, [email, sha256(password)]);
         return promise.length > 0;
     } catch(err){
         return err;
@@ -51,7 +52,7 @@ async function emailLogIn(email, password){
 async function register(name, email, password){
     try {
         let sql = "INSERT INTO usuario(nombre, email, contrasenia) VALUES(?, ?, ?)";
-        let promise = await sqlQuery(sql, [name, email, password]);
+        let promise = await sqlQuery(sql, [name, email, sha256(password)]);
         if(promise instanceof Error){
             return promise
         } else {
@@ -116,11 +117,11 @@ async function getAssignmentUsers(id) {
     }
 }
 
-getAssignment("test@test.test").then((value) => {
-    console.log("Tareas: ");
-    console.table(value);
-    getAssignmentUsers(value[0].id).then((value1) => {
-        console.log("Integrantes: ");
-        console.table(value1);
-    });
+nameLogIn("Juan", "123456")
+.then(result => {
+    console.log(result);
+}).catch(err => {
+    console.log(err);
+}).finally(() => {
+    closePool();
 });
