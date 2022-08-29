@@ -97,10 +97,10 @@ async function addUserToAssignment(userEmail, assignmentID){
 
 async function getAssignment(userEmail){
     try {
-        let sql = "SELECT tarea.id, tarea.nombre, tarea.descripcion, tarea.cantej, tarea.cantejhechos, tarea.materia, \
-        tarea.materia, tarea.fechaentrega, tarea.dificultad FROM tarea \
-        INNER JOIN `relacion usuario/tarea` ON tarea.id = `relacion usuario/tarea`.tarea WHERE \
-        `relacion usuario/tarea`.email = ?";
+        let sql = "SELECT tarea.id, tarea.nombre, tarea.descripcion, tarea.cantej, \
+        tarea.cantejhechos, tarea.materia, tarea.materia, tarea.fechaentrega, \
+        tarea.dificultad FROM tarea INNER JOIN `relacion usuario/tarea` ON \
+        tarea.id = `relacion usuario/tarea`.tarea WHERE `relacion usuario/tarea`.email = ?";
         return await sqlQuery(sql, [userEmail]);
     } catch(err) {
         return err;
