@@ -2,12 +2,14 @@ const mysql = require('mysql');
 const sha256 = require('js-sha256');
 
 const pool = mysql.createPool({
+  connectionLimit: 100,
   host: "localhost",
   user: "root",
   password: "rootroot",
   database: "b-ready"
 });
 
+// Don't use this function, it's only for testing purposes
 function closePool(){
     pool.end((err) =>{
         if(err) throw err;
