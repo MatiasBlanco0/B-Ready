@@ -10,8 +10,21 @@
     box-sizing: border-box;
 }
 
-.Register{
+.LogIn{
     display: none;
+}
+
+.Register{
+    /*display: none;*/
+}
+
+#errores{
+    display: none;
+    color: red;
+}
+
+.mostrar{
+    display: flex;
 }
 
 header{
@@ -88,16 +101,31 @@ section{
     padding-left: 10px;
 }
 
-#Enviar{
+.Register input{
+    width: 300px;
+    height: 40px;
+    border-radius: 5px;
+    border: none;
+    padding-left: 10px;
+}
+
+.Enviar{
     color: #fff;
     background-color: #47e61fd0;
     border: none;
     font-size: 15px;
 }
 
-#Enviar:hover{
+.Enviar:hover{
     cursor: pointer;
     background-color: #47e61ffa;
+}
+
+.Register ul{
+    font-size: 15px;
+    color: red;
+    list-style: none;
+    margin-top: 5px;
 }
 
 footer{

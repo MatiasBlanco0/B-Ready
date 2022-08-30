@@ -41,20 +41,22 @@
                 <input type="password" placeholder="Ingrese su contraseña">
                 <br><a href="">¿Has olvidado tu contraseña?</a>
                 <br><br>
-                <input type="submit" value="Iniciar Sesión" id="Enviar">
+                <input type="submit" value="Iniciar Sesión" class="Enviar">
             </div>
             <div class="Register">
                 <h4>Registrarse en B-Ready</h4 class="titulo"><br>
-                <input type="text" placeholder="Nombre de usuario">
+                <h5 id="errores"></h5>
+                <input type="text" placeholder="Nombre de usuario" id="nombre"><br>
                 <br>
-                <input type="email" placeholder="Correo electrónico"><br>
-                <input type="password" placeholder="Contraseña"><br>
+                <input type="email" placeholder="Correo electrónico" id="mail"><br><br>
+                <input type="password" placeholder="Contraseña" id="contraseña"><br><br>
+                <input type="password" placeholder="Confirmar Contraseña" id="conC"><br>
                 <ul>
-                    <li>La contraseña debe tener mas de 5 caracteres</li>
-                    <li>hola</li>
+                    <li id="condicion1">La contraseña debe tener mas de 5 <br>caracteres</li>
+                    <li id="condicion2">La contraseña debe incluir al menos una <br>mayuscula y un numero</li>
                 </ul>
                 <br>
-                <input type="submit" value="Registrarse">
+                <input type="submit" value="Registrarse" class="Enviar" id="enviarReg">
             </div>
             <br><a href="">Politica de privacidad</a>
             </div>
