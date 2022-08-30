@@ -32,16 +32,16 @@ document.addEventListener("DOMContentLoaded", () => {
     
     enviarReg.addEventListener("click", () => {
         if (nombreUsuario.value == "" || contrasenia.value == "" || email.value == "" || contraseniaConfirm.value == ""){
-            //faltan confirmar parametros
-            console.log("si");
-            error.classList.add("mostrar");
-            error.value = "no flaco";
+            document.getElementById("errores").style.display = "flex";
+            error.textContent = "Falta completar algun campo";
         }
         else if(checkEmail(email.value) == false){
-            //el email no es correcto
+            document.getElementById("errores").style.display = "flex";
+            error.textContent = "Ingrese un email valido";
         }
         else if(contraseniaConfirm.value != contrasenia.value){
-            //las contraseñas no coinciden
+            document.getElementById("errores").style.display = "flex";
+            error.textContent = "Las contraseñas no coinciden";
         }
     });
 
