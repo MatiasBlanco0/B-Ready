@@ -29,27 +29,26 @@
     </header>
     <section>
         <div class="contenedorForm">
-            <label class="toggle">
-               <input type="checkbox">
-               <span class="slider"></span>
-            </label>
+            <div class="cont">
+                <label for="check">
+                <input onchange="cambiar()" type="checkbox" id=toggle class="toggle">
+            </label><br>
             <div class="LogIn">
-                <h4>Ingrese su nombre de usuario o email</h4>
-                <input type="text" value="Nombre de usuario">
-                <br>
-                <h4>Ingrese si contraseña</h4>
-                <input type="password">
+                <h4>Iniciar sesión en B-Ready</h4 class="titulo"><br>
+                <input type="text" placeholder="Ingrese un correo electrónico">
+                <br><a href="" class="LR">¿Has olvidado tu correo electrónico?</a>
                 <br><br>
-                <input type="submit" value="Iniciar Sesión">
+                <input type="password" placeholder="Ingrese su contraseña">
+                <br><a href="">¿Has olvidado tu contraseña?</a>
+                <br><br>
+                <input type="submit" value="Iniciar Sesión" id="Enviar">
             </div>
             <div class="Register">
-                <h4>Introduzca un nombre de usuario</h4>
-                <input type="text" value="Nombre de usuario">
+                <h4>Registrarse en B-Ready</h4 class="titulo"><br>
+                <input type="text" placeholder="Nombre de usuario">
                 <br>
-                <h4>Introduzca un email</h4>
-                <input type="email" value="Email"><br>
-                <h4>Introduzca una contraseña</h4>
-                <input type="password"><br>
+                <input type="email" placeholder="Correo electrónico"><br>
+                <input type="password" placeholder="Contraseña"><br>
                 <ul>
                     <li>La contraseña debe tener mas de 5 caracteres</li>
                     <li>hola</li>
@@ -57,6 +56,9 @@
                 <br>
                 <input type="submit" value="Registrarse">
             </div>
+            <br><a href="">Politica de privacidad</a>
+            </div>
+            
         </div>
     </section>
     <footer>
@@ -71,5 +73,6 @@
             </div>
         </div>
     </footer>
+    <script src="reg.js"></script>
 </body>
 </html>
