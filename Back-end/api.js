@@ -1,8 +1,10 @@
+// Import modules
 const mysql = require('mysql');
 const sha256 = require('js-sha256');
 const express = require('express');
 const path = require('path');
 
+// Create a new express application
 const app = express();
 const port = process.env.PORT || 8080;
 
@@ -10,6 +12,7 @@ app.use(express.static(path.join(__dirname.slice(0,23), 'Front-end')));
 
 app.listen(port, () => console.log('Server started at http://localhost:' + port));
 
+// Create a connection pool
 const pool = mysql.createPool({
   connectionLimit: 100,
   host: "localhost",
@@ -26,6 +29,7 @@ function closePool(){
     });
 }
 
+// Function to execute queries
 async function sqlQuery (query, values){
     try{
         console.log("Running query");
@@ -44,6 +48,7 @@ async function emailLogIn(email, password){
     try {
         let sql = "SELECT 1 FROM usuario WHERE usuario.email = ? AND usuario.contrasenia = ?";
         let promise = await sqlQuery(sql, [email, sha256(password)]);
+        // Return true if the query has results
         return promise.length > 0;
     } catch(err){
         return err;
@@ -54,6 +59,7 @@ async function register(name, email, password){
     try {
         let sql = "INSERT INTO usuario(nombre, email, contrasenia) VALUES(?, ?, ?)";
         let promise = await sqlQuery(sql, [name, email, sha256(password)]);
+        // If the query was not successful, return the error
         if(promise instanceof Error){
             return promise
         } else {
@@ -68,10 +74,14 @@ async function addAssignment(userEmail, name, description, excercices, doneExcer
     try {
         let sql = "INSERT INTO tarea(nombre, descripcion, cantej, cantejhechos, materia, fechaentrega, dificultad) VALUES(?, ?, ?, ?, ?, ?, ?)";
         let promise = await sqlQuery(sql, [name, description, excercices, doneExcercices, subject, dueDate, difficulty]);
+        // If the query was not successful, return the error
         if(promise instanceof Error){
             return promise;
-        } else {
+        }
+        // If the query was successful, add the user to the assignment 
+        else {
            let result = await addUserToAssignment(userEmail, promise.insertId);
+           // If the query was not successful, return the error
            if(result instanceof Error){
             return result;
            } else {
@@ -87,6 +97,7 @@ async function addUserToAssignment(userEmail, assignmentID){
     try {
         let sql = "INSERT INTO `relacion usuario/tarea`(email, tarea) VALUES (?, ?)";
         let promise = await sqlQuery(sql, [userEmail, assignmentID]);
+        // If the query was not successful, return the error
         if(promise instanceof Error){
             return promise;
         } else {
