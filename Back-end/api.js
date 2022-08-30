@@ -1,5 +1,14 @@
 const mysql = require('mysql');
 const sha256 = require('js-sha256');
+const express = require('express');
+const path = require('path');
+
+const app = express();
+const port = process.env.PORT || 8080;
+
+app.use(express.static(path.join(__dirname.slice(0,23), 'Front-end')));
+
+app.listen(port, () => console.log('Server started at http://localhost:' + port));
 
 const pool = mysql.createPool({
   connectionLimit: 100,
