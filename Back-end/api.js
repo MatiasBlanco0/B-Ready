@@ -111,15 +111,6 @@ async function getAssignmentInfo(id) {
     }
  }
 
-async function getAssignmentUsers(id) {
-    try {
-        let sql = "SELECT rel.email FROM `relacion usuario/tarea` AS rel WHERE rel.tarea = ?"
-        return await sqlQuery(sql, [id]);
-    } catch(err) {
-        return err;
-    }
-}
-
 // Testing
 
 getAssignmentInfo(1)
