@@ -110,10 +110,3 @@ async function getAssignmentInfo(id) {
         return err;
     }
  }
-
-// Testing
-
-getAssignmentInfo(1)
-.then(result => console.table(result))
-.catch(err => console.log(err))
-.finally(() => closePool());
