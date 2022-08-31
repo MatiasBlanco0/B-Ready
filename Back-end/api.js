@@ -118,6 +118,30 @@ async function register(name, email, password){
 }
 
 async function addAssignment(userEmail, name, description, excercices, doneExcercices, subject, dueDate, difficulty){
+    if(!checkEmail(userEmail)){
+        return new Error("Invalid email");
+    }
+    if(!checkString(name)){
+        return new Error("Invalid name");
+    }
+    if(!checkString(descriptiono)){
+        return new Error("Invalid description");
+    }
+    if(!checkString(subject)){
+        return new Error("Invalid subject");
+    }
+    if(typeof excercices !== "number"){
+        return new Error("Invalid number of excercices");
+    }
+    if(typeof doneExcercices !== "number"){
+        return new Error("Invalid number of excercices done");
+    }
+    if(typeof difficulty !== "number"){
+        return new Error("Invalid number of difficulty");
+    }
+    if(!dueDate instanceof Date || isNaN(dueDate)){
+        return new Error("Invalid due date");
+    }
     try {
         let sql = "INSERT INTO tarea(nombre, descripcion, cantej, cantejhechos, materia, fechaentrega, dificultad) VALUES(?, ?, ?, ?, ?, ?, ?)";
         let promise = await sqlQuery(sql, [name, description, excercices, doneExcercices, subject, dueDate, difficulty]);
