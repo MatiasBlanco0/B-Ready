@@ -100,7 +100,7 @@ async function register(name, email, password){
     if(!checkPassword(password)){
         return new Error("Invalid password");
     }
-    if(checkString(name)){
+    if(!checkString(name)){
         return new Error("Invalid name");
     }
     try {
