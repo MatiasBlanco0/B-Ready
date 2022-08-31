@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const toggle = document.getElementById("");
     const logo = document.getElementById("logo");
-    const registrarse = document.getElementsByClassName("Register");
+    const registrarse = document.getElementById("Register");
+    const login = document.getElementById("LogIn");
     const imgI = document.getElementById("imgI");
     const imgD = document.getElementById("imgD");
     const email = document.getElementById("mail");
@@ -12,6 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const condicion1 = document.getElementById("condicion1");
     const condicion2 = document.getElementById("condicion2");
     const error = document.getElementById("errores");
+    const toggle = document.getElementById("TOGGLE");
+    let pantalla = 0;
 
     imgI.addEventListener("click", () => {
         window.location.replace("https://campus.ort.edu.ar/");
@@ -75,6 +77,20 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         else{
             condicion2.style.color = "red";
+        }
+    });
+
+    toggle.addEventListener("click", () => {
+        if(pantalla == 0){
+            document.getElementById("Register").style.display = "block";
+            document.getElementById("LogIn").style.display = "none";
+            console.log("elpepe");
+            pantalla = 1;
+        }
+        else{
+            document.getElementById("LogIn").style.display = "block";
+            document.getElementById("Register").style.display = "none";
+            pantalla = 0;
         }
     });
 });

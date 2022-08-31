@@ -10,21 +10,13 @@
     box-sizing: border-box;
 }
 
-.LogIn{
-    /*display: none;*/
-}
-
-.Register{
+#Register{
     display: none;
 }
 
 #errores{
     display: none;
     color: red;
-}
-
-.mostrar{
-    display: flex;
 }
 
 header{
@@ -105,7 +97,7 @@ section{
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    background-color: #4990e7d0;
     -webkit-transition: 0.4s;
     transition: 0.4s;
 }
@@ -123,7 +115,7 @@ section{
 }  
 
 .toggle input:checked + .slider {
-    background-color: #2196F3;
+    background-color: #4990e7d0;
 }
   
 .toggle input:focus + .slider {
@@ -144,7 +136,7 @@ section{
     text-align: center;
 }
 
-.LogIn input{
+#LogIn input{
     width: 300px;
     height: 40px;
     border-radius: 5px;
@@ -152,7 +144,7 @@ section{
     padding-left: 10px;
 }
 
-.Register input{
+#Register input{
     width: 300px;
     height: 40px;
     border-radius: 5px;
@@ -172,7 +164,7 @@ section{
     background-color: #47e61ffa;
 }
 
-.Register ul{
+#Register ul{
     font-size: 15px;
     color: red;
     list-style: none;
@@ -222,4 +214,8 @@ footer div{
     justify-content: space-between;
 }
 
-/*consultar con nacho el toggle de w3schools porque usa tanto posicion relativa como absoluta e incluso otro tipo de display aparte de flex*/
+@media all and (max-width: 320px){
+    .cont{
+        max-width: 100%;
+    }
+}
