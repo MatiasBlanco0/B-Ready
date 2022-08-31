@@ -15,6 +15,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const toggle = document.getElementById("TOGGLE");
     let pantalla = 0;
 
+    //email.value = $_GET("mail");
+    console.log($_GET(mail));
+    
     imgI.addEventListener("click", () => {
         window.location.replace("https://campus.ort.edu.ar/");
     });
