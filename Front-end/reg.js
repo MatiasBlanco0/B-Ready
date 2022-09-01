@@ -15,8 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const toggle = document.getElementById("TOGGLE");
     let pantalla = 0;
 
-    //email.value = $_GET("mail");
-    //console.log($_GET("mail"));
+    console.log(window.location.href);
     
     imgI.addEventListener("click", () => {
         window.location.replace("https://campus.ort.edu.ar/");
@@ -31,10 +30,26 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     
     function checkEmail(mailIngresado) {
-        const checker = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/gi;
+        const checker = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g; //preguntar con nacho para que pueda agarrar mails como el de ort
         return checker.test(mailIngresado);
     }
+
+    //momento parse
+    //function revisarURL(url) {
+    //    var queryStart = url.indexOf("=") + 1,
+    //        queryEnd = url.indexOf("#"),
+    //}
+
+    let parametros = new URLSearchParams(location.search);
+    let gmail = parametros.get("mail");
+    console.log(gmail);
     
+    if(gmail !== ""){
+        cambiar();
+        toggle.click();
+        email.style.value = gmail.value;
+    }
+
     enviarReg.addEventListener("click", () => {
         if (nombreUsuario.value == "" || contrasenia.value == "" || email.value == "" || contraseniaConfirm.value == ""){
             document.getElementById("errores").style.display = "flex";
@@ -83,11 +98,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    toggle.addEventListener("click", () => {
+    toggle.addEventListener("click", cambiar);
+
+    function cambiar(){
         if(pantalla == 0){
             document.getElementById("Register").style.display = "block";
             document.getElementById("LogIn").style.display = "none";
-            console.log("elpepe");
             pantalla = 1;
         }
         else{
@@ -95,5 +111,5 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("Register").style.display = "none";
             pantalla = 0;
         }
-    });
+    }
 });

@@ -156,6 +156,10 @@ form input::placeholder{
     padding: 5px 20px 5px 20px;
 }
 
+#Enviar:hover{
+    cursor: pointer;
+}
+
 #mail:focus{
     background-color: #fff;
 }
