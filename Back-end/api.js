@@ -8,8 +8,8 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 8080;
 
-app.get('/getAssigments', (req, res) => {
-    console.log("Recibi una request GET en /getAssigments");
+app.get('/getAssignments', (req, res) => {
+    console.log("Recibi una request GET en /getAssignments");
     getAssignments(req.params['email'])
     .then(result => res.send(result));
 });
