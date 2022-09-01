@@ -8,7 +8,11 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 8080;
 
-app.use(express.static(path.join(__dirname.slice(0,23), 'Front-end')));
+app.get('/getAssigments', (req, res) => {
+    console.log("Recibi una request GET en /getAssigments");
+    getAssignments(req.params['email'])
+    .then(result => res.send(result));
+});
 
 app.listen(port, () => console.log('Server started at http://localhost:' + port));
 
