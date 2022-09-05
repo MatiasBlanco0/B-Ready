@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if(gmail !== ""){
         cambiar();
         toggle.click();
-        email.style.value = gmail.value;
+        email.value = gmail;
     }
 
     enviarReg.addEventListener("click", () => {
