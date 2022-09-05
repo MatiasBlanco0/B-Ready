@@ -8,7 +8,9 @@ const app = express();
 const port = process.env.PORT || 8080;
 
 app.post('/getAssignments', (req, res) => {
-    console.log("Recibi una request GET en /getAssignments");
+    console.log("Recibi una request POST en /getAssignments");
+    console.log("Email: " + req.body['email']);
+    console.log();
     getAssignments(req.params['email'])
     .then(result => res.json(result));
 });

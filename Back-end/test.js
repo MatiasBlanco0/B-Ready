@@ -1,8 +1,16 @@
-fetch("http://localhost:8080/getAssignments", {
-    method: "post",
-    headers: {"Content Type": "application/json"},
-    body: JSON.stringify({"email": "test@test.test"})
-})
-.then(response => console.table(response.json()))
-.catch(err => console.log(err))
-.then(data => console.table(data))
+document.addEventListener("DOMContentLoaded", () =>{
+    response = document.getElementById("response");
+    error = document.getElementById("error");
+    result = document.getElementById("result");
+
+    fetch("http://localhost:8080/getAssignments", {
+        method: "post",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({"email": "test@test.test"})
+    })
+    .then(response => response.innerHTML = response.json())
+    .catch(err => error.innerHTML = err)
+    .then(data => result.innerHTML = data)
+});
