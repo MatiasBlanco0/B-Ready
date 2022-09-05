@@ -2,15 +2,22 @@
 const mysql = require('mysql');
 const sha256 = require('js-sha256');
 const express = require('express');
+const cors = require('cors');
 
 // Create a new express application
 const app = express();
 const port = process.env.PORT || 8080;
 
-app.post('/getAssignments', (req, res) => {
-    console.log("Recibi una request POST en /getAssignments");
-    console.log("Email: " + req.body['email']);
-    console.log();
+const corsOptions = {
+    origin: 'http://127.0.0.1:8080',
+    optionsSuccessStatus: 200
+}
+
+app.post('/getAssignments', cors(corsOptions), (req, res) => {
+    console.log("Recibi una request POST en /getAssignments\n");
+    console.log("Body: " + req.body + "\n");
+    console.log("Params:");
+    console.table(req.params);
     getAssignments(req.params['email'])
     .then(result => res.json(result));
 });
