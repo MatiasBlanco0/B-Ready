@@ -2,7 +2,6 @@
 const mysql = require('mysql');
 const sha256 = require('js-sha256');
 const express = require('express');
-const path = require('path');
 
 // Create a new express application
 const app = express();
