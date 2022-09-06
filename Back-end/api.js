@@ -11,9 +11,21 @@ const port = process.env.PORT || 8080;
 app.use(cors());
 app.use(express.json());
 
-app.post('/getAssignments', (req, res) => {
-    console.log("\nRecibi una request POST en /getAssignments");
-    getAssignments(req.body['email'])
+app.post('/login', (req, res) => {
+    console.log("\nRecibi una request POST en /login");
+    emailLogIn(req.body['email'], req.body['contrasenia'])
+        .then(result => res.json(result));
+});
+
+app.post('/register', (req, res) => {
+    console.log("\nRecibi una request POST en /register");
+    register(req.body['nombre'], req.body['email'], req.body['contrasenia'])
+        .then(result => res.json(result));
+});
+
+app.post('/assignments', (req, res) => {
+    console.log("\nRecibi una request POST en /assignments");
+    getAssignments(req.body['email'], req.body['contrasenia'])
         .then(result => res.json(result));
 });
 
@@ -231,7 +243,7 @@ async function getAssignmentInfo(id) {
     if (typeof id !== "number") {
         return new Error("Invalid Id");
     }
-    if(id < 0) {
+    if (id < 0) {
         return new Error("Invalid Id");
     }
     try {
@@ -248,7 +260,7 @@ async function deleteAssignment(id, userEmail, password) {
     if (typeof id !== "number") {
         return new Error("Invalid Id");
     }
-    if(id < 0) {
+    if (id < 0) {
         return new Error("Invalid Id");
     }
     if (!checkEmail(userEmail)) {
