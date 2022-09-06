@@ -232,7 +232,7 @@ async function addAssignment(userEmail, password, name, description, excercices,
         return new Error("Invalid due date");
     }
     try {
-        if (await logIn(userEmail, sha256(password))) {
+        if (await logIn(userEmail, password) === true) {
             let sql = "INSERT INTO tarea(nombre, descripcion, cantej, cantejhechos, materia, fechaentrega, dificultad) VALUES(?, ?, ?, ?, ?, ?, ?)";
             let promise = await sqlQuery(sql, [name, description, excercices, doneExcercices, subject, dueDate, difficulty]);
             // If the query was not successful, return the error
@@ -286,7 +286,7 @@ async function getAssignments(userEmail, password) {
         return new Error("Invalid password");
     }
     try {
-        if (await logIn(userEmail, sha256(password))) {
+        if (await logIn(userEmail, password) === true) {
             let sql = "SELECT tarea.id, tarea.nombre, tarea.cantej, tarea.cantejhechos, \
             tarea.materia, tarea.fechaentrega, tarea.dificultad FROM tarea INNER JOIN \
             `relacion usuario/tarea` ON tarea.id = `relacion usuario/tarea`.tarea \
@@ -331,7 +331,7 @@ async function deleteAssignment(id, userEmail, password) {
         return new Error("Invalid password");
     }
     try {
-        if (await logIn(userEmail, sha256(password))) {
+        if (await logIn(userEmail, password) === true) {
             let sql = "DELETE FROM tarea WHERE tarea.id = ?";
             let promise = await sqlQuery(sql, [id]);
             // If the query was not successful, return the error
