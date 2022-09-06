@@ -8,18 +8,13 @@ const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 8080;
 
-const corsOptions = {
-    origin: 'http://127.0.0.1:8080',
-    optionsSuccessStatus: 200
-}
+app.use(cors());
+app.use(express.json());
 
-app.post('/getAssignments', cors(corsOptions), (req, res) => {
-    console.log("Recibi una request POST en /getAssignments\n");
-    console.log("Body: " + req.body + "\n");
-    console.log("Params:");
-    console.table(req.params);
-    getAssignments(req.params['email'])
-    .then(result => res.json(result));
+app.post('/getAssignments', (req, res) => {
+    console.log("\nRecibi una request POST en /getAssignments");
+    getAssignments(req.body['email'])
+        .then(result => res.json(result));
 });
 
 app.listen(port, () => console.log('Server started at http://localhost:' + port));
