@@ -13,7 +13,7 @@ app.use(express.json());
 
 app.post('/login', (req, res) => {
     console.log("\nRecibi una request POST en /login");
-    emailLogIn(req.body['email'], req.body['contrasenia'])
+    logIn(req.body['email'], req.body['contrasenia'])
         .then(result => res.json(result));
 });
 
@@ -28,6 +28,8 @@ app.post('/assignments', (req, res) => {
     getAssignments(req.body['email'], req.body['contrasenia'])
         .then(result => res.json(result));
 });
+
+
 
 app.listen(port, () => console.log('Server started at http://localhost:' + port));
 
@@ -101,7 +103,7 @@ async function sqlQuery(query, values) {
     }
 }
 
-async function emailLogIn(email, password) {
+async function logIn(email, password) {
     if (!checkEmail(email)) {
         return new Error("Invalid email");
     }
@@ -171,7 +173,7 @@ async function addAssignment(userEmail, password, name, description, excercices,
         return new Error("Invalid due date");
     }
     try {
-        if (await emailLogIn(userEmail, sha256(password))) {
+        if (await logIn(userEmail, sha256(password))) {
             let sql = "INSERT INTO tarea(nombre, descripcion, cantej, cantejhechos, materia, fechaentrega, dificultad) VALUES(?, ?, ?, ?, ?, ?, ?)";
             let promise = await sqlQuery(sql, [name, description, excercices, doneExcercices, subject, dueDate, difficulty]);
             // If the query was not successful, return the error
@@ -225,7 +227,7 @@ async function getAssignments(userEmail, password) {
         return new Error("Invalid password");
     }
     try {
-        if (await emailLogIn(userEmail, sha256(password))) {
+        if (await logIn(userEmail, sha256(password))) {
             let sql = "SELECT tarea.id, tarea.nombre, tarea.cantej, tarea.cantejhechos, \
             tarea.materia, tarea.fechaentrega, tarea.dificultad FROM tarea INNER JOIN \
             `relacion usuario/tarea` ON tarea.id = `relacion usuario/tarea`.tarea \
@@ -270,7 +272,7 @@ async function deleteAssignment(id, userEmail, password) {
         return new Error("Invalid password");
     }
     try {
-        if (await emailLogIn(userEmail, sha256(password))) {
+        if (await logIn(userEmail, sha256(password))) {
             let sql = "DELETE FROM tarea WHERE tarea.id = ?";
             let promise = await sqlQuery(sql, [id]);
             // If the query was not successful, return the error
