@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () =>{
         },
         body: JSON.stringify({
             "email": "hola@gmail.com",
-            "contrasenia": "hola1234"
+            "contrasenia": "hola123"
         })
     })
     .catch(err => {
