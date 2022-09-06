@@ -126,10 +126,15 @@ function checkEmail(email) {
 }
 
 function checkPassword(password) {
+    const passwordRegEx = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{5,}$/gm
+
     if (typeof password !== "string") {
         return false;
     }
     if (password.length === 0) {
+        return false;
+    }
+    if (!passwordRegEx.test(password)) {
         return false;
     }
 
