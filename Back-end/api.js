@@ -168,6 +168,7 @@ async function sqlQuery(query, values) {
 }
 
 async function logIn(email, password) {
+    // Input Validation
     if (!checkEmail(email)) {
         return new Error("Invalid email");
     }
@@ -185,6 +186,7 @@ async function logIn(email, password) {
 }
 
 async function register(name, email, password) {
+    // Input Validation
     if (!checkEmail(email)) {
         return new Error("Invalid email");
     }
@@ -209,6 +211,7 @@ async function register(name, email, password) {
 }
 
 async function addAssignment(userEmail, password, name, description, excercices, doneExcercices, subject, dueDate, difficulty) {
+    // Input Validation
     if (!checkEmail(userEmail)) {
         return new Error("Invalid email");
     }
@@ -263,6 +266,7 @@ async function addAssignment(userEmail, password, name, description, excercices,
 }
 
 async function addUserToAssignment(userEmail, assignmentID) {
+    // Input Validation
     if (!checkEmail(userEmail)) {
         return new Error("Invalid email");
     }
@@ -284,6 +288,7 @@ async function addUserToAssignment(userEmail, assignmentID) {
 }
 
 async function getAssignments(userEmail, password) {
+    // Input Validation
     if (!checkEmail(userEmail)) {
         return new Error("Invalid email");
     }
@@ -306,6 +311,7 @@ async function getAssignments(userEmail, password) {
 }
 
 async function getAssignmentInfo(id) {
+    // Input Validation
     if (typeof id !== "number") {
         return new Error("Invalid Id");
     }
@@ -323,6 +329,7 @@ async function getAssignmentInfo(id) {
 }
 
 async function deleteAssignment(id, userEmail, password) {
+    // Input Validation
     if (typeof id !== "number") {
         return new Error("Invalid Id");
     }
