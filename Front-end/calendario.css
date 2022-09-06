@@ -48,7 +48,27 @@ section{
     padding-top: 50px;
     padding-bottom: 50px;
     align-items: center;
+    display: flex;
     justify-content: center;
+}
+
+.fondoNegro{
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 100px;
+    height: 400px;
+    align-items: center;
+    justify-content: center;
+}
+
+#apertura{
+    transform: rotate(90deg);
+    width: 100px;
+    height: 100px;
+}
+
+#apertura:hover{
+    cursor: pointer;
 }
 
 .contenedor{
@@ -61,8 +81,8 @@ section{
 
 .calendario{
     background-color: #cfe4ff;
-    width: 600px;
-    /*height: ;*/
+    width: 900px;
+    padding-bottom: 10px;
     box-shadow: 0px 1px 5px #000;
 }
 
@@ -71,12 +91,12 @@ section{
     height: 100px;
     display: flex;
     justify-content: space-between;
-    background-color: #8cabe6;
     background-color: #4990e7d0;
     align-items: center;
     text-align: center;
-    padding: 0 36px;
+    padding: 0 36px;    
     text-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.5);
+    margin-bottom: 7px;
 }
 
 .mes i{
@@ -100,16 +120,53 @@ section{
     align-items: center;
     width: 100%;
     height: 50px;
-    padding: 0 20px;
+    justify-content: space-evenly;
 }
 
 .diasSemana div{
     display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    font-size: 21px;
+    font-weight: 300;
+    text-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    width: 110px;
+}
+
+.dias{
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    padding: 4px;
+}
+
+.dias div:hover:not(.fecha-prev, .fecha-next){
+    cursor: pointer;
+}
+
+.dias div{
+    border-radius: 5%;
+    margin: 4px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 110px;
+    height: 80px;
+    display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 20px;
-    font-weight: 300;
-    width: calc(44.2rem / 7);
+    border: 1px solid #000;
     text-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.5);
-    /*Consultar con nacho el video, porque la section tiene ese tamaño? como hago para mover los 7 dias?*/
+    transition: background-color 0.2s;
+}
+
+.fecha-prev,
+.fecha-next {
+  opacity: 0.5;
+}
+
+.hoy {
+    background-color: #8cabe6;
 }
