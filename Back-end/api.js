@@ -14,31 +14,61 @@ app.use(express.json());
 app.post('/login', (req, res) => {
     console.log("\nRecibi una request POST en /login");
     logIn(req.body['email'], req.body['contrasenia'])
-        .then(result => res.json(result));
+        .then(result => {
+            if (result instanceof Error) {
+                res.json({ message: result.message, stack: result.stack });
+            } else {
+                res.json(result);
+            }
+        });
 });
 
 app.post('/register', (req, res) => {
     console.log("\nRecibi una request POST en /register");
     register(req.body['nombre'], req.body['email'], req.body['contrasenia'])
-        .then(result => res.json(result));
+        .then(result => {
+            if (result instanceof Error) {
+                res.json({ message: result.message, stack: result.stack });
+            } else {
+                res.json(result);
+            }
+        });
 });
 
 app.post('/assignments', (req, res) => {
     console.log("\nRecibi una request POST en /assignments");
     getAssignments(req.body['email'], req.body['contrasenia'])
-        .then(result => res.json(result));
+        .then(result => {
+            if (result instanceof Error) {
+                res.json({ message: result.message, stack: result.stack });
+            } else {
+                res.json(result);
+            }
+        });
 });
 
 app.post('/assignmentInfo', (req, res) => {
     console.log("\nRecibi una request POST en /assignmentInfo");
     getAssignmentInfo(req.body['id'])
-        .then(result => res.json(result));
+        .then(result => {
+            if (result instanceof Error) {
+                res.json({ message: result.message, stack: result.stack });
+            } else {
+                res.json(result);
+            }
+        });
 })
 
 app.post('/addAssignment', (req, res) => {
     console.log("\nRecibi una request POST en /addAssignment");
     addAssignment(req.body['email'], req.body['contrasenia'], req.body['nombre'], req.body['descripcion'], req.body['ejercicios'], req.body['ejerciciosHechos'], req.body['materia'], req.body['fecha'], req.body['difficultad'])
-        .then(result => res.json(result));
+        .then(result => {
+            if (result instanceof Error) {
+                res.json({ message: result.message, stack: result.stack });
+            } else {
+                res.json(result);
+            }
+        });
 });
 
 app.post('/addUser', (req, res) => {
@@ -50,7 +80,13 @@ app.post('/addUser', (req, res) => {
 app.post('/delete', (req, res) => {
     console.log("\nRecibi una request POST en /delete");
     deleteAssignment(req.body['id'], req.body['email'], req.body['contrasenia'])
-        .then(result => res.json(result));
+        .then(result => {
+            if (result instanceof Error) {
+                res.json({ message: result.message, stack: result.stack });
+            } else {
+                res.json(result);
+            }
+        });
 });
 
 
