@@ -110,7 +110,7 @@ function closePool() {
 }
 
 function checkEmail(email) {
-    const emailRegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+    const emailRegEx = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
     if (typeof email !== "string") {
         return false;
@@ -118,7 +118,7 @@ function checkEmail(email) {
     if (email.length === 0) {
         return false;
     }
-    if (!emailRegExp.test(email)) {
+    if (!emailRegEx.test(email)) {
         return false;
     }
 
