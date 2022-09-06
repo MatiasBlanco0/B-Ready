@@ -18,12 +18,10 @@ document.addEventListener("DOMContentLoaded", () =>{
         console.log("Error: ");
         console.log(err);
     })
-    .then(response => {
-        console.log(response);
-        response.json()
-    })
+    .then(response => response.json())
     .then(data => {
         console.log("Datos: ");
+        console.log(data);
         console.table(data);
     })
 });
