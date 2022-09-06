@@ -29,6 +29,29 @@ app.post('/assignments', (req, res) => {
         .then(result => res.json(result));
 });
 
+app.post('/assignmentInfo', (req, res) => {
+    console.log("\nRecibi una request POST en /assignmentInfo");
+    getAssignmentInfo(req.body['id'])
+        .then(result => res.json(result));
+})
+
+app.post('/addAssignment', (req, res) => {
+    console.log("\nRecibi una request POST en /addAssignment");
+    addAssignment(req.body['email'], req.body['contrasenia'], req.body['nombre'], req.body['descripcion'], req.body['ejercicios'], req.body['ejerciciosHechos'], req.body['materia'], req.body['fecha'], req.body['difficultad'])
+        .then(result => res.json(result));
+});
+
+app.post('addUser', (req, res) => {
+    console.log("\nRecibi una request POST en /addUser");
+    addUserToAssignment(req.body['email'], req.body['id'])
+        .then(result => res.json(result));
+});
+
+app.post('delete', (req, res) => {
+    console.log("\nRecibi una request POST en /delete");
+    deleteAssignment(req.body['id'], req.body['email'], req.body['contrasenia'])
+        .then(result => res.json(result));
+});
 
 
 app.listen(port, () => console.log('Server started at http://localhost:' + port));
