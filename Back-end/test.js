@@ -5,10 +5,19 @@ document.addEventListener("DOMContentLoaded", () =>{
 
     fetch("http://localhost:8080/getAssignments", {
         method: "post",
-        body: {"email": "test@test.test"}
+        mode: "cors",
+        headers:{
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({"email": "test@test.test"})
     })
-    .then(response => 
-        console.log(response)
-        )
-    .catch(err => console.log(err))
+    .catch(err => {
+        console.log("Error: ");
+        console.log(err);
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Datos: ");
+        console.table(data);
+    })
 });
