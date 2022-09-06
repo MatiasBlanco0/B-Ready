@@ -1,8 +1,4 @@
 document.addEventListener("DOMContentLoaded", () =>{
-    response = document.getElementById("response");
-    error = document.getElementById("error");
-    result = document.getElementById("result");
-
     fetch("http://localhost:8080/assignments", {
         method: "post",
         mode: "cors",
@@ -10,8 +6,8 @@ document.addEventListener("DOMContentLoaded", () =>{
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            "email": "hola@gmail.com",
-            "contrasenia": "hola123"
+            email: "juan@gmail.com",
+            contrasenia: "juanprogamer"
         })
     })
     .catch(err => {
@@ -21,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () =>{
     .then(response => response.json())
     .then(data => {
         console.log("Datos: ");
-        console.log(data);
         console.table(data);
     })
 });
