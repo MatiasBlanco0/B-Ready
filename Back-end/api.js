@@ -256,7 +256,7 @@ async function addAssignment(userEmail, password, name, description, excercices,
             }
             // If the query was successful, add the user to the assignment 
             else {
-                let result = await addUserToAssignment(userEmail, promise.insertId);
+                let result = await addUserToAssignment(userEmail, promise.insertId, userEmail, password);
                 // If the query was not successful, return the error
                 if (result instanceof Error) {
                     return result;
@@ -272,22 +272,32 @@ async function addAssignment(userEmail, password, name, description, excercices,
     }
 }
 // agregar checkeo de owner
-async function addUserToAssignment(userEmail, assignmentID) {
+async function addUserToAssignment(userToAdd, assignmentID, ownerEmail, password) {
     // Input Validation
-    if (!checkEmail(userEmail)) {
+    if (!checkEmail(userToAdd)) {
         return new Error("Invalid email");
     }
     if (typeof assignmentID !== "number") {
         return new Error("Invalid Id");
     }
+    if (!checkEmail(ownerEmail)) {
+        return new Error("Invalid owner email");
+    }
+    if (!checkPassword(password)) {
+        return new Error("Invalid password");
+    }
     try {
-        let sql = "INSERT INTO `relacion usuario/tarea`(email, tarea) VALUES (?, ?)";
-        let promise = await sqlQuery(sql, [userEmail, assignmentID]);
-        // If the query was not successful, return the error
-        if (promise instanceof Error) {
-            return promise;
-        } else {
-            return true;
+        if (await logIn(ownerEmail, password)) {
+            let sql = "INSERT INTO `relacion usuario/tarea`(email, tarea) VALUES (?, ?) WHERE EXISTS(SELECT * FROM \
+            `relacion usuario/tarea` WHERE `relacion usuario/tarea`.email = ? AND `relacion usuario/tarea`.tarea \
+            = ?)";
+            let promise = await sqlQuery(sql, [userToAdd, assignmentID, ownerEmail, assignmentID]);
+            // If the query was not successful, return the error
+            if (promise instanceof Error) {
+                return promise;
+            } else {
+                return true;
+            }
         }
     } catch (err) {
         return err;
