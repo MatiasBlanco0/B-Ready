@@ -6,6 +6,9 @@ document.addEventListener("DOMContentLoaded", () =>{
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
+            // nombre: "Juancito", email: "juan@gmail.com", contrasenia: "Juanprogamer10"
+            // nombre: "Nahuel_P", email: "naguelPer@gmail.com", contrasenia: "Nahuelsinho7"
+            id: 1,
             email: "juan@gmail.com",
             contrasenia: "juanprogamer"
         })
