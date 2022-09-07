@@ -11,6 +11,12 @@ const port = process.env.PORT || 8080;
 app.use(cors());
 app.use(express.json());
 
+app.all('*', (req, res, next) => {
+    if (Object.keys(req.body).length <= 0) {
+        res.json({message: "Body was empty, Content-Type header didn't match the type of body or there was an error"});
+    }
+})
+
 app.post('/login', (req, res) => {
     console.log("\nRecibi una request POST en /login");
     logIn(req.body['email'], req.body['contrasenia'])
