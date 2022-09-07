@@ -13,7 +13,7 @@ app.use(express.json());
 
 app.all('*', (req, res, next) => {
     if (Object.keys(req.body).length <= 0) {
-        res.json({message: "Body was empty, Content-Type header didn't match the type of body or there was an error"});
+        res.json({ message: "Body was empty, Content-Type header didn't match the type of body or there was an error" });
     }
 })
 
