@@ -294,16 +294,26 @@ async function addUserToAssignment(userToAdd, assignmentID, ownerEmail, password
     }
     try {
         if (await logIn(ownerEmail, password)) {
-            let sql = "INSERT INTO `relacion usuario/tarea`(email, tarea) VALUES (?, ?) WHERE EXISTS(SELECT * FROM \
-            `relacion usuario/tarea` WHERE `relacion usuario/tarea`.email = ? AND `relacion usuario/tarea`.tarea \
-            = ?)";
-            let promise = await sqlQuery(sql, [userToAdd, assignmentID, ownerEmail, assignmentID]);
-            // If the query was not successful, return the error
-            if (promise instanceof Error) {
-                return promise;
+            if (await sqlQuery("SELECT 1 FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.email = ? AND \
+            `relacion usuario/tarea`.tarea = ?", [ownerEmail, assignmentID]).length > 1) {
+                if (await sqlQuery("SELECT 1 FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.email = ? \
+                AND `relacion usuario/tarea`.tarea = ?", [userToAdd, assignmentID]).length === 0) {
+                    let sql = "INSERT INTO `relacion usuario/tarea`(email, tarea) VALUES (?, ?)";
+                    let promise = await sqlQuery(sql, [userToAdd, assignmentID, ownerEmail, assignmentID]);
+                    // If the query was not successful, return the error
+                    if (promise instanceof Error) {
+                        return promise;
+                    } else {
+                        return true;
+                    }
+                } else {
+                    return new Error("User already is owner of assignment");
+                }
             } else {
-                return true;
+                return new Error("Not owner of the assignment");
             }
+        } else {
+            return new Error("Invalid owner or password");
         }
     } catch (err) {
         return err;
