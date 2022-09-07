@@ -10,6 +10,16 @@
     box-sizing: border-box;
 }
 
+.tarea{
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    background-color: #2777da;
+    bottom: 25%;
+    width: 500px;
+    height: 300px;
+}
+
 header{
     width: 100%;
     background-color: #4990e7d0;
@@ -155,8 +165,6 @@ section{
     width: 110px;
     height: 80px;
     display: flex;
-    justify-content: center;
-    align-items: center;
     border: 1px solid #000;
     text-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.5);
     transition: background-color 0.2s;
@@ -169,4 +177,28 @@ section{
 
 .hoy {
     background-color: #8cabe6;
+}
+
+.top{
+    display: flex;
+    justify-content: space-between;
+    margin: 15px;
+}
+
+.bottom{
+    
+}
+
+#cruz{
+    width: 50px;
+    height: 50px;
+}
+
+.listaCosas{
+    margin-left: 15px;
+    font-size: 20px;
+}
+
+.Agregar{
+
 }
