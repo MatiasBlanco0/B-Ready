@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () =>{
-    fetch("http://localhost:8080/assignments", {
+    fetch("http://localhost:8080/addUser", {
         method: "post",
         mode: "cors",
         headers:{
@@ -7,10 +7,11 @@ document.addEventListener("DOMContentLoaded", () =>{
         },
         body: JSON.stringify({
             // nombre: "Juancito", email: "juan@gmail.com", contrasenia: "Juanprogamer10"
-            // nombre: "Nahuel_P", email: "naguelPer@gmail.com", contrasenia: "Nahuelsinho7"
+            // nombre: "Nahuel_P", email: "nahuelPer@gmail.com", contrasenia: "Nahuelsinho7"
             id: 1,
-            email: "juan@gmail.com",
-            contrasenia: "juanprogamer"
+            email: "nahuelPer@gmail.com",
+            duenio: "juan@gmail.com",
+            contrasenia: "Juanprogamer10"
         })
     })
     .catch(err => {
@@ -20,6 +21,6 @@ document.addEventListener("DOMContentLoaded", () =>{
     .then(response => response.json())
     .then(data => {
         console.log("Datos: ");
-        console.table(data);
+        console.log(data);
     })
 });
