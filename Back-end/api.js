@@ -55,7 +55,7 @@ app.post('/assignments', (req, res) => {
 
 app.post('/assignmentInfo', (req, res) => {
     console.log("\nRecibi una request POST en /assignmentInfo");
-    getAssignmentInfo(req.body['id'])
+    getAssignmentInfo(req.body['id'], req.body['email'], req.body['contrasenia'])
         .then(result => {
             if (result instanceof Error) {
                 res.json({ message: result.message, stack: result.stack });
@@ -316,7 +316,7 @@ async function getAssignments(userEmail, password) {
     }
 }
 
-async function getAssignmentInfo(id) {
+async function getAssignmentInfo(id, userEmail, password) {
     // Input Validation
     if (typeof id !== "number") {
         return new Error("Invalid Id");
@@ -325,10 +325,16 @@ async function getAssignmentInfo(id) {
         return new Error("Invalid Id");
     }
     try {
-        let sql = "SELECT tarea.descripcion, `relacion usuario/tarea`.email \
+        if (await logIn(userEmail, password) === true) {
+            let sql = "SELECT tarea.descripcion, `relacion usuario/tarea`.email \
         FROM tarea INNER JOIN `relacion usuario/tarea` ON tarea.id = \
-        `relacion usuario/tarea`.tarea WHERE tarea.id = ?";
-        return await sqlQuery(sql, [id]);
+        `relacion usuario/tarea`.tarea WHERE tarea.id = ? AND EXISTS(SELECT * FROM `relacion usuario/tarea` \
+        WHERE `relacion usuario/tarea`.email = ? AND `relacion usuario/tarea`.tarea = tarea.id)";
+            return await sqlQuery(sql, [id, userEmail]);
+        }
+        else {
+            return new Error("Invalid email or password");
+        }
     } catch (err) {
         return err;
     }
