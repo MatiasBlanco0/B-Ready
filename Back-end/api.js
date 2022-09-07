@@ -270,7 +270,7 @@ async function addAssignment(userEmail, password, name, description, excercices,
         return err;
     }
 }
-
+// agregar checkeo de owner
 async function addUserToAssignment(userEmail, assignmentID) {
     // Input Validation
     if (!checkEmail(userEmail)) {
@@ -340,6 +340,9 @@ async function getAssignmentInfo(id, userEmail, password) {
     }
 }
 
+// agregar checkeo de owner
+// en caso de que haya muchos owners para una tarea, que los borre de la relacion al que llama la funcion,
+// y cuando el ultimo llama la funcion la borra para todos
 async function deleteAssignment(id, userEmail, password) {
     // Input Validation
     if (typeof id !== "number") {
