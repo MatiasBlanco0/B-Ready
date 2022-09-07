@@ -80,8 +80,14 @@ app.post('/addAssignment', (req, res) => {
 
 app.post('/addUser', (req, res) => {
     console.log("\nRecibi una request POST en /addUser");
-    addUserToAssignment(req.body['email'], req.body['id'])
-        .then(result => res.json(result));
+    addUserToAssignment(req.body['email'], req.body['id'], req.body['duenio'], req.body['contrasenia'])
+        .then(result => {
+            if (result instanceof Error) {
+                res.json({ message: result.message, stack: result.stack });
+            } else {
+                res.json(result);
+            }
+        });
 });
 
 app.post('/delete', (req, res) => {
