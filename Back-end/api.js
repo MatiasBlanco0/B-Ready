@@ -15,9 +15,9 @@ const port = process.env.PORT || 8080;
 function errorToObj(error) {
     let errorObj = {};
     for (const key in error) {
-        errorObj[key] = error[key]
+        errorObj[key] = error[key];
     }
-    return errorObj
+    return errorObj;
 }
 
 app.use(cors());
