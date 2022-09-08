@@ -14,8 +14,8 @@ const port = process.env.PORT || 8080;
 
 function errorToObj(error) {
     let errorObj = {};
-    for (const key in result) {
-        errorObj[key] = result[key]
+    for (const key in error) {
+        errorObj[key] = error[key]
     }
     return errorObj
 }
