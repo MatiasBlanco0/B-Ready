@@ -202,10 +202,10 @@ async function sqlQuery(query, values) {
 async function logIn(email, password) {
     // Input Validation
     if (!checkEmail(email)) {
-        return new Error("Invalid email");
+        return new Error(email + " is not a valid email");
     }
     if (!checkPassword(password)) {
-        return new Error("Invalid password");
+        return new Error(password + " is not a valid password");
     }
     try {
         let sql = "SELECT 1 FROM usuario WHERE usuario.email = ? AND usuario.contrasenia = ?";
@@ -220,19 +220,22 @@ async function logIn(email, password) {
 async function register(name, email, password) {
     // Input Validation
     if (!checkEmail(email)) {
-        return new Error("Invalid email");
+        return new Error(email + " is not a valid email");
     }
     if (!checkPassword(password)) {
-        return new Error("Invalid password");
+        return new Error(password + " is not a valid password");
     }
     if (!checkString(name)) {
-        return new Error("Invalid name");
+        return new Error(name + " is not a valid name");
     }
     try {
         let sql = "INSERT INTO usuario(nombre, email, contrasenia) VALUES(?, ?, ?)";
         let promise = await sqlQuery(sql, [name, email, sha256(password)]);
         // If the query was not successful, return the error
         if (promise instanceof Error) {
+            if (promise.code === "ER_DUP_ENTRY") {
+                return new Error(email + " already is a user");
+            }
             return promise
         } else {
             return true;
@@ -245,31 +248,31 @@ async function register(name, email, password) {
 async function addAssignment(userEmail, password, name, description, excercices, doneExcercices, subject, dueDate, difficulty) {
     // Input Validation
     if (!checkEmail(userEmail)) {
-        return new Error("Invalid email");
+        return new Error(userEmail + " is not a valid email");
     }
     if (!checkPassword(password)) {
-        return new Error("Invalid password");
+        return new Error(password + " is not a valid password");
     }
     if (!checkString(name)) {
-        return new Error("Invalid name");
+        return new Error(name + " is not a valid name");
     }
     if (!checkString(description)) {
-        return new Error("Invalid description");
+        return new Error(description + " is not a valid description");
     }
     if (!checkString(subject)) {
-        return new Error("Invalid subject");
+        return new Error(subject + " is not a valid subject");
     }
-    if (typeof excercices !== "number") {
-        return new Error("Invalid number of excercices");
+    if (!checkNumber(excercices)) {
+        return new Error(excercices + " is not valid number of excercices");
     }
-    if (typeof doneExcercices !== "number") {
-        return new Error("Invalid number of done excercices");
+    if (!checkNumber(doneExcercices)) {
+        return new Error(doneExcercices + " is not a valid number of done excercices");
     }
-    if (typeof difficulty !== "number") {
-        return new Error("Invalid number of difficulty");
+    if (!checkNumber(difficulty)) {
+        return new Error(difficulty + " is not a valid number of difficulty");
     }
     if (!dueDate instanceof Date || isNaN(dueDate)) {
-        return new Error("Invalid due date");
+        return new Error(dueDate + " is not a valid due date");
     }
     try {
         if (await logIn(userEmail, password) === true) {
@@ -300,38 +303,35 @@ async function addAssignment(userEmail, password, name, description, excercices,
 async function addUserToAssignment(userToAdd, assignmentID, ownerEmail, password) {
     // Input Validation
     if (!checkEmail(userToAdd)) {
-        return new Error("Invalid email");
+        return new Error(userToAdd + " is not a valid email");
     }
-    if (typeof assignmentID !== "number") {
-        return new Error("Invalid Id");
+    if (!checkNumber(assignmentID)) {
+        return new Error(assignmentID + " is not a valid assignment Id");
     }
     if (!checkEmail(ownerEmail)) {
-        return new Error("Invalid owner email");
+        return new Error(ownerEmail + " is not a valid owner email");
     }
     if (!checkPassword(password)) {
-        return new Error("Invalid password");
+        return new Error(password + " is not a valid password");
     }
     try {
         if (await logIn(ownerEmail, password)) {
             let result = await sqlQuery("SELECT 1 FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.email = ? \
             AND `relacion usuario/tarea`.tarea = ?", [ownerEmail, assignmentID]);
             if (result.length > 0) {
-                result = await sqlQuery("SELECT 1 FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.email = ? \
-                AND `relacion usuario/tarea`.tarea = ?", [userToAdd, assignmentID]);
-                if (result.length === 0) {
-                    let sql = "INSERT INTO `relacion usuario/tarea`(email, tarea) VALUES (?, ?)";
-                    let promise = await sqlQuery(sql, [userToAdd, assignmentID, ownerEmail, assignmentID]);
-                    // If the query was not successful, return the error
-                    if (promise instanceof Error) {
-                        return promise;
-                    } else {
-                        return true;
+                let sql = "INSERT INTO `relacion usuario/tarea`(email, tarea) VALUES (?, ?)";
+                let promise = await sqlQuery(sql, [userToAdd, assignmentID, ownerEmail, assignmentID]);
+                // If the query was not successful, return the error
+                if (promise instanceof Error) {
+                    if (promise.code === "ER_DUP_ENTRY") {
+                        return new Error(userToAdd + " already is owner of assignment");
                     }
+                    return promise;
                 } else {
-                    return new Error("User already is owner of assignment");
+                    return true;
                 }
             } else {
-                return new Error("Not owner of the assignment");
+                return new Error(ownerEmail + " is not the owner of the assignment");
             }
         } else {
             return new Error("Invalid owner or password");
@@ -344,10 +344,10 @@ async function addUserToAssignment(userToAdd, assignmentID, ownerEmail, password
 async function getAssignments(userEmail, password) {
     // Input Validation
     if (!checkEmail(userEmail)) {
-        return new Error("Invalid email");
+        return new Error(userEmail + " is not a valid email");
     }
     if (!checkPassword(password)) {
-        return new Error("Invalid password");
+        return new Error(password + " is not a valid password");
     }
     try {
         if (await logIn(userEmail, password) === true) {
@@ -366,11 +366,8 @@ async function getAssignments(userEmail, password) {
 
 async function getAssignmentInfo(id, userEmail, password) {
     // Input Validation
-    if (typeof id !== "number") {
-        return new Error("Invalid Id");
-    }
-    if (id < 0) {
-        return new Error("Invalid Id");
+    if (!checkNumber(id)) {
+        return new Error(id + " is not a valid assignment Id");
     }
     try {
         if (await logIn(userEmail, password) === true) {
@@ -393,17 +390,14 @@ async function getAssignmentInfo(id, userEmail, password) {
 // y cuando el ultimo llama la funcion la borra para todos
 async function deleteAssignment(id, userEmail, password) {
     // Input Validation
-    if (typeof id !== "number") {
-        return new Error("Invalid Id");
-    }
-    if (id < 0) {
-        return new Error("Invalid Id");
+    if (!checkNumber(id)) {
+        return new Error(id + " is not a valid assignment Id");
     }
     if (!checkEmail(userEmail)) {
-        return new Error("Invalid email");
+        return new Error(userEmail + " is not a valid email");
     }
     if (!checkPassword(password)) {
-        return new Error("Invalid password");
+        return new Error(password + " is not a valid password");
     }
     try {
         if (await logIn(userEmail, password) === true) {
