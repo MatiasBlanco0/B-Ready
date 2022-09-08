@@ -8,6 +8,14 @@ const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 8080;
 
+function errorToObj(error) {
+    let errorObj = {};
+    for (const key in result) {
+        errorObj[key] = result[key]
+    }
+    return errorObj
+}
+
 app.use(cors());
 app.use(express.json());
 
@@ -23,7 +31,7 @@ app.post('/login', (req, res) => {
     logIn(req.body['email'], req.body['contrasenia'])
         .then(result => {
             if (result instanceof Error) {
-                res.json({ message: result.message, stack: result.stack });
+                res.json(errorToObj(result));
             } else {
                 res.json(result);
             }
@@ -35,7 +43,7 @@ app.post('/register', (req, res) => {
     register(req.body['nombre'], req.body['email'], req.body['contrasenia'])
         .then(result => {
             if (result instanceof Error) {
-                res.json({ message: result.message, stack: result.stack });
+                res.json(errorToObj(result));
             } else {
                 res.json(result);
             }
@@ -47,7 +55,7 @@ app.post('/assignments', (req, res) => {
     getAssignments(req.body['email'], req.body['contrasenia'])
         .then(result => {
             if (result instanceof Error) {
-                res.json({ message: result.message, stack: result.stack });
+                res.json(errorToObj(result));
             } else {
                 res.json(result);
             }
@@ -59,7 +67,7 @@ app.post('/assignmentInfo', (req, res) => {
     getAssignmentInfo(req.body['id'], req.body['email'], req.body['contrasenia'])
         .then(result => {
             if (result instanceof Error) {
-                res.json({ message: result.message, stack: result.stack });
+                res.json(errorToObj(result));
             } else {
                 res.json(result);
             }
@@ -71,7 +79,7 @@ app.post('/addAssignment', (req, res) => {
     addAssignment(req.body['email'], req.body['contrasenia'], req.body['nombre'], req.body['descripcion'], req.body['ejercicios'], req.body['ejerciciosHechos'], req.body['materia'], req.body['fecha'], req.body['difficultad'])
         .then(result => {
             if (result instanceof Error) {
-                res.json({ message: result.message, stack: result.stack });
+                res.json(errorToObj(result));
             } else {
                 res.json(result);
             }
@@ -83,7 +91,7 @@ app.post('/addUser', (req, res) => {
     addUserToAssignment(req.body['email'], req.body['id'], req.body['duenio'], req.body['contrasenia'])
         .then(result => {
             if (result instanceof Error) {
-                res.json({ message: result.message, stack: result.stack });
+                res.json(errorToObj(result));
             } else {
                 res.json(result);
             }
@@ -95,7 +103,7 @@ app.post('/delete', (req, res) => {
     deleteAssignment(req.body['id'], req.body['email'], req.body['contrasenia'])
         .then(result => {
             if (result instanceof Error) {
-                res.json({ message: result.message, stack: result.stack });
+                res.json(errorToObj(result));
             } else {
                 res.json(result);
             }
