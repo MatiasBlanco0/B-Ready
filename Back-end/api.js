@@ -172,6 +172,12 @@ function checkString(string) {
 
     return true;
 }
+
+function checkNumber(number) {
+    if (typeof number !== "number") {
+        return false;
+    }
+    if (number < 0) {
         return false;
     }
 
