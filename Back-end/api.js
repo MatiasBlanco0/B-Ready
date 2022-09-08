@@ -277,7 +277,7 @@ async function addAssignment(userEmail, password, name, description, excercices,
         return err;
     }
 }
-// agregar checkeo de owner
+
 async function addUserToAssignment(userToAdd, assignmentID, ownerEmail, password) {
     // Input Validation
     if (!checkEmail(userToAdd)) {
@@ -294,10 +294,12 @@ async function addUserToAssignment(userToAdd, assignmentID, ownerEmail, password
     }
     try {
         if (await logIn(ownerEmail, password)) {
-            if (await sqlQuery("SELECT 1 FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.email = ? AND \
-            `relacion usuario/tarea`.tarea = ?", [ownerEmail, assignmentID]).length > 1) {
-                if (await sqlQuery("SELECT 1 FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.email = ? \
-                AND `relacion usuario/tarea`.tarea = ?", [userToAdd, assignmentID]).length === 0) {
+            let result = await sqlQuery("SELECT 1 FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.email = ? \
+            AND `relacion usuario/tarea`.tarea = ?", [ownerEmail, assignmentID]);
+            if (result.length > 0) {
+                result = await sqlQuery("SELECT 1 FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.email = ? \
+                AND `relacion usuario/tarea`.tarea = ?", [userToAdd, assignmentID]);
+                if (result.length === 0) {
                     let sql = "INSERT INTO `relacion usuario/tarea`(email, tarea) VALUES (?, ?)";
                     let promise = await sqlQuery(sql, [userToAdd, assignmentID, ownerEmail, assignmentID]);
                     // If the query was not successful, return the error
