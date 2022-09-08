@@ -162,11 +162,16 @@ function checkPassword(password) {
     return true;
 }
 
-function checkString(name) {
-    if (typeof name !== "string") {
+function checkString(string) {
+    if (typeof string !== "string") {
         return false;
     }
-    if (name.length <= 0) {
+    if (string.length <= 0) {
+        return false;
+    }
+
+    return true;
+}
         return false;
     }
 
