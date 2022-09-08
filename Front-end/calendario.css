@@ -10,14 +10,27 @@
     box-sizing: border-box;
 }
 
-.tarea{
-    display: flex;
+#tarea{
+    display: none;
     flex-direction: column;
     position: fixed;
     background-color: #2777da;
     bottom: 25%;
     width: 500px;
     height: 300px;
+    z-index: 2;
+}
+
+#formulario{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    background-color: #cfe4ff;
+    bottom: 10%;
+    width: 300px;
+    height: 500px;
+    z-index: 3;
 }
 
 header{
@@ -173,6 +186,7 @@ section{
 .fecha-prev,
 .fecha-next {
   opacity: 0.5;
+  background-color: grey;
 }
 
 .hoy {
@@ -183,10 +197,14 @@ section{
     display: flex;
     justify-content: space-between;
     margin: 15px;
+    height: 200px;
 }
 
 .bottom{
-    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 #cruz{
@@ -194,11 +212,73 @@ section{
     height: 50px;
 }
 
+#cruz:hover{
+    cursor: pointer;
+}
+
 .listaCosas{
-    margin-left: 15px;
     font-size: 20px;
+    list-style: none;
 }
 
 .Agregar{
-
+    width: 200px;
+    height: 40px;
+    border-radius: 5px;
+    background-color: #cfe4ff;
 }
+
+.Agregar:hover{
+    cursor: pointer;
+}
+
+#formulario form{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 30px;
+}
+
+form input{
+    padding-left: 10px;
+    width: 250px;
+    height: 35px;
+    border-radius: 5px;
+    border: none;
+    margin-bottom: 20px;
+}
+
+.botones *{
+    width: 100px;
+    border:none
+}
+
+.botones{
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.botones *:hover{
+    cursor: pointer;
+}
+
+#Enviar{
+    padding-left: 0;
+    background-color: green;
+    color: #fff;
+}
+
+#cancelar{
+    border-radius: 5px;
+    padding-left: 0;
+    background-color: red;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+form img{
+    height: 100px;
+    width: 125px;
+}
+

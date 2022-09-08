@@ -9,7 +9,7 @@ const renderCalendario = () => {
     const ultimoDiaIndex = new Date(fecha.getFullYear(), fecha.getMonth() + 1, 0).getDay();
 
     let dias = "";
-    const proximosDias = 7 - ultimoDiaIndex;
+    const proximosDias = 7 - ultimoDiaIndex - 1;
 
     document.querySelector(".fecha h1").innerHTML = meses[fecha.getMonth()];
     document.querySelector(".fecha p").innerHTML = fecha.toLocaleDateString("es-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -48,6 +48,18 @@ renderCalendario();
 
 document.querySelector(".dias").addEventListener("click", (evento) => {
     if(!evento.target.classList.contains("fecha-next") && !evento.target.classList.contains("fecha-prev")){
-        //abrir cuadro de tarea
+        document.getElementById("tarea").style.display = "flex";
     }
+});
+
+document.querySelector("#cruz").addEventListener("click", () => {
+    document.getElementById("tarea").style.display = "none";
+});
+
+document.querySelector(".Agregar").addEventListener("click", () => {
+    document.getElementById("formulario").style.display = "flex";
+});
+
+document.querySelector("#cancelar").addEventListener("click", () => {
+    document.getElementById("formulario").style.display = "none";
 });
