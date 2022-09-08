@@ -4,6 +4,10 @@ const sha256 = require('js-sha256');
 const express = require('express');
 const cors = require('cors');
 
+// -------------------------------------------------------------------------------------------------------------------
+// express
+// -------------------------------------------------------------------------------------------------------------------
+
 // Create a new express application
 const app = express();
 const port = process.env.PORT || 8080;
@@ -110,8 +114,12 @@ app.post('/delete', (req, res) => {
         });
 });
 
-
+// Start server
 app.listen(port, () => console.log('Server started at http://localhost:' + port));
+
+// -------------------------------------------------------------------------------------------------------------------
+// mysql
+// -------------------------------------------------------------------------------------------------------------------
 
 // Create a connection pool
 const pool = mysql.createPool({
