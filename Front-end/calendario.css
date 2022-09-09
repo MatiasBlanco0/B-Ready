@@ -33,6 +33,15 @@
     z-index: 3;
 }
 
+#lista{
+    background-color: #000;
+    box-sizing: border-box;
+    display: none;
+    flex-direction: column;
+    height: 100%;
+    width: 300px;
+}
+
 header{
     width: 100%;
     background-color: #4990e7d0;
@@ -75,7 +84,7 @@ section{
     justify-content: center;
 }
 
-.fondoNegro{
+#fondoNegro{
     display: flex;
     background-color: rgba(0, 0, 0, 0.7);
     width: 100px;
@@ -236,7 +245,7 @@ section{
     display: flex;
     align-items: center;
     flex-direction: column;
-    margin-top: 30px;
+    margin-top: 10px;
 }
 
 form input{
@@ -280,5 +289,15 @@ form input{
 form img{
     height: 100px;
     width: 125px;
+}
+
+#formulario h4{
+    font-size: 30px;
+}
+
+.titulo{
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
 }
 
