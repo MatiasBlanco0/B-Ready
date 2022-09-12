@@ -1,8 +1,8 @@
-document.addEventListener("DOMContentLoaded", () =>{
-    fetch("http://localhost:8080/register", {
+document.addEventListener("DOMContentLoaded", () => {
+    fetch("http://localhost:8080/assignments", {
         method: "post",
         mode: "cors",
-        headers:{
+        headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
@@ -15,13 +15,18 @@ document.addEventListener("DOMContentLoaded", () =>{
             contrasenia: "Nahuelsinho7"
         })
     })
-    .catch(err => {
-        console.log("Error: ");
-        console.log(err);
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log("Datos: ");
-        console.log(data);
-    })
+        .catch(err => {
+            console.log("Error: ");
+            console.log(err);
+        })
+        .then(response => {
+            console.table(response);
+            if (response.ok === true) {
+                response.json();
+            }
+        })
+        .then(data => {
+            console.log("Datos: ");
+            console.log(data);
+        })
 });
