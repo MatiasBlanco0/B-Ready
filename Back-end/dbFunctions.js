@@ -1,3 +1,7 @@
+// Import modules
+const mysql = require('mysql');
+const sha256 = require('js-sha256');
+
 // Create a connection pool function
 function createPool() {
     mysql.createPool({

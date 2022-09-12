@@ -1,13 +1,7 @@
 // Import modules
-const mysql = require('mysql');
-const sha256 = require('js-sha256');
 const express = require('express');
 const cors = require('cors');
 const dbFunctions = require('./dbFunctions.js');
-
-// -------------------------------------------------------------------------------------------------------------------
-// express
-// -------------------------------------------------------------------------------------------------------------------
 
 // Create a new express application
 const app = express();
