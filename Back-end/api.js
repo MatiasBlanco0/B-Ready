@@ -3,7 +3,7 @@ const mysql = require('mysql');
 const sha256 = require('js-sha256');
 const express = require('express');
 const cors = require('cors');
-const dbFunctions = require('dbFunctions.js');
+const dbFunctions = require('./dbFunctions.js');
 
 // -------------------------------------------------------------------------------------------------------------------
 // express
