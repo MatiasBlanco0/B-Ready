@@ -3,15 +3,13 @@ const mysql = require('mysql');
 const sha256 = require('js-sha256');
 
 // Create a connection pool function
-function createPool() {
-    mysql.createPool({
+const pool = mysql.createPool({
     connectionLimit: 100,
     host: "localhost",
     user: "root",
     password: "rootroot",
     database: "b-ready"
-    });
-}
+});
 
 // Don't use this function, it's only for testing purposes
 function closePool() {
@@ -320,8 +318,8 @@ async function deleteAssignment(id, userEmail, password) {
     }
 }
 
+// Export functions
 module.exports = {
-    createPool: createPool,
     logIn: logIn,
     register: register,
     addAssignment: addAssignment,
