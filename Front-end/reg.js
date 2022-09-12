@@ -44,9 +44,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let gmail = parametros.get("mail");
     console.log(gmail);
     
-    if(gmail !== ""){
-        cambiar();
+    if(gmail !== "null"){
         toggle.click();
+        cambiar();
         email.value = gmail;
     }
 
