@@ -394,8 +394,6 @@ async function getAssignmentInfo(id, userEmail, password) {
 }
 
 // agregar checkeo de owner
-// en caso de que haya muchos owners para una tarea, que los borre de la relacion al que llama la funcion,
-// y cuando el ultimo llama la funcion la borra para todos
 async function deleteAssignment(id, userEmail, password) {
     // Input Validation
     if (!checkNumber(id)) {
@@ -409,14 +407,21 @@ async function deleteAssignment(id, userEmail, password) {
     }
     try {
         if (await logIn(userEmail, password) === true) {
-            let sql = "DELETE FROM tarea WHERE tarea.id = ?";
-            let promise = await sqlQuery(sql, [id]);
-            // If the query was not successful, return the error
-            if (promise instanceof Error) {
-                return promise;
+            let checkUsers = await sqlQuery("SELECT `relacion usuario/tarea`.email WHERE `relacion usuario/tarea`.id = ?", [id]);
+            if (checkUsers.length === 0) {
+                let sql = "DELETE FROM tarea WHERE tarea.id = ?;\
+                DELETE FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.tarea = ?";
+                let promise = await sqlQuery(sql, [id, id]);
+                // If the query was not successful, return the error
+                if (promise instanceof Error) {
+                    return promise;
+                } else {
+                    return true;
+                }
             } else {
-                sql = "DELETE FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.tarea = ?";
-                let result = await sqlQuery(sql, [id]);
+                let sql = "DELETE FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.tarea = ? AND \
+                `relacion usuario/tarea`.email = ?";
+                let result = await sqlQuery(sql, [id, userEmail]);
                 // If the query was not successful, return the error
                 if (result instanceof Error) {
                     return result;
