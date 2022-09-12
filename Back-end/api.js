@@ -3,6 +3,7 @@ const mysql = require('mysql');
 const sha256 = require('js-sha256');
 const express = require('express');
 const cors = require('cors');
+const dbFunctions = require('dbFunctions.js');
 
 // -------------------------------------------------------------------------------------------------------------------
 // express
@@ -32,7 +33,7 @@ app.all('*', (req, res, next) => {
 
 app.post('/login', (req, res) => {
     console.log("\nRecibi una request POST en /login");
-    logIn(req.body['email'], req.body['contrasenia'])
+    dbFunctions.logIn(req.body['email'], req.body['contrasenia'])
         .then(result => {
             if (result instanceof Error) {
                 res.json(errorToObj(result));
@@ -44,7 +45,7 @@ app.post('/login', (req, res) => {
 
 app.post('/register', (req, res) => {
     console.log("\nRecibi una request POST en /register");
-    register(req.body['nombre'], req.body['email'], req.body['contrasenia'])
+    dbFunctions.register(req.body['nombre'], req.body['email'], req.body['contrasenia'])
         .then(result => {
             if (result instanceof Error) {
                 res.json(errorToObj(result));
@@ -56,7 +57,7 @@ app.post('/register', (req, res) => {
 
 app.post('/assignments', (req, res) => {
     console.log("\nRecibi una request POST en /assignments");
-    getAssignments(req.body['email'], req.body['contrasenia'])
+    dbFunctions.getAssignments(req.body['email'], req.body['contrasenia'])
         .then(result => {
             if (result instanceof Error) {
                 res.json(errorToObj(result));
@@ -68,7 +69,7 @@ app.post('/assignments', (req, res) => {
 
 app.post('/assignmentInfo', (req, res) => {
     console.log("\nRecibi una request POST en /assignmentInfo");
-    getAssignmentInfo(req.body['id'], req.body['email'], req.body['contrasenia'])
+    dbFunctions.getAssignmentInfo(req.body['id'], req.body['email'], req.body['contrasenia'])
         .then(result => {
             if (result instanceof Error) {
                 res.json(errorToObj(result));
@@ -80,7 +81,7 @@ app.post('/assignmentInfo', (req, res) => {
 
 app.post('/addAssignment', (req, res) => {
     console.log("\nRecibi una request POST en /addAssignment");
-    addAssignment(req.body['email'], req.body['contrasenia'], req.body['nombre'], req.body['descripcion'], req.body['ejercicios'], req.body['ejerciciosHechos'], req.body['materia'], req.body['fecha'], req.body['difficultad'])
+    dbFunctions.addAssignment(req.body['email'], req.body['contrasenia'], req.body['nombre'], req.body['descripcion'], req.body['ejercicios'], req.body['ejerciciosHechos'], req.body['materia'], req.body['fecha'], req.body['difficultad'])
         .then(result => {
             if (result instanceof Error) {
                 res.json(errorToObj(result));
@@ -92,7 +93,7 @@ app.post('/addAssignment', (req, res) => {
 
 app.post('/addUser', (req, res) => {
     console.log("\nRecibi una request POST en /addUser");
-    addUserToAssignment(req.body['email'], req.body['id'], req.body['duenio'], req.body['contrasenia'])
+    dbFunctions.addUserToAssignment(req.body['email'], req.body['id'], req.body['duenio'], req.body['contrasenia'])
         .then(result => {
             if (result instanceof Error) {
                 res.json(errorToObj(result));
@@ -104,7 +105,7 @@ app.post('/addUser', (req, res) => {
 
 app.post('/delete', (req, res) => {
     console.log("\nRecibi una request POST en /delete");
-    deleteAssignment(req.body['id'], req.body['email'], req.body['contrasenia'])
+    dbFunctions.deleteAssignment(req.body['id'], req.body['email'], req.body['contrasenia'])
         .then(result => {
             if (result instanceof Error) {
                 res.json(errorToObj(result));
