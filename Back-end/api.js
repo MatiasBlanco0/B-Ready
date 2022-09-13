@@ -8,9 +8,11 @@ const app = express();
 const port = process.env.PORT || 8080;
 
 function errorToObj(error) {
+    // If it is an error return an object with the message
     if (error instanceof Error) {
         return {message: error.toString()};
     }
+    // If it is not an error return the valua
     else {
         return error;
     } 
@@ -80,6 +82,14 @@ app.post('/delete', (req, res) => {
         .then(result => {
             res.json(errorToObj(result));
         });
+});
+
+app.post('/update', (req, res) => {
+    console.log("\nRecibi una request POST en /update");
+    dbFunctions.updateDoneExercises(req.body['email'], req.body['contrasenia'], req.body['id'], req.body['ejercicios'])
+    .then(result => {
+        res.json(errorToObj(result));
+    });
 });
 
 // Start server
