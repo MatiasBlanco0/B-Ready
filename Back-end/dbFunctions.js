@@ -99,8 +99,12 @@ async function logIn(email, password) {
     try {
         let sql = "SELECT 1 FROM usuario WHERE usuario.email = ? AND usuario.contrasenia = ?";
         let promise = await sqlQuery(sql, [email, sha256(password)]);
-        // Return true if the query has results
-        return promise.length > 0;
+        // If there was an error return it, otherwise return true if the query has results
+        if (promise instanceof Error) {
+            return promise;
+        } else {
+            return promise.length > 0;
+        }
     } catch (err) {
         return err;
     }
@@ -262,7 +266,7 @@ async function getAssignmentInfo(id, userEmail, password) {
         if (await logIn(userEmail, password) === true) {
             let sql = "SELECT tarea.descripcion, `relacion usuario/tarea`.email \
         FROM tarea INNER JOIN `relacion usuario/tarea` ON tarea.id = \
-        `relacion usuario/tarea`.tarea WHERE tarea.id = ? AND EXISTS(SELECT * FROM `relacion usuario/tarea` \
+        `relacion usuario/tarea`.tarea WHERE tarea.id = ? AND EXISTS(SELECT 1 FROM `relacion usuario/tarea` \
         WHERE `relacion usuario/tarea`.email = ? AND `relacion usuario/tarea`.tarea = tarea.id)";
             return await sqlQuery(sql, [id, userEmail]);
         }
@@ -274,7 +278,6 @@ async function getAssignmentInfo(id, userEmail, password) {
     }
 }
 
-// agregar checkeo de owner
 async function deleteAssignment(id, userEmail, password) {
     // Input Validation
     if (!checkNumber(id)) {
