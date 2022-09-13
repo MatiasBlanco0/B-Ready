@@ -44,10 +44,11 @@ document.addEventListener("DOMContentLoaded", () => {
     let gmail = parametros.get("mail");
     console.log(gmail);
     
-    if(gmail !== "null"){
+    if(gmail !== null){
         toggle.click();
         cambiar();
         email.value = gmail;
+        console.log("hello");
     }
 
     enviarReg.addEventListener("click", () => {

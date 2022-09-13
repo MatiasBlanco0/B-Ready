@@ -318,3 +318,69 @@ form img{
     padding: 5px 5px 5px 0px;
     text-align: center;
 }
+
+@media all and (max-width: 720px) {
+    .contenedor{
+        height: 550px;
+    }
+    
+    .calendario{
+        width: 500px;
+        height: 500px;
+        padding-bottom: 505px;
+    }
+    
+    .mes{
+        height: 70px;
+    }
+
+    .mes h1{
+        font-size: 20px;
+    }
+
+    .diasSemana div{
+        font-size: 16px;
+        margin-left: 5px;
+    }
+
+    .dias div{
+        width: 62px;
+        height: 70px;
+        margin: 4px;
+    }
+
+    #fondoNegro{
+        width: 60px;
+    }
+
+    #apertura{
+        width: 70px;
+        height: 70px;
+    }
+
+    #lista{
+        width: 90px;
+        justify-content: center;
+    }
+
+    #lista *{
+        font-size: 15px;
+    }
+
+    #lista ul{
+        text-align: center;
+    }
+
+    #lista li{
+        padding-left: 5px;
+    }
+
+    #tarea{
+        bottom: 20%;   
+    }
+
+    #formulario{
+        height: 450px;
+        bottom: 7.5%;
+    }
+}
