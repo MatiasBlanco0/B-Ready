@@ -287,23 +287,41 @@ async function deleteAssignment(id, userEmail, password) {
         return new Error(password + " is not a valid password");
     }
     try {
-        if (await logIn(userEmail, password) === true && await sqlQuery("SELECT 1 FROM `relacion usuario/tarea` \
-        WHERE `relacion usuario/tarea`.email = ? AND `relacion usuario/tarea`.tarea = ?", [userEmail, id]).length > 0) {
-            let checkUsers = await sqlQuery("SELECT `relacion usuario/tarea`.email WHERE `relacion usuario/tarea`.id = ?", [id]);
-            if (checkUsers.length === 0) {
-                let sql = "DELETE FROM tarea WHERE tarea.id = ?;\
+        if (await logIn(userEmail, password) === true) {
+            if (await sqlQuery("SELECT 1 FROM `relacion usuario/tarea` \
+            WHERE `relacion usuario/tarea`.email = ? AND `relacion usuario/tarea`.tarea = ?", [userEmail, id]).length > 0) {
+                let checkUsers = await sqlQuery("SELECT `relacion usuario/tarea`.email WHERE `relacion usuario/tarea`.id = ?", [id]);
+                if (checkUsers.length === 0) {
+                    let sql = "DELETE FROM tarea WHERE tarea.id = ?;\
                 DELETE FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.tarea = ?";
-                let promise = await sqlQuery(sql, [id, id]);
-                // If the query was not successful, return the error
-                if (promise instanceof Error) {
-                    return promise;
+                    let promise = await sqlQuery(sql, [id, id]);
+                    // If the query was not successful, return the error
+                    if (promise instanceof Error) {
+                        return promise;
+                    } else {
+                        return true;
+                    }
                 } else {
-                    return true;
+                    let sql = "DELETE FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.tarea = ? AND \
+                `relacion usuario/tarea`.email = ?";
+                    let result = await sqlQuery(sql, [id, userEmail]);
+                    // If the query was not successful, return the error
+                    if (result instanceof Error) {
+                        return result;
+                    } else {
+                        return true;
+                    }
                 }
             } else {
-                let sql = "DELETE FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.tarea = ? AND \
-                `relacion usuario/tarea`.email = ?";
-                let result = await sqlQuery(sql, [id, userEmail]);
+                return new Error("This user was not an owner of the assignment");
+            }
+        } else {
+            return new Error("Invalid email or password");
+        }
+    } catch (err) {
+        return err;
+    }
+}
 
 async function updateDoneExercises(userEmail, password, id, doneExcercices) {
     // Input Validation
