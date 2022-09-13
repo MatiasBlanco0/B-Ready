@@ -304,15 +304,34 @@ async function deleteAssignment(id, userEmail, password) {
                 let sql = "DELETE FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.tarea = ? AND \
                 `relacion usuario/tarea`.email = ?";
                 let result = await sqlQuery(sql, [id, userEmail]);
+
+async function updateDoneExercises(userEmail, password, id, doneExcercices) {
+    // Input Validation
+    if (!checkEmail(userEmail)) {
+        return new Error(userEmail + " is not a valid email");
+    }
+    if (!checkPassword(password)) {
+        return new Error(password + " is not a valid password");
+    }
+    if (!checkNumber(id)) {
+        return new Error(id + " is not a valid assignment Id");
+    }
+    if (!checkNumber(doneExcercices)) {
+        return new Error(doneExcercices + " is not a valid number of excercices");
+    }
+    try {
+        if (await logIn(userEmail, password) === true) {
+            if (await sqlQuery("SELECT 1 WHERE `relacion usuario/tarea`.email = ? AND `relacion usuario/tarea`.tarea = ?",
+                [userEmail, id]).length > 0) {
+                let sql = "UPDATE tarea SET tarea.cantejhechos = ? WHERE tarea.id = ?";
+                let promise = await sqlQuery(sql, [doneExcercices, id]);
                 // If the query was not successful, return the error
-                if (result instanceof Error) {
-                    return result;
+                if (promise instanceof Error) {
+                    return promise;
                 } else {
                     return true;
                 }
             }
-        } else {
-            return new Error("Invalid email or password");
         }
     } catch (err) {
         return err;
@@ -327,5 +346,6 @@ module.exports = {
     addUserToAssignment: addUserToAssignment,
     getAssignments: getAssignments,
     getAssignmentInfo: getAssignmentInfo,
-    deleteAssignment: deleteAssignment
+    deleteAssignment: deleteAssignment,
+    updateDoneExercises: updateDoneExercises
 }
