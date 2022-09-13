@@ -10,12 +10,12 @@ const port = process.env.PORT || 8080;
 function errorToObj(error) {
     // If it is an error return an object with the message
     if (error instanceof Error) {
-        return {message: error.toString()};
+        return { message: error.toString() };
     }
     // If it is not an error return the valua
     else {
         return error;
-    } 
+    }
 }
 
 app.use(cors());
@@ -24,6 +24,15 @@ app.use(express.json());
 app.all('*', (req, res, next) => {
     if (Object.keys(req.body).length <= 0) {
         res.json({ message: "Body was empty, Content-Type header didn't match the type of body or there was another error" });
+    }
+    let isEmpty = false
+    for (const key in Object.keys(req.body)) {
+        if (req.body[key] === undefined || req.body[key] === "") {
+            isEmpty = true;
+        }
+    }
+    if (isEmpty) {
+        res.json({ message: "Some key of the body was undefined or an empty string" });
     }
     next();
 });
@@ -87,9 +96,9 @@ app.post('/delete', (req, res) => {
 app.post('/update', (req, res) => {
     console.log("\nRecibi una request POST en /update");
     dbFunctions.updateDoneExercises(req.body['email'], req.body['contrasenia'], req.body['id'], req.body['ejercicios'])
-    .then(result => {
-        res.json(errorToObj(result));
-    });
+        .then(result => {
+            res.json(errorToObj(result));
+        });
 });
 
 // Start server
