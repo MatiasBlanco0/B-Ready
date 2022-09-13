@@ -15,6 +15,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const toggle = document.getElementById("TOGGLE");
     let pantalla = 0;
 
+    //LA VARIABLE MAS IMPORTANTE :O
+    let loggeado = false;
+
     console.log(window.location.href);
     
     imgI.addEventListener("click", () => {
@@ -113,4 +116,79 @@ document.addEventListener("DOMContentLoaded", () => {
             pantalla = 0;
         }
     }
+
+    //register
+    enviarReg.addEventListener("click", () => {
+        fetch("http://localhost:8080/register", {
+        method: "post",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            email: email.value,
+            contrasenia: contrasenia.value,
+            nombre: nombreUsuario.value
+        })
+    })
+        .then(response => {
+            console.log(typeof response);
+            console.log(response);
+            if (response.ok) {
+                return response.json();
+            }
+        })
+        .then(data => {
+            console.log("Datos: ");
+            console.log(data);
+        })
+        .catch(err => {
+            console.log("Error: ");
+            console.log(err);
+            document.getElementById("alerta").style.display = "flex";
+        });
+    });
+
+    document.querySelector("#cruz").addEventListener("click", () => {
+        location.reload(true);
+    });
+
+    document.querySelector(".Enviar").addEventListener("click", () => {
+        //logIn
+    fetch("http://localhost:8080/login", {
+        method: "post",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            email: document.querySelector("#iCorreo").value,
+            contrasenia: document.querySelector("iContrasenia").value
+        })
+    })
+        .then(response => {
+            console.log(typeof response);
+            console.log(response);
+            if (response.ok) {
+                return response.json();
+            }
+        })
+        .then(data => {
+            console.log("Datos: ");
+            console.log(data);
+            if(data === true){
+                loggeado = true;
+            }
+            else if(data === false){
+                //no definido que va a pasar todavia
+            }
+            else{
+                document.getElementById("alerta").style.display = "flex";
+            }
+        })
+        .catch(err => {
+            console.log("Error: ");
+            console.log(err);
+        });
+    });
 });
