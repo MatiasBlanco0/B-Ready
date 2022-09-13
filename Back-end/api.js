@@ -22,11 +22,12 @@ app.use(cors());
 app.use(express.json());
 
 app.all('*', (req, res, next) => {
-    if (Object.keys(req.body).length <= 0) {
+    let emptyBody = Object.keys(req.body).length <= 0;
+    let isEmpty = false;
+    if (emptyBody) {
         res.json({ message: "Body was empty, Content-Type header didn't match the type of body or there was another error" });
     }
-    let isEmpty = false
-    for (const key in Object.keys(req.body)) {
+    for (const key in req.body) {
         if (req.body[key] === undefined || req.body[key] === "") {
             isEmpty = true;
         }
@@ -34,7 +35,9 @@ app.all('*', (req, res, next) => {
     if (isEmpty) {
         res.json({ message: "Some key of the body was undefined or an empty string" });
     }
-    next();
+    if (!(emptyBody && isEmpty)) {
+        next();
+    }
 });
 
 app.post('/login', (req, res) => {
