@@ -1,8 +1,10 @@
 {
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^16.0.2",
     "express": "^4.18.1",
     "js-sha256": "^0.9.0",
+    "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1"
   },
   "name": "b-ready_api",
@@ -11,7 +13,7 @@
   "main": "api.js",
   "scripts": {
     "start": "node api.js",
-    "dev": "npx nodemon api.js"
+    "dev": "nodemon api.js"
   },
   "repository": {
     "type": "git",
@@ -22,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/MatiasBlanco0/B-Ready/issues"
   },
-  "homepage": "https://github.com/MatiasBlanco0/B-Ready#readme"
+  "homepage": "https://github.com/MatiasBlanco0/B-Ready#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
 }
