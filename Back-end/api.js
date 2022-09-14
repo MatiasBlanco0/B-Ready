@@ -1,7 +1,9 @@
 // Import modules
+//require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const dbFunctions = require('./dbFunctions.js');
+//const jwt = require('jsonwebtoken');
 
 // Create a new express application
 const app = express();
