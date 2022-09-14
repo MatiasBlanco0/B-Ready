@@ -303,7 +303,7 @@ async function deleteAssignment(id, userEmail, password) {
             `relacion usuario/tarea`.email = ? AND `relacion usuario/tarea`.tarea = ?", [userEmail, id]);
             if (isOwner.length > 0) {
                 let checkUsers = await sqlQuery("SELECT `relacion usuario/tarea`.email WHERE `relacion usuario/tarea`.id = ?", [id]);
-                if (checkUsers.length === 0) {
+                if (checkUsers.length < 2) {
                     let sql = "DELETE FROM tarea WHERE tarea.id = ?;\
                 DELETE FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.tarea = ?";
                     let promise = await sqlQuery(sql, [id, id]);
