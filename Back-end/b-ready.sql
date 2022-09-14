@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 30-08-2022 a las 12:40:20
+-- Tiempo de generación: 14-09-2022 a las 18:22:16
 -- Versión del servidor: 5.7.17-log
 -- Versión de PHP: 5.6.30
 
@@ -32,15 +32,6 @@ CREATE TABLE `relacion usuario/tarea` (
   `Tarea` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Volcado de datos para la tabla `relacion usuario/tarea`
---
-
-INSERT INTO `relacion usuario/tarea` (`ID`, `Email`, `Tarea`) VALUES
-(1, 'test@test.test', 1),
-(2, 'hola@gmail.com', 1),
-(3, 'juancito@gmail.com', 1);
-
 -- --------------------------------------------------------
 
 --
@@ -51,19 +42,12 @@ CREATE TABLE `tarea` (
   `ID` int(11) NOT NULL,
   `Nombre` varchar(40) NOT NULL,
   `Descripcion` varchar(200) NOT NULL,
-  `CantEj` int(11) NOT NULL,
-  `CantEjHechos` int(11) NOT NULL,
+  `CantEj` tinyint(4) NOT NULL,
+  `CantEjHechos` tinyint(4) NOT NULL,
   `Materia` varchar(60) NOT NULL,
   `FechaEntrega` date NOT NULL,
   `Dificultad` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Volcado de datos para la tabla `tarea`
---
-
-INSERT INTO `tarea` (`ID`, `Nombre`, `Descripcion`, `CantEj`, `CantEjHechos`, `Materia`, `FechaEntrega`, `Dificultad`) VALUES
-(1, 'Proyecto', 'Proyecto B-ready B)', 10, 2, 'TIC', '2022-11-20', 127);
 
 -- --------------------------------------------------------
 
@@ -82,9 +66,8 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`Nombre`, `Email`, `Contrasenia`) VALUES
-('Hola', 'hola@gmail.com', 'hola123'),
-('Juan', 'juancito@gmail.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92'),
-('Test', 'Test@test.test', 'incorrecta');
+('Juancito', 'juan@gmail.com', '83352d69270d50a99cfef2b3d6317aa2d3b1029aa3ee566bcf93eedfb695f539'),
+('Nahuel_P', 'nahuelPer@gmail.com', '39caad2557d3cbc00e846f386d0778ee5017770cba01a7e41fa73a7acd2b6e7a');
 
 --
 -- Índices para tablas volcadas
@@ -116,12 +99,12 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `relacion usuario/tarea`
 --
 ALTER TABLE `relacion usuario/tarea`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT de la tabla `tarea`
 --
 ALTER TABLE `tarea`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
