@@ -153,6 +153,10 @@ section{
     text-align: center;
 }
 
+#HyperPol{
+    display: none;
+}
+
 #LogIn input{
     width: 300px;
     height: 40px;

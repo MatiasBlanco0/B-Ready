@@ -34,10 +34,12 @@
 }
 
 #lista{
-    background-color: #000;
+    border: 1px solid #000;
+    border-radius: 5px;
     box-sizing: border-box;
     display: none;
     flex-direction: column;
+    overflow-y: auto;
     height: 550px;
     width: 400px;
 }
@@ -305,18 +307,33 @@ form img{
     margin-top: 15px;
 }
 
+.dificil{
+    background-color: red;
+    text-align: left;
+    justify-content: center;
+    padding: 10px;
+    border-bottom: 1px solid #000;
+}
+
+.medio{
+    background-color: yellow;
+    text-align: left;
+    justify-content: center;
+    padding: 10px;
+    border-bottom: 1px solid #000;
+}
+
+.facil{
+    background-color: lightgreen;
+    text-align: left;
+    justify-content: center;
+    padding: 10px;
+    border-bottom: 1px solid #000;
+}
+
 #lista *{
     color: #fff;
-    font-size: 20px;
-}
-
-#lista ul{
-    padding-top: 10px;
-}
-
-#lista li{
-    padding: 5px 5px 5px 0px;
-    text-align: center;
+    font-size: 15px;
 }
 
 @media all and (max-width: 720px) {

@@ -36,7 +36,7 @@ nav{
     display: flex;
 }
 
-nav ul{
+nav .Hyperlinks{
     list-style: none;
     display: inline-flex;
 }
@@ -47,7 +47,7 @@ nav img{
     align-items: center;
 }
 
-ul a{
+.Hyperlinks a{
     margin-right: 15px;
     padding: 5px 10px 5px 10px;
     letter-spacing: 1px;
@@ -58,7 +58,7 @@ ul a{
     border-radius: 500px;
 }
 
-ul a:hover{
+.Hyperlinks a:hover{
     text-shadow: 1px 2px #000;
 }
 
@@ -268,7 +268,7 @@ footer div{
 
 @media all and (max-width: 720px) {
     
-    nav ul{
+    nav .Hyperlinks{
         display: none;
     }
 
@@ -276,6 +276,29 @@ footer div{
         display: flex;
         width: 70px;
         height: 70px;
+    }
+
+    #Menu{
+        display: flex;
+        flex-direction: column;
+        list-style: none;
+        /*right: -100%;*/
+        transition: 0.7s ease;
+        background-color: #4990e7d0;
+        padding: 5px;
+    }
+
+    #Menu a{
+        background-color: none;
+        text-decoration: none;
+        color: #000;
+        transition: 0.7s ease;
+        font-size: 20px;
+        padding: 2px;
+    }
+
+    #Menu a:hover{
+        background-color: #4990e7ea;
     }
 
     .texto{

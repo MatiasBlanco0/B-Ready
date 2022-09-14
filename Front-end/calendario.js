@@ -37,6 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         console.log(new Date(fecha.getFullYear(), fecha.getMonth(), 0));
     };
+     const tareas = document.querySelector("#lista");
+     let tareasAgregar = "";
 
     document.querySelector(".prev").addEventListener("click", () => {
         fecha.setMonth(fecha.getMonth() - 1);
@@ -92,7 +94,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#ET").addEventListener("keydown", (evento) => {
         if(!checkNum(evento.key)){
             evento.preventDefault();
-            console.log("heol");
         }
     });
     document.querySelector("#EH").addEventListener("keydown", (evento) => {
@@ -100,4 +101,19 @@ document.addEventListener("DOMContentLoaded", () => {
             evento.preventDefault();
         }
     });
+
+    //la idea es hacer un map para cada tarea recibida por el fetch una ves revisado que el usuario esta loggeado
+    if("logeado === true"){
+        //fetch de las tareas y que les va a pasar dependiendo sus parametros:
+        if("tarea con tal dificultad se presenta"){
+        tareasAgregar += `<div class="dificil"> <h4>Lengua</h4><br><h5>Leer el Martin Fierro</h5><br><h6>7 Ejercicios para hacer hoy</h6><br><h6>Se entrega el 14/9/2023</h6></div>`;
+        }
+        if("tarea con dificultad media se presenta"){
+            tareasAgregar += `<div class="medio"> <h4>Geografia</h4><br><h5>Abrir Google Maps</h5><br><h6>1 Ejercicios para hacer hoy</h6><br><h6>Se entrega el 28/9/2023</h6></div>`;
+        }
+        if("tarea con dificultad facil se presenta"){
+            tareasAgregar += `<div class="facil"> <h4>Fisica</h4><br><h5>Terminar la guia</h5><br><h6>4 Ejercicios para hacer hoy</h6><br><h6>Se entrega el 30/9/2023</h6></div>`;
+        }
+        tareas.innerHTML = tareasAgregar;
+    }
 });

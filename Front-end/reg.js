@@ -108,11 +108,15 @@ document.addEventListener("DOMContentLoaded", () => {
         if(pantalla == 0){
             document.getElementById("Register").style.display = "block";
             document.getElementById("LogIn").style.display = "none";
+            document.getElementById("HyperPol").style.display = "flex";
+            document.getElementById("HyperReg").style.display = "none";
             pantalla = 1;
         }
         else{
             document.getElementById("LogIn").style.display = "block";
             document.getElementById("Register").style.display = "none";
+            document.getElementById("HyperReg").style.display = "flex";
+            document.getElementById("HyperPol").style.display = "none";
             pantalla = 0;
         }
     }
