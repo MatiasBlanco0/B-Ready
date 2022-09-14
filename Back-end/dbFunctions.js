@@ -184,7 +184,8 @@ async function addAssignment(userEmail, password, name, description, excercices,
             }
             // If the query was successful, add the user to the assignment 
             else {
-                let result = await addUserToAssignment(userEmail, promise.insertId, userEmail, password);
+                sql = "INSERT INTO `relacion usuario/tarea`(email, tarea) VALUES (?, ?)";
+                let result = await sqlQuery(sql, [userEmail, promise.insertId]);
                 // If the query was not successful, return the error
                 if (result instanceof Error) {
                     return result;
