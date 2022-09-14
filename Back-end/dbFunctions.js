@@ -299,8 +299,9 @@ async function deleteAssignment(id, userEmail, password) {
     }
     try {
         if (await logIn(userEmail, password) === true) {
-            if (await sqlQuery("SELECT 1 FROM `relacion usuario/tarea` \
-            WHERE `relacion usuario/tarea`.email = ? AND `relacion usuario/tarea`.tarea = ?", [userEmail, id]).length > 0) {
+            const isOwner = await sqlQuery("SELECT 1 FROM `relacion usuario/tarea` WHERE \
+            `relacion usuario/tarea`.email = ? AND `relacion usuario/tarea`.tarea = ?", [userEmail, id]);
+            if (isOwner.length > 0) {
                 let checkUsers = await sqlQuery("SELECT `relacion usuario/tarea`.email WHERE `relacion usuario/tarea`.id = ?", [id]);
                 if (checkUsers.length === 0) {
                     let sql = "DELETE FROM tarea WHERE tarea.id = ?;\
