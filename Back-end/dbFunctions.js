@@ -342,8 +342,9 @@ async function updateDoneExercises(userEmail, password, id, doneExcercices) {
     }
     try {
         if (await logIn(userEmail, password) === true) {
-            if (await sqlQuery("SELECT 1 WHERE `relacion usuario/tarea`.email = ? AND `relacion usuario/tarea`.tarea = ?",
-                [userEmail, id]).length > 0) {
+            const isOwner = await sqlQuery("SELECT 1 FROM `relacion usuario/tarea`WHERE `relacion usuario/tarea`.email = ? \
+            AND `relacion usuario/tarea`.tarea = ?",[userEmail, id]);
+            if (isOwner.length > 0) {
                 let sql = "UPDATE tarea SET tarea.cantejhechos = ? WHERE tarea.id = ?";
                 let promise = await sqlQuery(sql, [doneExcercices, id]);
                 // If the query was not successful, return the error
