@@ -103,7 +103,7 @@ app.post('/delete', validateBody, (req, res) => {
 
 // Tendria que ser PUT
 app.put('/update', validateBody, (req, res) => {
-    console.log("\nRecibi una request POST en /update");
+    console.log("\nRecibi una request PUT en /update");
     dbFunctions.updateDoneExercises(req.body['email'], req.body['contrasenia'], req.body['id'], req.body['ejercicios'])
         .then(result => {
             res.json(errorToObj(result));
