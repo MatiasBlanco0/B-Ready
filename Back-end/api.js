@@ -92,7 +92,6 @@ app.post('/addUser', validateBody, (req, res) => {
         });
 });
 
-// Tendria que ser DELETE
 app.delete('/delete', validateBody, (req, res) => {
     console.log("\nRecibi una request DELETE en /delete");
     dbFunctions.deleteAssignment(req.body['id'], req.body['email'], req.body['contrasenia'])
@@ -101,7 +100,6 @@ app.delete('/delete', validateBody, (req, res) => {
         });
 });
 
-// Tendria que ser PUT
 app.put('/update', validateBody, (req, res) => {
     console.log("\nRecibi una request PUT en /update");
     dbFunctions.updateDoneExercises(req.body['email'], req.body['contrasenia'], req.body['id'], req.body['ejercicios'])
