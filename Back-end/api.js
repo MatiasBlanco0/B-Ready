@@ -93,8 +93,8 @@ app.post('/addUser', validateBody, (req, res) => {
 });
 
 // Tendria que ser DELETE
-app.post('/delete', validateBody, (req, res) => {
-    console.log("\nRecibi una request POST en /delete");
+app.delete('/delete', validateBody, (req, res) => {
+    console.log("\nRecibi una request DELETE en /delete");
     dbFunctions.deleteAssignment(req.body['id'], req.body['email'], req.body['contrasenia'])
         .then(result => {
             res.json(errorToObj(result));
