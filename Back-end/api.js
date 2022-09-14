@@ -20,29 +20,29 @@ function errorToObj(error) {
     }
 }
 
-app.use(cors());
-app.use(express.json());
-
-app.all('*', (req, res, next) => {
-    let emptyBody = Object.keys(req.body).length <= 0;
-    let isEmpty = false;
-    if (emptyBody) {
+function validateBody(req, res, next) {
+    let isEmpty = Object.keys(req.body).length <= 0;
+    let keyEmpty = false;
+    if (isEmpty) {
         res.json({ message: "Body was empty, Content-Type header didn't match the type of body or there was another error" });
     }
     for (const key in req.body) {
         if (req.body[key] === undefined || req.body[key] === "") {
-            isEmpty = true;
+            keyEmpty = true;
         }
     }
-    if (isEmpty) {
+    if (keyEmpty) {
         res.json({ message: "Some key of the body was undefined or an empty string" });
     }
     if (!(emptyBody && isEmpty)) {
         next();
     }
-});
+}
 
-app.post('/login', (req, res) => {
+app.use(cors());
+app.use(express.json());
+
+app.post('/login', validateBody, (req, res) => {
     console.log("\nRecibi una request POST en /login");
     dbFunctions.logIn(req.body['email'], req.body['contrasenia'])
         .then(result => {
@@ -50,7 +50,7 @@ app.post('/login', (req, res) => {
         });
 });
 
-app.post('/register', (req, res) => {
+app.post('/register', validateBody, (req, res) => {
     console.log("\nRecibi una request POST en /register");
     dbFunctions.register(req.body['nombre'], req.body['email'], req.body['contrasenia'])
         .then(result => {
@@ -58,6 +58,7 @@ app.post('/register', (req, res) => {
         });
 });
 
+// Tendria que ser GET
 app.post('/assignments', (req, res) => {
     console.log("\nRecibi una request POST en /assignments");
     dbFunctions.getAssignments(req.body['email'], req.body['contrasenia'])
@@ -66,6 +67,7 @@ app.post('/assignments', (req, res) => {
         });
 });
 
+// Tendria que ser GET
 app.post('/assignmentInfo', (req, res) => {
     console.log("\nRecibi una request POST en /assignmentInfo");
     dbFunctions.getAssignmentInfo(req.body['id'], req.body['email'], req.body['contrasenia'])
@@ -74,7 +76,7 @@ app.post('/assignmentInfo', (req, res) => {
         });
 });
 
-app.post('/addAssignment', (req, res) => {
+app.post('/addAssignment', validateBody, (req, res) => {
     console.log("\nRecibi una request POST en /addAssignment");
     dbFunctions.addAssignment(req.body['email'], req.body['contrasenia'], req.body['nombre'], req.body['descripcion'], req.body['ejercicios'], req.body['ejerciciosHechos'], req.body['materia'], req.body['fecha'], req.body['difficultad'])
         .then(result => {
@@ -82,7 +84,7 @@ app.post('/addAssignment', (req, res) => {
         });
 });
 
-app.post('/addUser', (req, res) => {
+app.post('/addUser', validateBody, (req, res) => {
     console.log("\nRecibi una request POST en /addUser");
     dbFunctions.addUserToAssignment(req.body['email'], req.body['id'], req.body['duenio'], req.body['contrasenia'])
         .then(result => {
@@ -90,7 +92,8 @@ app.post('/addUser', (req, res) => {
         });
 });
 
-app.post('/delete', (req, res) => {
+// Tendria que ser DELETE
+app.post('/delete', validateBody, (req, res) => {
     console.log("\nRecibi una request POST en /delete");
     dbFunctions.deleteAssignment(req.body['id'], req.body['email'], req.body['contrasenia'])
         .then(result => {
@@ -98,7 +101,8 @@ app.post('/delete', (req, res) => {
         });
 });
 
-app.post('/update', (req, res) => {
+// Tendria que ser PUT
+app.put('/update', validateBody, (req, res) => {
     console.log("\nRecibi una request POST en /update");
     dbFunctions.updateDoneExercises(req.body['email'], req.body['contrasenia'], req.body['id'], req.body['ejercicios'])
         .then(result => {
