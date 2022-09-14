@@ -34,7 +34,7 @@ function validateBody(req, res, next) {
     if (keyEmpty) {
         res.json({ message: "Some key of the body was undefined or an empty string" });
     }
-    if (!(emptyBody && isEmpty)) {
+    if (!(isEmpty && keyEmpty)) {
         next();
     }
 }
