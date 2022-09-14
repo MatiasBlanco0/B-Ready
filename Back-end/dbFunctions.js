@@ -73,6 +73,13 @@ function checkNumber(number) {
     return true;
 }
 
+function checkDate(date) {
+    if (date !== new Date(date).toISOString()) {
+        return false;
+    }
+    return true;
+}
+
 // Function to execute queries
 async function sqlQuery(query, values) {
     try {
@@ -164,7 +171,7 @@ async function addAssignment(userEmail, password, name, description, excercices,
     if (!checkNumber(difficulty)) {
         return new Error(difficulty + " is not a valid number of difficulty");
     }
-    if (!dueDate instanceof Date || isNaN(dueDate)) {
+    if (!checkDate(dueDate)) {
         return new Error(dueDate + " is not a valid due date");
     }
     try {
