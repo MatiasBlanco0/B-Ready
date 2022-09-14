@@ -220,16 +220,19 @@ async function addUserToAssignment(userToAdd, assignmentID, ownerEmail, password
             let result = await sqlQuery("SELECT 1 FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.email = ? \
             AND `relacion usuario/tarea`.tarea = ?", [ownerEmail, assignmentID]);
             if (result.length > 0) {
-                let sql = "INSERT INTO `relacion usuario/tarea`(email, tarea) VALUES (?, ?)";
-                let promise = await sqlQuery(sql, [userToAdd, assignmentID, ownerEmail, assignmentID]);
-                // If the query was not successful, return the error
-                if (promise instanceof Error) {
-                    if (promise.code === "ER_DUP_ENTRY") {
-                        return new Error(userToAdd + " already is owner of assignment");
+                result = await sqlQuery("SELECT 1 FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.email = ? \
+                AND `relacion usuario/tarea`.tarea = ?", [userToAdd, assignmentID]);
+                if (result.length === 0) {
+                    let sql = "INSERT INTO `relacion usuario/tarea`(email, tarea) VALUES (?, ?)";
+                    let promise = await sqlQuery(sql, [userToAdd, assignmentID, ownerEmail, assignmentID]);
+                    // If the query was not successful, return the error
+                    if (promise instanceof Error) {
+                        return promise;
+                    } else {
+                        return true;
                     }
-                    return promise;
                 } else {
-                    return true;
+                    return new Error(userToAdd + "is already an owner of the assignment");
                 }
             } else {
                 return new Error(ownerEmail + " is not the owner of the assignment");
@@ -352,7 +355,7 @@ async function updateDoneExercises(userEmail, password, id, doneExcercices) {
     try {
         if (await logIn(userEmail, password) === true) {
             const isOwner = await sqlQuery("SELECT 1 FROM `relacion usuario/tarea`WHERE `relacion usuario/tarea`.email = ? \
-            AND `relacion usuario/tarea`.tarea = ?",[userEmail, id]);
+            AND `relacion usuario/tarea`.tarea = ?", [userEmail, id]);
             if (isOwner.length > 0) {
                 let sql = "UPDATE tarea SET tarea.cantejhechos = ? WHERE tarea.id = ?";
                 let promise = await sqlQuery(sql, [doneExcercices, id]);
