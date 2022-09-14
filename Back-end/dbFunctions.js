@@ -353,7 +353,11 @@ async function updateDoneExercises(userEmail, password, id, doneExcercices) {
                 } else {
                     return true;
                 }
+            } else {
+                return new Error("This user was not an owner of the assignment");
             }
+        } else {
+            return new Error("Invalid email or password");
         }
     } catch (err) {
         return err;
