@@ -1,9 +1,9 @@
 // Import modules
-//require('dotenv').config();
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const dbFunctions = require('./dbFunctions.js');
-//const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
 // Create a new express application
 const app = express();
@@ -46,7 +46,12 @@ app.post('/login', validateBody, (req, res) => {
     console.log("\nRecibi una request POST en /login");
     dbFunctions.logIn(req.body['email'], req.body['contrasenia'])
         .then(result => {
-            res.json(errorToObj(result));
+            if (result === true) {
+                const accessToken = jwt.sign(req.body['email'], process.env.ACCESS_TOKEN_SECRET);
+                res.json({ accessToken: accessToken });
+            } else {
+                res.json(errorToObj(result));
+            }
         });
 });
 
@@ -54,7 +59,12 @@ app.post('/register', validateBody, (req, res) => {
     console.log("\nRecibi una request POST en /register");
     dbFunctions.register(req.body['nombre'], req.body['email'], req.body['contrasenia'])
         .then(result => {
-            res.json(errorToObj(result));
+            if (result === true) {
+                const accessToken = jwt.sign(req.body['email'], process.env.ACCESS_TOKEN_SECRET);
+                res.json({ accessToken: accessToken });
+            } else {
+                res.json(errorToObj(result));
+            }
         });
 });
 
