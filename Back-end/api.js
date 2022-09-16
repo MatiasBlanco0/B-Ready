@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 
 // Create a new express application
 const app = express();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 9000;
 
 function errorToObj(error) {
     // If it is an error return an object with the message
