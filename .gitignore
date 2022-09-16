@@ -1,3 +1,5 @@
 node_modules/
 .env
 req.rest
+test.js
+test.html
