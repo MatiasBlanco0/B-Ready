@@ -47,6 +47,8 @@ function authenticateToken(req, res, next) {
     });
 }
 
+app.all('*', (req,res,next)=>{console.log("Hola"); next()})
+
 app.post('/login', validateBody, (req, res) => {
     console.log("\nRecibi una request POST en /login");
     if (req.body['email'] !== undefined || req.body['contrasenia'] !== undefined) {
