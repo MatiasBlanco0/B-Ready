@@ -9,6 +9,9 @@ const jwt = require('jsonwebtoken');
 const app = express();
 const port = process.env.PORT || 9000;
 
+app.use(cors());
+app.use(express.json());
+
 function errorToObj(error) {
     // If it is an error return an object with the message
     if (error instanceof Error) {
@@ -28,8 +31,6 @@ function validateBody(req, res, next) {
     }
 }
 
-app.use(cors());
-app.use(express.json());
 
 app.post('/login', validateBody, (req, res) => {
     console.log("\nRecibi una request POST en /login");
