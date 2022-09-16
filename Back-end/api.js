@@ -21,21 +21,10 @@ function errorToObj(error) {
 }
 
 function validateBody(req, res, next) {
-    let isEmpty = Object.keys(req.body).length <= 0;
-    let keyEmpty = false;
-    if (isEmpty) {
-        res.json({ message: "Body was empty, Content-Type header didn't match the type of body or there was another error" });
-    }
-    for (const key in req.body) {
-        if (req.body[key] === undefined || req.body[key] === "") {
-            keyEmpty = true;
-        }
-    }
-    if (keyEmpty) {
-        res.json({ message: "Some key of the body was undefined or an empty string" });
-    }
-    if (!(isEmpty && keyEmpty)) {
-        next();
+    if (Object.keys(req.body).length <= 0) {
+        res.status(400).json({ message: "Body was empty, Content-Type header didn't match the type of body or there was another error" });
+    } else {
+        next()
     }
 }
 
@@ -44,28 +33,44 @@ app.use(express.json());
 
 app.post('/login', validateBody, (req, res) => {
     console.log("\nRecibi una request POST en /login");
-    dbFunctions.logIn(req.body['email'], req.body['contrasenia'])
-        .then(result => {
-            if (result === true) {
-                const accessToken = jwt.sign(req.body['email'], process.env.ACCESS_TOKEN_SECRET);
-                res.json({ accessToken: accessToken });
-            } else {
-                res.json(errorToObj(result));
-            }
-        });
+    if (req.body['email'] !== undefined || req.body['contrasenia'] !== undefined) {
+        if (req.body['email'] !== "" || req.body['contrasenia'] !== "") {
+            dbFunctions.logIn(req.body['email'], req.body['contrasenia'])
+                .then(result => {
+                    if (result === true) {
+                        const accessToken = jwt.sign(req.body['email'], process.env.ACCESS_TOKEN_SECRET);
+                        res.json({ accessToken: accessToken });
+                    } else {
+                        res.json(errorToObj(result));
+                    }
+                });
+        } else {
+            res.status(400).json({ message: "Email or Contrasenia were empty strings" });
+        }
+    } else {
+        res.status(400).json({ message: "Email or Contrasenia were undefined" });
+    }
 });
 
 app.post('/register', validateBody, (req, res) => {
     console.log("\nRecibi una request POST en /register");
-    dbFunctions.register(req.body['nombre'], req.body['email'], req.body['contrasenia'])
-        .then(result => {
-            if (result === true) {
-                const accessToken = jwt.sign(req.body['email'], process.env.ACCESS_TOKEN_SECRET);
-                res.json({ accessToken: accessToken });
-            } else {
-                res.json(errorToObj(result));
-            }
-        });
+    if (req.body['nombre'] !== undefined || req.body['email'] !== undefined || req.body['contrasenia'] !== undefined) {
+        if (req.body['nombre'] !== "" || req.body['email'] !== "" || req.body['contrasenia'] !== "") {
+            dbFunctions.register(req.body['nombre'], req.body['email'], req.body['contrasenia'])
+                .then(result => {
+                    if (result === true) {
+                        const accessToken = jwt.sign(req.body['email'], process.env.ACCESS_TOKEN_SECRET);
+                        res.json({ accessToken: accessToken });
+                    } else {
+                        res.json(errorToObj(result));
+                    }
+                });
+        } else {
+            res.status(400).json({ message: "Nombre, Email or Contrasenia were empty strings" });
+        }
+    } else {
+        res.status(400).json({ message: "Nombre, Email or Contrasenia were unefined" });
+    }
 });
 
 // Tendria que ser GET
@@ -77,13 +82,20 @@ app.post('/assignments', (req, res) => {
         });
 });
 
-// Tendria que ser GET
 app.post('/assignmentInfo', (req, res) => {
     console.log("\nRecibi una request POST en /assignmentInfo");
-    dbFunctions.getAssignmentInfo(req.body['id'], req.body['email'], req.body['contrasenia'])
-        .then(result => {
-            res.json(errorToObj(result));
-        });
+    if (req.body['id'] !== undefined) {
+        if (req.body['id'] !== "") {
+            dbFunctions.getAssignmentInfo(req.body['id'], req.body['email'], req.body['contrasenia'])
+                .then(result => {
+                    res.json(errorToObj(result));
+                });
+        } else {
+            res.status(400).json({ message: "Id was an empty string" });
+        }
+    } else {
+        res.status(400).json({ message: "Id was undefined" });
+    }
 });
 
 app.post('/addAssignment', validateBody, (req, res) => {
