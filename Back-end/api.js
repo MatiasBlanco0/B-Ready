@@ -54,8 +54,8 @@ app.post('/login', validateBody, (req, res) => {
             dbFunctions.logIn(req.body['email'], req.body['contrasenia'])
                 .then(result => {
                     if (result === true) {
-                        const accessToken = jwt.sign(req.body['email'], process.env.ACCESS_TOKEN_SECRET);
-                        res.json({ accessToken: accessToken });
+                        const accessToken = jwt.sign({ email: req.body['email'] }, process.env.ACCESS_TOKEN_SECRET);
+                        res.status(200).json({ accessToken: accessToken });
                     } else {
                         res.json(errorToObj(result));
                     }
@@ -75,8 +75,8 @@ app.post('/register', validateBody, (req, res) => {
             dbFunctions.register(req.body['nombre'], req.body['email'], req.body['contrasenia'])
                 .then(result => {
                     if (result === true) {
-                        const accessToken = jwt.sign(req.body['email'], process.env.ACCESS_TOKEN_SECRET);
-                        res.json({ accessToken: accessToken });
+                        const accessToken = jwt.sign({ email: req.body['email'] }, process.env.ACCESS_TOKEN_SECRET);
+                        res.status(201).json({ accessToken: accessToken });
                     } else {
                         res.json(errorToObj(result));
                     }
