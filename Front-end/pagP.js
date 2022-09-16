@@ -34,5 +34,15 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("section").style.filter = "none";
         }
     });
+
+    document.getElementById("section").addEventListener("click", () => {
+        if(abierto){
+            Menu.style.right = "-100%";
+            Menu.style.transition = "1s";
+            document.body.style.overflow = "scroll";
+            abierto = false;
+            document.getElementById("section").style.filter = "none";
+        }
+    }); 
 });
 

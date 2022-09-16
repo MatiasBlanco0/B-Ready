@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
     const fecha = new Date();
     let diaClickeado;
+    const fondo = document.getElementById("fondoNegro");    
+
 
     const renderCalendario = () => {
         fecha.setDate(1);
@@ -116,4 +118,5 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         tareas.innerHTML = tareasAgregar;
     }
+    fondo.click();
 });
