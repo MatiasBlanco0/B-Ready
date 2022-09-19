@@ -55,7 +55,7 @@ app.get("/hola", authenticateToken, (req, res) => {
     res.send(req.user);
 });
 
-app.post('/token', (req, res) => {
+app.post('/token', validateBody, (req, res) => {
     const refreshToken = req.body.token;
     if (refreshToken == null) return res.sendStatus(401);
     dbFunctions.tokenExists(req.body.email, refreshToken).then(result => {
