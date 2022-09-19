@@ -401,6 +401,7 @@ async function updateDoneExercises(userEmail, password, id, doneExcercices) {
 module.exports = {
     logIn: logIn,
     register: register,
+    updateToken: updateToken,
     addAssignment: addAssignment,
     addUserToAssignment: addUserToAssignment,
     getAssignments: getAssignments,
