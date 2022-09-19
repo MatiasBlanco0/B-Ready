@@ -47,7 +47,13 @@ function authenticateToken(req, res, next) {
     });
 }
 
-app.all('*', (req,res,next)=>{console.log("Hola"); next()})
+function generateAccessToken(payload) {
+    return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "20s" });
+}
+
+app.get("/hola", authenticateToken, (req, res) => {
+    res.send(req.user);
+});
 
 app.post('/login', validateBody, (req, res) => {
     console.log("\nRecibi una request POST en /login");
