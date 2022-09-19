@@ -178,6 +178,29 @@ async function updateToken(userEmail, token){
     }
 }
 
+async function tokenExists(userEmail, token){
+    // Input validation
+    if(!checkEmail(userEmail)){
+        return new Error(userEmail + " is not a valid email");
+    }
+    if(!checkToken(token)){
+        return new Error(token + " is not a valid token");
+    }
+    try {
+        let sql = "SELECT 1 FROM usuario WHERE usuario.email = ? AND usuario.token = ?";
+        let promise = await sqlQuery(sql, [userEmail, token]);
+        // If the query was not successful, return the error
+        if(promise instanceof Error){
+            return promise;
+        }
+        else {
+            return promise.length > 0;
+        }
+    } catch(err){
+        return err;
+    }
+}
+
 async function addAssignment(userEmail, password, name, description, excercices, doneExcercices, subject, dueDate, difficulty) {
     // Input Validation
     if (!checkEmail(userEmail)) {
