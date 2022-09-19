@@ -155,6 +155,29 @@ async function register(name, email, password) {
     }
 }
 
+async function updateToken(userEmail, token){
+    // Input validation
+    if(!checkEmail(userEmail)){
+        return new Error(userEmail + " is not a valid email");
+    }
+    if(!checkToken(token)){
+        return new Error(token + " is not a valid email");
+    }
+    try {
+        let sql = "UPDATE usuario SET usuario.token = ? WHERE usuario.email = ?";
+        let promise = await sqlQuery(sql, [token, userEmail]);
+        // If the query was not successful, return the error
+        if(promise instanceof Error){
+            return promise;
+        }
+        else {
+            return true;
+        }
+    } catch(err){
+        return err;
+    }
+}
+
 async function addAssignment(userEmail, password, name, description, excercices, doneExcercices, subject, dueDate, difficulty) {
     // Input Validation
     if (!checkEmail(userEmail)) {
