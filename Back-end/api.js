@@ -76,12 +76,7 @@ app.post('/register', validateBody, (req, res) => {
         if (req.body['nombre'] !== "" || req.body['email'] !== "" || req.body['contrasenia'] !== "") {
             dbFunctions.register(req.body['nombre'], req.body['email'], req.body['contrasenia'])
                 .then(result => {
-                    if (result === true) {
-                        const accessToken = jwt.sign({ email: req.body['email'] }, process.env.ACCESS_TOKEN_SECRET);
-                        res.status(201).json({ accessToken: accessToken });
-                    } else {
-                        res.json(errorToObj(result));
-                    }
+                    return res.json(errorToObj(result));
                 });
         } else {
             res.status(400).json({ message: "Nombre, Email or Contrasenia were empty strings" });
