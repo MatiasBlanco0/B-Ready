@@ -80,11 +80,11 @@ function checkDate(date) {
     return true;
 }
 
-function checkToken(token){
-    if(typeof token !== "number"){
+function checkToken(token) {
+    if (typeof token !== "number") {
         return false;
     }
-    if(token.length <= 0){
+    if (token.length <= 0) {
         return false;
     }
     return true;
@@ -155,48 +155,48 @@ async function register(name, email, password) {
     }
 }
 
-async function updateToken(userEmail, token){
+async function updateToken(userEmail, token) {
     // Input validation
-    if(!checkEmail(userEmail)){
+    if (!checkEmail(userEmail)) {
         return new Error(userEmail + " is not a valid email");
     }
-    if(!checkToken(token)){
+    if (!checkToken(token)) {
         return new Error(token + " is not a valid email");
     }
     try {
         let sql = "UPDATE usuario SET usuario.token = ? WHERE usuario.email = ?";
         let promise = await sqlQuery(sql, [token, userEmail]);
         // If the query was not successful, return the error
-        if(promise instanceof Error){
+        if (promise instanceof Error) {
             return promise;
         }
         else {
             return true;
         }
-    } catch(err){
+    } catch (err) {
         return err;
     }
 }
 
-async function tokenExists(userEmail, token){
+async function tokenExists(userEmail, token) {
     // Input validation
-    if(!checkEmail(userEmail)){
+    if (!checkEmail(userEmail)) {
         return new Error(userEmail + " is not a valid email");
     }
-    if(!checkToken(token)){
+    if (!checkToken(token)) {
         return new Error(token + " is not a valid token");
     }
     try {
         let sql = "SELECT 1 FROM usuario WHERE usuario.email = ? AND usuario.token = ?";
         let promise = await sqlQuery(sql, [userEmail, token]);
         // If the query was not successful, return the error
-        if(promise instanceof Error){
+        if (promise instanceof Error) {
             return promise;
         }
         else {
             return promise.length > 0;
         }
-    } catch(err){
+    } catch (err) {
         return err;
     }
 }

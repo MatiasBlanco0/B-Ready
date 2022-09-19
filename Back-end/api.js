@@ -80,14 +80,13 @@ app.post('/login', validateBody, (req, res) => {
                         const accessToken = generateAccessToken(payload);
                         const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET);
                         dbFunctions.updateToken(req.body['email'], refreshToken).then(result => {
-                            if (result === true){
+                            if (result === true) {
                                 return res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken });
                             }
                             else {
                                 return res.json(errorToObj(result));
                             }
-                        })
-                        
+                        });
                     } else {
                         return res.json(errorToObj(result));
                     }
