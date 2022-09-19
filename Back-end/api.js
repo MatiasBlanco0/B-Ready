@@ -57,9 +57,8 @@ app.get("/hola", authenticateToken, (req, res) => {
 
 app.post('/token', (req, res) => {
     const refreshToken = req.body.token;
-    const email = req.body.email;
     if (refreshToken == null) return res.sendStatus(401);
-    dbFunctions.tokenExists(email, refreshToken).then(result => {
+    dbFunctions.tokenExists(req.body.email, refreshToken).then(result => {
         if (result === false) return res.sendStatus(403);
         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
             if (err) return res.sendStatus(403);
