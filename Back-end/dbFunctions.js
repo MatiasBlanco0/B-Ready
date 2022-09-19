@@ -80,6 +80,16 @@ function checkDate(date) {
     return true;
 }
 
+function checkToken(token){
+    if(typeof token !== "number"){
+        return false;
+    }
+    if(token.length <= 0){
+        return false;
+    }
+    return true;
+}
+
 // Function to execute queries
 async function sqlQuery(query, values) {
     try {
