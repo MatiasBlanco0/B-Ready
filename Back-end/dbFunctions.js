@@ -425,6 +425,7 @@ module.exports = {
     logIn: logIn,
     register: register,
     updateToken: updateToken,
+    tokenExists: tokenExists,
     addAssignment: addAssignment,
     addUserToAssignment: addUserToAssignment,
     getAssignments: getAssignments,
