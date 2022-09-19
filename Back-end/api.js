@@ -55,6 +55,20 @@ app.get("/hola", authenticateToken, (req, res) => {
     res.send(req.user);
 });
 
+app.post('/token', (req, res) => {
+    const refreshToken = req.body.token;
+    const email = req.body.email;
+    if (refreshToken == null) return res.sendStatus(401);
+    dbFunctions.tokenExists(email, refreshToken).then(result => {
+        if (result === false) return res.sendStatus(403);
+        jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+            if (err) return res.sendStatus(403);
+            const accessToken = generateAccessToken({ email: user.email });
+            return res.json({ accessToken: accessToken });
+        })
+    })
+});
+
 app.post('/login', validateBody, (req, res) => {
     console.log("\nRecibi una request POST en /login");
     if (req.body['email'] !== undefined || req.body['contrasenia'] !== undefined) {
