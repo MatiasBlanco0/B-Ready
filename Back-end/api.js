@@ -68,6 +68,17 @@ app.post('/token', validateBody, (req, res) => {
     })
 });
 
+app.delete('/logout', validateBody, (req, res) => {
+    dbFunctions.updateToken(req.body.email, "").then(result => {
+        if (result === true) {
+            return res.sendStatus(204);
+        }
+        else {
+            return result;
+        }
+    });
+});
+
 app.post('/login', validateBody, (req, res) => {
     console.log("\nRecibi una request POST en /login");
     if (req.body['email'] !== undefined || req.body['contrasenia'] !== undefined) {
