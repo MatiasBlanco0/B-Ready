@@ -125,20 +125,19 @@ app.post('/register', validateBody, (req, res) => {
     }
 });
 
-// Tendria que ser GET
-app.post('/assignments', (req, res) => {
+app.get('/assignments', authenticateToken, (req, res) => {
     console.log("\nRecibi una request POST en /assignments");
-    dbFunctions.getAssignments(req.body['email'], req.body['contrasenia'])
+    dbFunctions.getAssignments(req.user.email)
         .then(result => {
             res.json(errorToObj(result));
         });
 });
 
-app.post('/assignmentInfo', (req, res) => {
+app.post('/assignmentInfo', authenticateToken, (req, res) => {
     console.log("\nRecibi una request POST en /assignmentInfo");
     if (req.body['id'] !== undefined) {
         if (req.body['id'] !== "") {
-            dbFunctions.getAssignmentInfo(req.body['id'], req.body['email'], req.body['contrasenia'])
+            dbFunctions.getAssignmentInfo(req.body['id'], req.user.email)
                 .then(result => {
                     res.json(errorToObj(result));
                 });
@@ -150,33 +149,33 @@ app.post('/assignmentInfo', (req, res) => {
     }
 });
 
-app.post('/addAssignment', validateBody, (req, res) => {
+app.post('/addAssignment', authenticateToken, validateBody, (req, res) => {
     console.log("\nRecibi una request POST en /addAssignment");
-    dbFunctions.addAssignment(req.body['email'], req.body['contrasenia'], req.body['nombre'], req.body['descripcion'], req.body['ejercicios'], req.body['ejerciciosHechos'], req.body['materia'], req.body['fecha'], req.body['difficultad'])
+    dbFunctions.addAssignment(req.user.email, req.body['nombre'], req.body['descripcion'], req.body['ejercicios'], req.body['ejerciciosHechos'], req.body['materia'], req.body['fecha'], req.body['difficultad'])
         .then(result => {
             res.json(errorToObj(result));
         });
 });
 
-app.post('/addUser', validateBody, (req, res) => {
+app.post('/addUser', authenticateToken, validateBody, (req, res) => {
     console.log("\nRecibi una request POST en /addUser");
-    dbFunctions.addUserToAssignment(req.body['email'], req.body['id'], req.body['duenio'], req.body['contrasenia'])
+    dbFunctions.addUserToAssignment(req.body['email'], req.body['id'], req.user.email)
         .then(result => {
             res.json(errorToObj(result));
         });
 });
 
-app.delete('/delete', validateBody, (req, res) => {
+app.delete('/delete', authenticateToken, validateBody, (req, res) => {
     console.log("\nRecibi una request DELETE en /delete");
-    dbFunctions.deleteAssignment(req.body['id'], req.body['email'], req.body['contrasenia'])
+    dbFunctions.deleteAssignment(req.body['id'], req.user.email)
         .then(result => {
             res.json(errorToObj(result));
         });
 });
 
-app.put('/update', validateBody, (req, res) => {
+app.put('/update', authenticateToken, validateBody, (req, res) => {
     console.log("\nRecibi una request PUT en /update");
-    dbFunctions.updateDoneExercises(req.body['email'], req.body['contrasenia'], req.body['id'], req.body['ejercicios'])
+    dbFunctions.updateDoneExercises(req.user.email, req.body['id'], req.body['ejercicios'])
         .then(result => {
             res.json(errorToObj(result));
         });
