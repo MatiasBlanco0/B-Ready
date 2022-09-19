@@ -56,8 +56,10 @@ app.post('/login', validateBody, (req, res) => {
             dbFunctions.logIn(req.body['email'], req.body['contrasenia'])
                 .then(result => {
                     if (result === true) {
-                        const accessToken = jwt.sign({ email: req.body['email'] }, process.env.ACCESS_TOKEN_SECRET);
-                        res.status(200).json({ accessToken: accessToken });
+                        const payload = { email: req.body['email'] };
+                        const accessToken = generateAccessToken(payload);
+                        const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET);
+                        return res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken });
                     } else {
                         res.json(errorToObj(result));
                     }
