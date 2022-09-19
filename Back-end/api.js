@@ -25,7 +25,7 @@ function errorToObj(error) {
 
 function validateBody(req, res, next) {
     if (Object.keys(req.body).length <= 0) {
-        res.status(400).json({ message: "Body was empty, Content-Type header didn't match the type of body or there was another error" });
+        return res.status(400).json({ message: "Body was empty, Content-Type header didn't match the type of body or there was another error" });
     } else {
         next()
     }
@@ -61,14 +61,14 @@ app.post('/login', validateBody, (req, res) => {
                         const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET);
                         return res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken });
                     } else {
-                        res.json(errorToObj(result));
+                        return res.json(errorToObj(result));
                     }
                 });
         } else {
-            res.status(400).json({ message: "Email or Contrasenia were empty strings" });
+            return res.status(400).json({ message: "Email or Contrasenia were empty strings" });
         }
     } else {
-        res.status(400).json({ message: "Email or Contrasenia were undefined" });
+        return res.status(400).json({ message: "Email or Contrasenia were undefined" });
     }
 });
 
@@ -81,10 +81,10 @@ app.post('/register', validateBody, (req, res) => {
                     return res.json(errorToObj(result));
                 });
         } else {
-            res.status(400).json({ message: "Nombre, Email or Contrasenia were empty strings" });
+            return res.status(400).json({ message: "Nombre, Email or Contrasenia were empty strings" });
         }
     } else {
-        res.status(400).json({ message: "Nombre, Email or Contrasenia were unefined" });
+        return res.status(400).json({ message: "Nombre, Email or Contrasenia were unefined" });
     }
 });
 
