@@ -250,11 +250,9 @@ async function addUserToAssignment(userToAdd, assignmentID, ownerEmail, password
     }
     try {
         if (await logIn(ownerEmail, password)) {
-            let result = await sqlQuery("SELECT 1 FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.email = ? \
-            AND `relacion usuario/tarea`.tarea = ?", [ownerEmail, assignmentID]);
+            let result = await sqlQuery("SELECT 1 FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.email = ? AND `relacion usuario/tarea`.tarea = ?", [ownerEmail, assignmentID]);
             if (result.length > 0) {
-                result = await sqlQuery("SELECT 1 FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.email = ? \
-                AND `relacion usuario/tarea`.tarea = ?", [userToAdd, assignmentID]);
+                result = await sqlQuery("SELECT 1 FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.email = ? AND `relacion usuario/tarea`.tarea = ?", [userToAdd, assignmentID]);
                 if (result.length === 0) {
                     let sql = "INSERT INTO `relacion usuario/tarea`(email, tarea) VALUES (?, ?)";
                     let promise = await sqlQuery(sql, [userToAdd, assignmentID, ownerEmail, assignmentID]);
@@ -288,10 +286,7 @@ async function getAssignments(userEmail, password) {
     }
     try {
         if (await logIn(userEmail, password) === true) {
-            let sql = "SELECT tarea.id, tarea.nombre, tarea.cantej, tarea.cantejhechos, \
-            tarea.materia, tarea.fechaentrega, tarea.dificultad FROM tarea INNER JOIN \
-            `relacion usuario/tarea` ON tarea.id = `relacion usuario/tarea`.tarea \
-            WHERE `relacion usuario/tarea`.email = ?";
+            let sql = "SELECT tarea.id, tarea.nombre, tarea.cantej, tarea.cantejhechos, tarea.materia, tarea.fechaentrega, tarea.dificultad FROM tarea INNER JOIN `relacion usuario/tarea` ON tarea.id = `relacion usuario/tarea`.tarea WHERE `relacion usuario/tarea`.email = ?";
             return await sqlQuery(sql, [userEmail]);
         } else {
             return new Error("Invalid email or password");
@@ -308,10 +303,7 @@ async function getAssignmentInfo(id, userEmail, password) {
     }
     try {
         if (await logIn(userEmail, password) === true) {
-            let sql = "SELECT tarea.descripcion, `relacion usuario/tarea`.email \
-        FROM tarea INNER JOIN `relacion usuario/tarea` ON tarea.id = \
-        `relacion usuario/tarea`.tarea WHERE tarea.id = ? AND EXISTS(SELECT 1 FROM `relacion usuario/tarea` \
-        WHERE `relacion usuario/tarea`.email = ? AND `relacion usuario/tarea`.tarea = tarea.id)";
+            let sql = "SELECT tarea.descripcion, `relacion usuario/tarea`.email FROM tarea INNER JOIN `relacion usuario/tarea` ON tarea.id = `relacion usuario/tarea`.tarea WHERE tarea.id = ? AND EXISTS(SELECT 1 FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.email = ? AND `relacion usuario/tarea`.tarea = tarea.id)";
             return await sqlQuery(sql, [id, userEmail]);
         }
         else {
@@ -335,13 +327,11 @@ async function deleteAssignment(id, userEmail, password) {
     }
     try {
         if (await logIn(userEmail, password) === true) {
-            const isOwner = await sqlQuery("SELECT 1 FROM `relacion usuario/tarea` WHERE \
-            `relacion usuario/tarea`.email = ? AND `relacion usuario/tarea`.tarea = ?", [userEmail, id]);
+            const isOwner = await sqlQuery("SELECT 1 FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.email = ? AND `relacion usuario/tarea`.tarea = ?", [userEmail, id]);
             if (isOwner.length > 0) {
                 let checkUsers = await sqlQuery("SELECT `relacion usuario/tarea`.email WHERE `relacion usuario/tarea`.id = ?", [id]);
                 if (checkUsers.length < 2) {
-                    let sql = "DELETE FROM tarea WHERE tarea.id = ?;\
-                DELETE FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.tarea = ?";
+                    let sql = "DELETE FROM tarea WHERE tarea.id = ?; DELETE FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.tarea = ?";
                     let promise = await sqlQuery(sql, [id, id]);
                     // If the query was not successful, return the error
                     if (promise instanceof Error) {
@@ -350,8 +340,7 @@ async function deleteAssignment(id, userEmail, password) {
                         return true;
                     }
                 } else {
-                    let sql = "DELETE FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.tarea = ? AND \
-                `relacion usuario/tarea`.email = ?";
+                    let sql = "DELETE FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.tarea = ? AND `relacion usuario/tarea`.email = ?";
                     let result = await sqlQuery(sql, [id, userEmail]);
                     // If the query was not successful, return the error
                     if (result instanceof Error) {
@@ -387,8 +376,7 @@ async function updateDoneExercises(userEmail, password, id, doneExcercices) {
     }
     try {
         if (await logIn(userEmail, password) === true) {
-            const isOwner = await sqlQuery("SELECT 1 FROM `relacion usuario/tarea`WHERE `relacion usuario/tarea`.email = ? \
-            AND `relacion usuario/tarea`.tarea = ?", [userEmail, id]);
+            const isOwner = await sqlQuery("SELECT 1 FROM `relacion usuario/tarea`WHERE `relacion usuario/tarea`.email = ? AND `relacion usuario/tarea`.tarea = ?", [userEmail, id]);
             if (isOwner.length > 0) {
                 let sql = "UPDATE tarea SET tarea.cantejhechos = ? WHERE tarea.id = ?";
                 let promise = await sqlQuery(sql, [doneExcercices, id]);
