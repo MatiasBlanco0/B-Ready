@@ -289,11 +289,11 @@ footer div{
         background-color: #4990e7;
         margin: 0;
         position: fixed;
-        top: 17.4%;
+        right: 0;
         width: 100%;
         text-align: center;
-        right: -100%;
-        z-index: inherit;
+        top: -100%;
+        z-index: 4;
         border-bottom: 1px solid #000;
     }
 

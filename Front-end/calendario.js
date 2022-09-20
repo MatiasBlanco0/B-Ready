@@ -1,7 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
     const fecha = new Date();
     let diaClickeado;
-    const fondo = document.getElementById("fondoNegro");    
+    const fondo = document.getElementById("fondoNegro");
+    const lista = document.getElementById("lista");
+    lista.style.display = "none";
 
 
     const renderCalendario = () => {
@@ -77,16 +79,20 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("formulario").style.display = "none";
     });
 
-    document.querySelector("#fondoNegro").addEventListener("click", () => {
-        if (document.getElementById("lista").style.display === "none") {
+    fondo.addEventListener("click", () => {
+        console.log(lista.style.display);
+        if (lista.style.display === "none") {
             document.getElementById("apertura").style.transform = "rotate(-90deg)";
-            document.getElementById("lista").style.display = "flex";
+            lista.style.display = "flex";
         }
         else {
             document.getElementById("apertura").style.transform = "rotate(90deg)";
-            document.getElementById("lista").style.display = "none";
+            lista.style.display = "none";
+            console.log("elepepe");
         }
     });
+
+
 
     function checkNum(numero){
         const regEx = /^[1-9]\d*$/g;

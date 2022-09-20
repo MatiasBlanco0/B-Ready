@@ -18,30 +18,29 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.querySelector("#MenuIco").addEventListener("click", () => {
-        console.log("hola");
         if(!abierto){
-            Menu.style.right = "0%";
+            Menu.style.top = "18.5%";
             Menu.style.transition = "1s";
             document.body.style.overflow = "hidden";
-            document.getElementById("section").style.filter = "blur(2px)";
+            document.getElementById("pagina").style.filter = "blur(2px)";
             abierto = true;
         }
         else{
-            Menu.style.right = "-100%";
+            Menu.style.top = "-100%";
             Menu.style.transition = "1s";
             document.body.style.overflow = "scroll";
             abierto = false;
-            document.getElementById("section").style.filter = "none";
+            document.getElementById("pagina").style.filter = "none";
         }
     });
 
-    document.getElementById("section").addEventListener("click", () => {
+    document.getElementById("pagina").addEventListener("click", () => {
         if(abierto){
-            Menu.style.right = "-100%";
+            Menu.style.top = "-100%";
             Menu.style.transition = "1s";
             document.body.style.overflow = "scroll";
             abierto = false;
-            document.getElementById("section").style.filter = "none";
+            document.getElementById("pagina").style.filter = "none";
         }
     }); 
 });

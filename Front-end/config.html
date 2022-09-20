@@ -34,15 +34,62 @@
     </header>
     <section>
         <div class="sectores">
-            <button>Visibilidad</button>
-            <button>Privacidad</button>
-            <button>Daltonismo</button>
-            <button>Ayuda</button>
+            <button id="Perfil">Perfil</button>
+            <button id="Visibilidad">Visibilidad</button>
+            <button id="Privacidad">Privacidad</button>
+            <button id="Estilo">Estilo</button>
+            <button id="Ayuda">Ayuda</button>
         </div>
         <div class="opciones">
+            <div id="PerfilO">
+                <input id="fondoInput" type="file" accept="image/png, image/jpeg">
+                <div class="imgFondo">
+                    <img src="" alt="" id="editar">
+                </div>
+                <img src="" alt="" id="fotoPerfil">
+                <div class="info">
+                    <h3>Nombre</h3>
+                    <h5>Descripción</h5>
+                </div>
+                <div class="datos">
+                    <p>Email</p>
+                    <p>fecha de registro</p>
+                </div>
+            </div>
+            <div id="VisibilidadO">
+                <div class="modos">
+                    <h3>Seleccionar un tema</h3>
+                    <div>
+                        <input type="radio" id="Claro" value="Claro" name="Tema" checked>
+                        <label class="labels" for="Claro">Claro</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="Oscuro" value="Oscuro" name="Tema">
+                        <label class="labels" for="Oscuro">Oscuro</label>
+                    </div>
+                </div>
+                <div class="idiomas">
+                    <h3>Seleccionar un idioma:</h3>
+                    <select>
+                        <option value="español(españa)" selected>español (España)</option>
+                        <option value="ingles">ingles</option>
+                        <option value="hebreo">hebreo na joda</option>
+                        <option value="Alien">soy analfabeto muchas gracias asi que no hace falta ningun idioma</option>
+                    </select>
+                </div>
+            </div>
+            <div id="PrivacidadO">
 
+            </div>
+            <div id="EstiloO">
+
+            </div>
+            <div id="AyudaO">
+
+            </div>
         </div>
     </section>
+    <script src="config.js"></script>
 </body>
 
 </html>

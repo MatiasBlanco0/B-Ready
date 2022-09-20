@@ -28,7 +28,7 @@ header{
     z-index: 2;
     justify-content: center;
     box-shadow: 0px 0px 4px 1px #000;
-    position: sticky;
+    position: absolute;
 }
 
 #alerta{

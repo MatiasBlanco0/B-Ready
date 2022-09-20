@@ -51,7 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
         toggle.click();
         cambiar();
         email.value = gmail;
-        console.log("hello");
     }
 
     enviarReg.addEventListener("click", () => {
@@ -69,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    contrasenia.addEventListener("focus", () => {
+    contrasenia.addEventListener("keydown", () => {
         let tieneMayus = false;
         let tieneNum = false;
         if(contrasenia.value.length >= 5){
@@ -94,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        if(tieneMayus == true && tieneNum == true){
+        if(tieneMayus === true && tieneNum === true){
             condicion2.style.color = "green";
         }
         else{
@@ -180,8 +179,10 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(data => {
             console.log("Datos: ");
             console.log(data);
-            if(data === true){
+            if(data != null){
                 loggeado = true;
+                document.cookie = "token=" + data.accessToken;
+                document.cookie = "refreshtoken" +data.refreshToken;
             }
             else if(data === false){
                 //no definido que va a pasar todavia
