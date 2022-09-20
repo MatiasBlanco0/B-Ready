@@ -210,7 +210,7 @@ async function addAssignment(userEmail, name, description, excercices, doneExcer
         }
         // If the query was successful, add the user to the assignment 
         else {
-            sql = "INSERT INTO relacion_usuario/tarea(email, tarea) VALUES (?, ?)";
+            sql = "INSERT INTO relacion_usuario_tarea(email, tarea) VALUES (?, ?)";
             let result = await sqlQuery(sql, [userEmail, promise.insertId]);
             // If the query was not successful, return the error
             if (result instanceof Error) {
@@ -236,11 +236,11 @@ async function addUserToAssignment(userToAdd, assignmentID, ownerEmail) {
         return new Error(ownerEmail + " is not a valid owner email");
     }
     try {
-        let result = await sqlQuery("SELECT 1 FROM relacion_usuario/tarea WHERE relacion_usuario/tarea.email = ? AND relacion_usuario/tarea.tarea = ?", [ownerEmail, assignmentID]);
+        let result = await sqlQuery("SELECT 1 FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.email = ? AND relacion_usuario_tarea.tarea = ?", [ownerEmail, assignmentID]);
         if (result.length > 0) {
-            result = await sqlQuery("SELECT 1 FROM relacion_usuario/tarea WHERE relacion_usuario/tarea.email = ? AND relacion_usuario/tarea.tarea = ?", [userToAdd, assignmentID]);
+            result = await sqlQuery("SELECT 1 FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.email = ? AND relacion_usuario_tarea.tarea = ?", [userToAdd, assignmentID]);
             if (result.length === 0) {
-                let sql = "INSERT INTO relacion_usuario/tarea(email, tarea) VALUES (?, ?)";
+                let sql = "INSERT INTO relacion_usuario_tarea(email, tarea) VALUES (?, ?)";
                 let promise = await sqlQuery(sql, [userToAdd, assignmentID, ownerEmail, assignmentID]);
                 // If the query was not successful, return the error
                 if (promise instanceof Error) {
@@ -265,7 +265,7 @@ async function getAssignments(userEmail) {
         return new Error(userEmail + " is not a valid email");
     }
     try {
-        let sql = "SELECT tarea.id, tarea.nombre, tarea.cantej, tarea.cantejhechos, tarea.materia, tarea.fechaentrega, tarea.dificultad FROM tarea INNER JOIN relacion_usuario/tarea ON tarea.id = relacion_usuario/tarea.tarea WHERE relacion_usuario/tarea.email = ?";
+        let sql = "SELECT tarea.id, tarea.nombre, tarea.cantej, tarea.cantejhechos, tarea.materia, tarea.fechaentrega, tarea.dificultad FROM tarea INNER JOIN relacion_usuario_tarea ON tarea.id = relacion_usuario_tarea.tarea WHERE relacion_usuario_tarea.email = ?";
         return await sqlQuery(sql, [userEmail]);
     } catch (err) {
         return err;
@@ -281,7 +281,7 @@ async function getAssignmentInfo(id, userEmail) {
         return new Error(userEmail + " is not a valid email");
     }
     try {
-        let sql = "SELECT tarea.descripcion, relacion_usuario/tarea.email FROM tarea INNER JOIN relacion_usuario/tarea ON tarea.id = relacion_usuario/tarea.tarea WHERE tarea.id = ? AND EXISTS(SELECT 1 FROM relacion_usuario/tarea WHERE relacion_usuario/tarea.email = ? AND relacion_usuario/tarea.tarea = tarea.id)";
+        let sql = "SELECT tarea.descripcion, relacion_usuario_tarea.email FROM tarea INNER JOIN relacion_usuario_tarea ON tarea.id = relacion_usuario_tarea.tarea WHERE tarea.id = ? AND EXISTS(SELECT 1 FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.email = ? AND relacion_usuario_tarea.tarea = tarea.id)";
         return await sqlQuery(sql, [id, userEmail]);
     } catch (err) {
         return err;
@@ -297,11 +297,11 @@ async function deleteAssignment(id, userEmail) {
         return new Error(userEmail + " is not a valid email");
     }
     try {
-        const isOwner = await sqlQuery("SELECT 1 FROM relacion_usuario/tarea WHERE relacion_usuario/tarea.email = ? AND relacion_usuario/tarea.tarea = ?", [userEmail, id]);
+        const isOwner = await sqlQuery("SELECT 1 FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.email = ? AND relacion_usuario_tarea.tarea = ?", [userEmail, id]);
         if (isOwner.length > 0) {
-            let checkUsers = await sqlQuery("SELECT relacion_usuario/tarea.email WHERE relacion_usuario/tarea.id = ?", [id]);
+            let checkUsers = await sqlQuery("SELECT relacion_usuario_tarea.email WHERE relacion_usuario_tarea.id = ?", [id]);
             if (checkUsers.length < 2) {
-                let sql = "DELETE FROM tarea WHERE tarea.id = ?; DELETE FROM relacion_usuario/tarea WHERE relacion_usuario/tarea.tarea = ?";
+                let sql = "DELETE FROM tarea WHERE tarea.id = ?; DELETE FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.tarea = ?";
                 let promise = await sqlQuery(sql, [id, id]);
                 // If the query was not successful, return the error
                 if (promise instanceof Error) {
@@ -310,7 +310,7 @@ async function deleteAssignment(id, userEmail) {
                     return true;
                 }
             } else {
-                let sql = "DELETE FROM relacion_usuario/tarea WHERE relacion_usuario/tarea.tarea = ? AND relacion_usuario/tarea.email = ?";
+                let sql = "DELETE FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.tarea = ? AND relacion_usuario_tarea.email = ?";
                 let result = await sqlQuery(sql, [id, userEmail]);
                 // If the query was not successful, return the error
                 if (result instanceof Error) {
@@ -339,7 +339,7 @@ async function updateDoneExercises(userEmail, id, doneExcercices) {
         return new Error(doneExcercices + " is not a valid number of excercices");
     }
     try {
-        const isOwner = await sqlQuery("SELECT 1 FROM relacion_usuario/tareaWHERE relacion_usuario/tarea.email = ? AND relacion_usuario/tarea.tarea = ?", [userEmail, id]);
+        const isOwner = await sqlQuery("SELECT 1 FROM relacion_usuario_tareaWHERE relacion_usuario_tarea.email = ? AND relacion_usuario_tarea.tarea = ?", [userEmail, id]);
         if (isOwner.length > 0) {
             let sql = "UPDATE tarea SET tarea.cantejhechos = ? WHERE tarea.id = ?";
             let promise = await sqlQuery(sql, [doneExcercices, id]);
