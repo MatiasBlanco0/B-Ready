@@ -81,15 +81,17 @@ app.delete('/logout', validateBody, (req, res) => {
 
 app.post('/login', validateBody, (req, res) => {
     console.log("\nRecibi una request POST en /login");
-    if (req.body['email'] !== undefined || req.body['contrasenia'] !== undefined) {
-        if (req.body['email'] !== "" || req.body['contrasenia'] !== "") {
-            dbFunctions.logIn(req.body['email'], req.body['contrasenia'])
+    const email = req.body.email;
+    const password = req.body.contrasenia;
+    if (email !== undefined || password !== undefined) {
+        if (email !== "" || password !== "") {
+            dbFunctions.logIn(email, password)
                 .then(result => {
                     if (result === true) {
-                        const payload = { email: req.body['email'] };
+                        const payload = { email: email };
                         const accessToken = generateAccessToken(payload);
                         const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET);
-                        dbFunctions.updateToken(req.body['email'], refreshToken).then(result => {
+                        dbFunctions.updateToken(email, refreshToken).then(result => {
                             if (result === true) {
                                 return res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken });
                             }
@@ -111,9 +113,12 @@ app.post('/login', validateBody, (req, res) => {
 
 app.post('/register', validateBody, (req, res) => {
     console.log("\nRecibi una request POST en /register");
-    if (req.body['nombre'] !== undefined || req.body['email'] !== undefined || req.body['contrasenia'] !== undefined) {
-        if (req.body['nombre'] !== "" || req.body['email'] !== "" || req.body['contrasenia'] !== "") {
-            dbFunctions.register(req.body['nombre'], req.body['email'], req.body['contrasenia'])
+    const email = req.body.email;
+    const password = req.body.contrasenia;
+    const name = req.body.nombre;
+    if (name !== undefined || email !== undefined || password !== undefined) {
+        if (name !== "" || email !== "" || password !== "") {
+            dbFunctions.register(name, email, password)
                 .then(result => {
                     return res.json(errorToObj(result));
                 });
@@ -135,9 +140,10 @@ app.get('/assignments', authenticateToken, (req, res) => {
 
 app.post('/assignmentInfo', authenticateToken, (req, res) => {
     console.log("\nRecibi una request POST en /assignmentInfo");
-    if (req.body['id'] !== undefined) {
-        if (req.body['id'] !== "") {
-            dbFunctions.getAssignmentInfo(req.body['id'], req.user.email)
+    const id = req.body.id;
+    if (id !== undefined) {
+        if (id !== "") {
+            dbFunctions.getAssignmentInfo(id, req.user.email)
                 .then(result => {
                     res.json(errorToObj(result));
                 });
@@ -151,7 +157,7 @@ app.post('/assignmentInfo', authenticateToken, (req, res) => {
 
 app.post('/addAssignment', authenticateToken, validateBody, (req, res) => {
     console.log("\nRecibi una request POST en /addAssignment");
-    dbFunctions.addAssignment(req.user.email, req.body['nombre'], req.body['descripcion'], req.body['ejercicios'], req.body['ejerciciosHechos'], req.body['materia'], req.body['fecha'], req.body['difficultad'])
+    dbFunctions.addAssignment(req.user.email, req.body.nombre, req.body.descripcion, req.body.ejercicios, req.body.ejerciciosHechos, req.body.materia, req.body.fecha, req.body.difficultad)
         .then(result => {
             res.json(errorToObj(result));
         });
@@ -159,7 +165,7 @@ app.post('/addAssignment', authenticateToken, validateBody, (req, res) => {
 
 app.post('/addUser', authenticateToken, validateBody, (req, res) => {
     console.log("\nRecibi una request POST en /addUser");
-    dbFunctions.addUserToAssignment(req.body['email'], req.body['id'], req.user.email)
+    dbFunctions.addUserToAssignment(req.body.email, req.body.id, req.user.email)
         .then(result => {
             res.json(errorToObj(result));
         });
@@ -167,7 +173,7 @@ app.post('/addUser', authenticateToken, validateBody, (req, res) => {
 
 app.delete('/delete', authenticateToken, validateBody, (req, res) => {
     console.log("\nRecibi una request DELETE en /delete");
-    dbFunctions.deleteAssignment(req.body['id'], req.user.email)
+    dbFunctions.deleteAssignment(req.body.id, req.user.email)
         .then(result => {
             res.json(errorToObj(result));
         });
@@ -175,7 +181,7 @@ app.delete('/delete', authenticateToken, validateBody, (req, res) => {
 
 app.put('/update', authenticateToken, validateBody, (req, res) => {
     console.log("\nRecibi una request PUT en /update");
-    dbFunctions.updateDoneExercises(req.user.email, req.body['id'], req.body['ejercicios'])
+    dbFunctions.updateDoneExercises(req.user.email, req.body.id, req.body.ejercicios)
         .then(result => {
             res.json(errorToObj(result));
         });
