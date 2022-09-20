@@ -69,13 +69,17 @@ app.post('/token', validateBody, (req, res) => {
 });
 
 app.delete('/logout', validateBody, (req, res) => {
-    dbFunctions.updateToken(req.body.email, "").then(result => {
-        if (result === true) {
-            return res.sendStatus(204);
-        }
-        else {
-            return result;
-        }
+    const email = req.body.email;
+    dbFunctions.tokenExists(email, req.body.token).then(result => {
+        if (result === false) return res.sendStatus(403);
+        dbFunctions.updateToken(email, "").then(result => {
+            if (result === true) {
+                return res.sendStatus(204);
+            }
+            else {
+                return result;
+            }
+        });
     });
 });
 
