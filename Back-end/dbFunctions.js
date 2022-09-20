@@ -161,7 +161,7 @@ async function updateToken(userEmail, token) {
         return new Error(userEmail + " is not a valid email");
     }
     if (!checkToken(token)) {
-        return new Error(token + " is not a valid email");
+        return new Error(token + " is not a valid token");
     }
     try {
         let sql = "UPDATE usuario SET usuario.token = ? WHERE usuario.email = ?";
