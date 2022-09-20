@@ -48,7 +48,7 @@ function authenticateToken(req, res, next) {
 }
 
 function generateAccessToken(payload) {
-    return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "20s" });
+    return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_LIFE });
 }
 
 app.get("/hola", authenticateToken, (req, res) => {
