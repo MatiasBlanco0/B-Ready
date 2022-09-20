@@ -22,59 +22,43 @@ function closePool() {
 function checkEmail(email) {
     const emailRegEx = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
-    if (typeof email !== "string") {
+    if (typeof email !== "string" || email.length === 0 || !emailRegEx.test(email)) {
         return false;
     }
-    if (email.length === 0) {
-        return false;
-    }
-    if (!emailRegEx.test(email)) {
-        return false;
-    }
-
     return true;
 }
 
 function checkPassword(password) {
     const passwordRegEx = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{5,}$/gm
-
-    if (typeof password !== "string") {
+    if (typeof password !== "string" || password.length === 0 || !passwordRegEx.test(password)) {
         return false;
     }
-    if (password.length === 0) {
-        return false;
-    }
-    if (!passwordRegEx.test(password)) {
-        return false;
-    }
-
     return true;
 }
 
 function checkString(string) {
-    if (typeof string !== "string") {
+    if (typeof string !== "string" || string.length <= 0) {
         return false;
     }
-    if (string.length <= 0) {
-        return false;
-    }
-
     return true;
 }
 
 function checkNumber(number) {
-    if (typeof number !== "number") {
+    if (typeof number !== "number" || number < 0) {
         return false;
     }
-    if (number < 0) {
-        return false;
-    }
-
     return true;
 }
 
 function checkDate(date) {
     if (date !== new Date(date).toISOString()) {
+        return false;
+    }
+    return true;
+}
+
+function checkToken(token) {
+    if (typeof token !== "string" || token.length <= 0 || token === ""){
         return false;
     }
     return true;
@@ -145,13 +129,56 @@ async function register(name, email, password) {
     }
 }
 
-async function addAssignment(userEmail, password, name, description, excercices, doneExcercices, subject, dueDate, difficulty) {
-    // Input Validation
+async function updateToken(userEmail, token) {
+    // Input validation
     if (!checkEmail(userEmail)) {
         return new Error(userEmail + " is not a valid email");
     }
-    if (!checkPassword(password)) {
-        return new Error(password + " is not a valid password");
+    if (!checkToken(token)) {
+        return new Error(token + " is not a valid token");
+    }
+    try {
+        let sql = "UPDATE usuario SET usuario.token = ? WHERE usuario.email = ?";
+        let promise = await sqlQuery(sql, [token, userEmail]);
+        // If the query was not successful, return the error
+        if (promise instanceof Error) {
+            return promise;
+        }
+        else {
+            return true;
+        }
+    } catch (err) {
+        return err;
+    }
+}
+
+async function tokenExists(userEmail, token) {
+    // Input validation
+    if (!checkEmail(userEmail)) {
+        return new Error(userEmail + " is not a valid email");
+    }
+    if (!checkToken(token)) {
+        return new Error(token + " is not a valid token");
+    }
+    try {
+        let sql = "SELECT 1 FROM usuario WHERE usuario.email = ? AND usuario.token = ?";
+        let promise = await sqlQuery(sql, [userEmail, token]);
+        // If the query was not successful, return the error
+        if (promise instanceof Error) {
+            return promise;
+        }
+        else {
+            return promise.length > 0;
+        }
+    } catch (err) {
+        return err;
+    }
+}
+
+async function addAssignment(userEmail, name, description, excercices, doneExcercices, subject, dueDate, difficulty) {
+    // Input Validation
+    if (!checkEmail(userEmail)) {
+        return new Error(userEmail + " is not a valid email");
     }
     if (!checkString(name)) {
         return new Error(name + " is not a valid name");
@@ -175,33 +202,29 @@ async function addAssignment(userEmail, password, name, description, excercices,
         return new Error(dueDate + " is not a valid due date");
     }
     try {
-        if (await logIn(userEmail, password) === true) {
-            let sql = "INSERT INTO tarea(nombre, descripcion, cantej, cantejhechos, materia, fechaentrega, dificultad) VALUES(?, ?, ?, ?, ?, ?, ?)";
-            let promise = await sqlQuery(sql, [name, description, excercices, doneExcercices, subject, dueDate, difficulty]);
+        let sql = "INSERT INTO tarea(nombre, descripcion, cantej, cantejhechos, materia, fechaentrega, dificultad) VALUES(?, ?, ?, ?, ?, ?, ?)";
+        let promise = await sqlQuery(sql, [name, description, excercices, doneExcercices, subject, dueDate, difficulty]);
+        // If the query was not successful, return the error
+        if (promise instanceof Error) {
+            return promise;
+        }
+        // If the query was successful, add the user to the assignment 
+        else {
+            sql = "INSERT INTO relacion_usuario_tarea(email, tarea) VALUES (?, ?)";
+            let result = await sqlQuery(sql, [userEmail, promise.insertId]);
             // If the query was not successful, return the error
-            if (promise instanceof Error) {
-                return promise;
+            if (result instanceof Error) {
+                return result;
+            } else {
+                return true;
             }
-            // If the query was successful, add the user to the assignment 
-            else {
-                sql = "INSERT INTO `relacion usuario/tarea`(email, tarea) VALUES (?, ?)";
-                let result = await sqlQuery(sql, [userEmail, promise.insertId]);
-                // If the query was not successful, return the error
-                if (result instanceof Error) {
-                    return result;
-                } else {
-                    return true;
-                }
-            }
-        } else {
-            return new Error("Invalid email or password");
         }
     } catch (err) {
         return err;
     }
 }
 
-async function addUserToAssignment(userToAdd, assignmentID, ownerEmail, password) {
+async function addUserToAssignment(userToAdd, assignmentID, ownerEmail) {
     // Input Validation
     if (!checkEmail(userToAdd)) {
         return new Error(userToAdd + " is not a valid email");
@@ -212,84 +235,44 @@ async function addUserToAssignment(userToAdd, assignmentID, ownerEmail, password
     if (!checkEmail(ownerEmail)) {
         return new Error(ownerEmail + " is not a valid owner email");
     }
-    if (!checkPassword(password)) {
-        return new Error(password + " is not a valid password");
-    }
     try {
-        if (await logIn(ownerEmail, password)) {
-            let result = await sqlQuery("SELECT 1 FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.email = ? \
-            AND `relacion usuario/tarea`.tarea = ?", [ownerEmail, assignmentID]);
-            if (result.length > 0) {
-                result = await sqlQuery("SELECT 1 FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.email = ? \
-                AND `relacion usuario/tarea`.tarea = ?", [userToAdd, assignmentID]);
-                if (result.length === 0) {
-                    let sql = "INSERT INTO `relacion usuario/tarea`(email, tarea) VALUES (?, ?)";
-                    let promise = await sqlQuery(sql, [userToAdd, assignmentID, ownerEmail, assignmentID]);
-                    // If the query was not successful, return the error
-                    if (promise instanceof Error) {
-                        return promise;
-                    } else {
-                        return true;
-                    }
+        let result = await sqlQuery("SELECT 1 FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.email = ? AND relacion_usuario_tarea.tarea = ?", [ownerEmail, assignmentID]);
+        if (result.length > 0) {
+            result = await sqlQuery("SELECT 1 FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.email = ? AND relacion_usuario_tarea.tarea = ?", [userToAdd, assignmentID]);
+            if (result.length === 0) {
+                let sql = "INSERT INTO relacion_usuario_tarea(email, tarea) VALUES (?, ?)";
+                let promise = await sqlQuery(sql, [userToAdd, assignmentID, ownerEmail, assignmentID]);
+                // If the query was not successful, return the error
+                if (promise instanceof Error) {
+                    return promise;
                 } else {
-                    return new Error(userToAdd + "is already an owner of the assignment");
+                    return true;
                 }
             } else {
-                return new Error(ownerEmail + " is not the owner of the assignment");
+                return new Error(userToAdd + "is already an owner of the assignment");
             }
         } else {
-            return new Error("Invalid owner or password");
+            return new Error(ownerEmail + " is not the owner of the assignment");
         }
     } catch (err) {
         return err;
     }
 }
 
-async function getAssignments(userEmail, password) {
+async function getAssignments(userEmail) {
     // Input Validation
     if (!checkEmail(userEmail)) {
         return new Error(userEmail + " is not a valid email");
     }
-    if (!checkPassword(password)) {
-        return new Error(password + " is not a valid password");
-    }
     try {
-        if (await logIn(userEmail, password) === true) {
-            let sql = "SELECT tarea.id, tarea.nombre, tarea.cantej, tarea.cantejhechos, \
-            tarea.materia, tarea.fechaentrega, tarea.dificultad FROM tarea INNER JOIN \
-            `relacion usuario/tarea` ON tarea.id = `relacion usuario/tarea`.tarea \
-            WHERE `relacion usuario/tarea`.email = ?";
-            return await sqlQuery(sql, [userEmail]);
-        } else {
-            return new Error("Invalid email or password");
-        }
+        let sql = "SELECT tarea.id, tarea.nombre, tarea.cantej, tarea.cantejhechos, tarea.materia, tarea.fechaentrega, tarea.dificultad FROM tarea INNER JOIN relacion_usuario_tarea ON tarea.id = relacion_usuario_tarea.tarea WHERE relacion_usuario_tarea.email = ?";
+        return await sqlQuery(sql, [userEmail]);
     } catch (err) {
         return err;
     }
 }
 
-async function getAssignmentInfo(id, userEmail, password) {
-    // Input Validation
-    if (!checkNumber(id)) {
-        return new Error(id + " is not a valid assignment Id");
-    }
-    try {
-        if (await logIn(userEmail, password) === true) {
-            let sql = "SELECT tarea.descripcion, `relacion usuario/tarea`.email \
-        FROM tarea INNER JOIN `relacion usuario/tarea` ON tarea.id = \
-        `relacion usuario/tarea`.tarea WHERE tarea.id = ? AND EXISTS(SELECT 1 FROM `relacion usuario/tarea` \
-        WHERE `relacion usuario/tarea`.email = ? AND `relacion usuario/tarea`.tarea = tarea.id)";
-            return await sqlQuery(sql, [id, userEmail]);
-        }
-        else {
-            return new Error("Invalid email or password");
-        }
-    } catch (err) {
-        return err;
-    }
-}
-
-async function deleteAssignment(id, userEmail, password) {
+async function getAssignmentInfo(id, userEmail) {
     // Input Validation
     if (!checkNumber(id)) {
         return new Error(id + " is not a valid assignment Id");
@@ -297,54 +280,57 @@ async function deleteAssignment(id, userEmail, password) {
     if (!checkEmail(userEmail)) {
         return new Error(userEmail + " is not a valid email");
     }
-    if (!checkPassword(password)) {
-        return new Error(password + " is not a valid password");
+    try {
+        let sql = "SELECT tarea.descripcion, relacion_usuario_tarea.email FROM tarea INNER JOIN relacion_usuario_tarea ON tarea.id = relacion_usuario_tarea.tarea WHERE tarea.id = ? AND EXISTS(SELECT 1 FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.email = ? AND relacion_usuario_tarea.tarea = tarea.id)";
+        return await sqlQuery(sql, [id, userEmail]);
+    } catch (err) {
+        return err;
+    }
+}
+
+async function deleteAssignment(id, userEmail) {
+    // Input Validation
+    if (!checkNumber(id)) {
+        return new Error(id + " is not a valid assignment Id");
+    }
+    if (!checkEmail(userEmail)) {
+        return new Error(userEmail + " is not a valid email");
     }
     try {
-        if (await logIn(userEmail, password) === true) {
-            const isOwner = await sqlQuery("SELECT 1 FROM `relacion usuario/tarea` WHERE \
-            `relacion usuario/tarea`.email = ? AND `relacion usuario/tarea`.tarea = ?", [userEmail, id]);
-            if (isOwner.length > 0) {
-                let checkUsers = await sqlQuery("SELECT `relacion usuario/tarea`.email WHERE `relacion usuario/tarea`.id = ?", [id]);
-                if (checkUsers.length < 2) {
-                    let sql = "DELETE FROM tarea WHERE tarea.id = ?;\
-                DELETE FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.tarea = ?";
-                    let promise = await sqlQuery(sql, [id, id]);
-                    // If the query was not successful, return the error
-                    if (promise instanceof Error) {
-                        return promise;
-                    } else {
-                        return true;
-                    }
+        const isOwner = await sqlQuery("SELECT 1 FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.email = ? AND relacion_usuario_tarea.tarea = ?", [userEmail, id]);
+        if (isOwner.length > 0) {
+            let checkUsers = await sqlQuery("SELECT relacion_usuario_tarea.email WHERE relacion_usuario_tarea.id = ?", [id]);
+            if (checkUsers.length < 2) {
+                let sql = "DELETE FROM tarea WHERE tarea.id = ?; DELETE FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.tarea = ?";
+                let promise = await sqlQuery(sql, [id, id]);
+                // If the query was not successful, return the error
+                if (promise instanceof Error) {
+                    return promise;
                 } else {
-                    let sql = "DELETE FROM `relacion usuario/tarea` WHERE `relacion usuario/tarea`.tarea = ? AND \
-                `relacion usuario/tarea`.email = ?";
-                    let result = await sqlQuery(sql, [id, userEmail]);
-                    // If the query was not successful, return the error
-                    if (result instanceof Error) {
-                        return result;
-                    } else {
-                        return true;
-                    }
+                    return true;
                 }
             } else {
-                return new Error("This user was not an owner of the assignment");
+                let sql = "DELETE FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.tarea = ? AND relacion_usuario_tarea.email = ?";
+                let result = await sqlQuery(sql, [id, userEmail]);
+                // If the query was not successful, return the error
+                if (result instanceof Error) {
+                    return result;
+                } else {
+                    return true;
+                }
             }
         } else {
-            return new Error("Invalid email or password");
+            return new Error("This user was not an owner of the assignment");
         }
     } catch (err) {
         return err;
     }
 }
 
-async function updateDoneExercises(userEmail, password, id, doneExcercices) {
+async function updateDoneExercises(userEmail, id, doneExcercices) {
     // Input Validation
     if (!checkEmail(userEmail)) {
         return new Error(userEmail + " is not a valid email");
-    }
-    if (!checkPassword(password)) {
-        return new Error(password + " is not a valid password");
     }
     if (!checkNumber(id)) {
         return new Error(id + " is not a valid assignment Id");
@@ -353,23 +339,18 @@ async function updateDoneExercises(userEmail, password, id, doneExcercices) {
         return new Error(doneExcercices + " is not a valid number of excercices");
     }
     try {
-        if (await logIn(userEmail, password) === true) {
-            const isOwner = await sqlQuery("SELECT 1 FROM `relacion usuario/tarea`WHERE `relacion usuario/tarea`.email = ? \
-            AND `relacion usuario/tarea`.tarea = ?", [userEmail, id]);
-            if (isOwner.length > 0) {
-                let sql = "UPDATE tarea SET tarea.cantejhechos = ? WHERE tarea.id = ?";
-                let promise = await sqlQuery(sql, [doneExcercices, id]);
-                // If the query was not successful, return the error
-                if (promise instanceof Error) {
-                    return promise;
-                } else {
-                    return true;
-                }
+        const isOwner = await sqlQuery("SELECT 1 FROM relacion_usuario_tareaWHERE relacion_usuario_tarea.email = ? AND relacion_usuario_tarea.tarea = ?", [userEmail, id]);
+        if (isOwner.length > 0) {
+            let sql = "UPDATE tarea SET tarea.cantejhechos = ? WHERE tarea.id = ?";
+            let promise = await sqlQuery(sql, [doneExcercices, id]);
+            // If the query was not successful, return the error
+            if (promise instanceof Error) {
+                return promise;
             } else {
-                return new Error("This user was not an owner of the assignment");
+                return true;
             }
         } else {
-            return new Error("Invalid email or password");
+            return new Error("This user was not an owner of the assignment");
         }
     } catch (err) {
         return err;
@@ -380,6 +361,8 @@ async function updateDoneExercises(userEmail, password, id, doneExcercices) {
 module.exports = {
     logIn: logIn,
     register: register,
+    updateToken: updateToken,
+    tokenExists: tokenExists,
     addAssignment: addAssignment,
     addUserToAssignment: addUserToAssignment,
     getAssignments: getAssignments,
