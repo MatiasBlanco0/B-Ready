@@ -12,7 +12,7 @@ const port = process.env.PORT || 9000;
 app.use(cors());
 app.use(express.json());
 
-function errorToObj(error) {
+function prepareObj(error) {
     // If it is an error return an object with the message
     if (error instanceof Error) {
         return { message: error.toString() };
@@ -99,12 +99,13 @@ app.post('/login', validateBody, (req, res) => {
                             if (result === true) {
                                 return res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken });
                             }
-                            else {
-                                return res.json(errorToObj(result));
-                            }
                         });
-                    } else {
-                        return res.json(errorToObj(result));
+                    }
+                    else if (result === false) {
+                        return res.status(401).json({ message: "Wrong email or password" });
+                    }
+                    else {
+                        return res.status(500).json(prepareObj(result));
                     }
                 });
         } else {
@@ -124,7 +125,11 @@ app.post('/register', validateBody, (req, res) => {
         if (name !== "" || email !== "" || password !== "") {
             dbFunctions.register(name, email, password)
                 .then(result => {
-                    return res.json(errorToObj(result));
+                    if (result === true) {
+                        return res.sendStatus(201);
+                    } else {
+                        return res.status(400).json(prepareObj(result));
+                    }
                 });
         } else {
             return res.status(400).json({ message: "Nombre, Email or Contrasenia were empty strings" });
@@ -138,7 +143,11 @@ app.get('/assignments', authenticateToken, (req, res) => {
     console.log("\nRecibi una request POST en /assignments");
     dbFunctions.getAssignments(req.user.email)
         .then(result => {
-            res.json(errorToObj(result));
+            if (result instanceof Error) {
+                return res.status(400).json(prepareObj(result));
+            } else {
+                res.json(prepareObj(result));
+            }
         });
 });
 
@@ -149,7 +158,11 @@ app.post('/assignmentInfo', authenticateToken, (req, res) => {
         if (id !== "") {
             dbFunctions.getAssignmentInfo(id, req.user.email)
                 .then(result => {
-                    res.json(errorToObj(result));
+                    if (result instanceof Error) {
+                        return res.status(400).json(prepareObj(result));
+                    } else {
+                        res.json(prepareObj(result));
+                    }
                 });
         } else {
             res.status(400).json({ message: "Id was an empty string" });
@@ -163,7 +176,11 @@ app.post('/addAssignment', authenticateToken, validateBody, (req, res) => {
     console.log("\nRecibi una request POST en /addAssignment");
     dbFunctions.addAssignment(req.user.email, req.body.nombre, req.body.descripcion, req.body.ejercicios, req.body.ejerciciosHechos, req.body.materia, req.body.fecha, req.body.difficultad)
         .then(result => {
-            res.json(errorToObj(result));
+            if (result === true) {
+                res.json(prepareObj(result));
+            } else {
+                res.status(400).json(prepareObj(result));
+            }
         });
 });
 
@@ -171,7 +188,11 @@ app.post('/addUser', authenticateToken, validateBody, (req, res) => {
     console.log("\nRecibi una request POST en /addUser");
     dbFunctions.addUserToAssignment(req.body.email, req.body.id, req.user.email)
         .then(result => {
-            res.json(errorToObj(result));
+            if (result === true) {
+                res.json(prepareObj(result));
+            } else {
+                res.status(400).json(prepareObj(result));
+            }
         });
 });
 
@@ -179,7 +200,11 @@ app.delete('/delete', authenticateToken, validateBody, (req, res) => {
     console.log("\nRecibi una request DELETE en /delete");
     dbFunctions.deleteAssignment(req.body.id, req.user.email)
         .then(result => {
-            res.json(errorToObj(result));
+            if (result === true) {
+                res.json(prepareObj(result));
+            } else {
+                res.status(400).json(prepareObj(result));
+            }
         });
 });
 
@@ -187,7 +212,11 @@ app.put('/update', authenticateToken, validateBody, (req, res) => {
     console.log("\nRecibi una request PUT en /update");
     dbFunctions.updateDoneExercises(req.user.email, req.body.id, req.body.ejercicios)
         .then(result => {
-            res.json(errorToObj(result));
+            if (result === true) {
+                res.json(prepareObj(result));
+            } else {
+                res.status(400).json(prepareObj(result));
+            }
         });
 });
 
