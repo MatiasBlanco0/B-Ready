@@ -22,54 +22,31 @@ function closePool() {
 function checkEmail(email) {
     const emailRegEx = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
-    if (typeof email !== "string") {
+    if (typeof email !== "string" || email.length === 0 || !emailRegEx.test(email)) {
         return false;
     }
-    if (email.length === 0) {
-        return false;
-    }
-    if (!emailRegEx.test(email)) {
-        return false;
-    }
-
     return true;
 }
 
 function checkPassword(password) {
     const passwordRegEx = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{5,}$/gm
-
-    if (typeof password !== "string") {
+    if (typeof password !== "string" || password.length === 0 || !passwordRegEx.test(password)) {
         return false;
     }
-    if (password.length === 0) {
-        return false;
-    }
-    if (!passwordRegEx.test(password)) {
-        return false;
-    }
-
     return true;
 }
 
 function checkString(string) {
-    if (typeof string !== "string") {
+    if (typeof string !== "string" || string.length <= 0) {
         return false;
     }
-    if (string.length <= 0) {
-        return false;
-    }
-
     return true;
 }
 
 function checkNumber(number) {
-    if (typeof number !== "number") {
+    if (typeof number !== "number" || number < 0) {
         return false;
     }
-    if (number < 0) {
-        return false;
-    }
-
     return true;
 }
 
@@ -81,10 +58,7 @@ function checkDate(date) {
 }
 
 function checkToken(token) {
-    if (typeof token !== "number") {
-        return false;
-    }
-    if (token.length <= 0) {
+    if (typeof token !== "string" || token.length <= 0 || token === ""){
         return false;
     }
     return true;
