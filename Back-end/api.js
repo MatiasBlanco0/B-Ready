@@ -51,10 +51,6 @@ function generateAccessToken(payload) {
     return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_LIFE });
 }
 
-app.get("/hola", authenticateToken, (req, res) => {
-    res.send(req.user);
-});
-
 app.post('/token', validateBody, (req, res) => {
     const refreshToken = req.body.token;
     if (refreshToken == null) return res.sendStatus(401);
