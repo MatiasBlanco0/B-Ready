@@ -5,6 +5,10 @@ const cors = require('cors');
 const dbFunctions = require('./dbFunctions.js');
 const jwt = require('jsonwebtoken');
 
+const w1 = 1;
+const w2 = 1;
+const w3 = 1;
+
 // Create a new express application
 const app = express();
 const port = process.env.PORT || 9000;
@@ -142,7 +146,18 @@ app.get('/assignments', authenticateToken, (req, res) => {
             if (result instanceof Error) {
                 return res.status(400).json(prepareObj(result));
             } else {
-                res.json(prepareObj(result));
+                const assignments = result.map(assignment => {
+                    let newAssignment = {};
+                    const daysLeft = Math.floor((new Date(assignment.fechaentrega).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+                    newAssignment.id = assignment.id;
+                    newAssignment.nombre = assignment.nombre;
+                    newAssignment.materia = assignment.materia;
+                    newAssignment.fechaEntrega = assignment.fechaentrega;
+                    newAssignment.ejHoy = Math.floor((assignment.cantej - assignment.cantejhechos) / daysLeft);
+                    newAssignment.prioridad = w1 * newAssignment.ejHoy - w2 * daysLeft + w3 * assignment.dificultad;
+                    return newAssignment;
+                })
+                res.json(assignments);
             }
         });
 });
