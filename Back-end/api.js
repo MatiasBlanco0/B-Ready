@@ -76,7 +76,6 @@ app.delete('/logout', validateBody, (req, res) => {
         }
         else if(result === true) {
             dbFunctions.updateToken(email, "null").then(result => {
-                console.log(result);
                 if (result === true) {
                     return res.sendStatus(204);
                 }
