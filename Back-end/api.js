@@ -71,15 +71,23 @@ app.post('/token', validateBody, (req, res) => {
 app.delete('/logout', validateBody, (req, res) => {
     const email = req.body.email;
     dbFunctions.tokenExists(email, req.body.token).then(result => {
-        if (result === false) return res.sendStatus(403);
-        dbFunctions.updateToken(email, "").then(result => {
-            if (result === true) {
-                return res.sendStatus(204);
-            }
-            else {
-                return result;
-            }
-        });
+        if (result === false) {
+            return res.sendStatus(403);
+        }
+        else if(result === true) {
+            dbFunctions.updateToken(email, "null").then(result => {
+                console.log(result);
+                if (result === true) {
+                    return res.sendStatus(204);
+                }
+                else {
+                    return res.sendStatus(500).json(result);
+                }
+            });
+        }
+        else {
+            return res.sendStatus(500);
+        }
     });
 });
 
