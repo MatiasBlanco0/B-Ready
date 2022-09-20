@@ -174,7 +174,7 @@ app.post('/assignmentInfo', authenticateToken, (req, res) => {
 
 app.post('/addAssignment', authenticateToken, validateBody, (req, res) => {
     console.log("\nRecibi una request POST en /addAssignment");
-    dbFunctions.addAssignment(req.user.email, req.body.nombre, req.body.descripcion, req.body.ejercicios, req.body.ejerciciosHechos, req.body.materia, req.body.fecha, req.body.difficultad)
+    dbFunctions.addAssignment(req.user.email, req.body.nombre, req.body.descripcion, req.body.ejercicios, req.body.ejerciciosHechos, req.body.materia, req.body.fecha, req.body.dificultad)
         .then(result => {
             if (result === true) {
                 res.json(prepareObj(result));
