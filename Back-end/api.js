@@ -147,7 +147,7 @@ app.post('/register', validateBody, (req, res) => {
 });
 
 app.get('/assignments', authenticateToken, (req, res) => {
-    console.log("\nRecibi una request POST en /assignments");
+    console.log("\nRecibi una request GET en /assignments");
     dbFunctions.getAssignments(req.user.email)
         .then(result => {
             if (result instanceof Error) {
