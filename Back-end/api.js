@@ -74,19 +74,17 @@ app.delete('/logout', validateBody, (req, res) => {
         if (result === false) {
             return res.sendStatus(403);
         }
-        else if(result === true) {
-            dbFunctions.updateToken(email, "null").then(result => {
-                if (result === true) {
-                    return res.sendStatus(204);
-                }
-                else {
-                    return res.sendStatus(500).json(result);
-                }
-            });
-        }
-        else {
+        if (result instanceof Error) {
             return res.sendStatus(500);
         }
+        dbFunctions.updateToken(email, "null").then(result => {
+            if (result === true) {
+                return res.sendStatus(204);
+            }
+            else {
+                return res.sendStatus(500).json(result);
+            }
+        });
     });
 });
 
@@ -94,33 +92,32 @@ app.post('/login', validateBody, (req, res) => {
     console.log("\nRecibi una request POST en /login");
     const email = req.body.email;
     const password = req.body.contrasenia;
-    if (email !== undefined || password !== undefined) {
-        if (email !== "" || password !== "") {
-            dbFunctions.logIn(email, password)
-                .then(result => {
-                    if (result === true) {
-                        const payload = { email: email };
-                        const accessToken = generateAccessToken(payload);
-                        const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET);
-                        dbFunctions.updateToken(email, refreshToken).then(result => {
-                            if (result === true) {
-                                return res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken });
-                            }
-                        });
-                    }
-                    else if (result === false) {
-                        return res.status(401).json({ message: "Wrong email or password" });
-                    }
-                    else {
-                        return res.status(500).json(prepareObj(result));
-                    }
-                });
-        } else {
-            return res.status(400).json({ message: "Email or Contrasenia were empty strings" });
-        }
-    } else {
+    if (email === undefined || password === undefined) {
         return res.status(400).json({ message: "Email or Contrasenia were undefined" });
     }
+    if (email === "" || password === "") {
+        return res.status(400).json({ message: "Email or Contrasenia were empty strings" });
+    }
+    dbFunctions.logIn(email, password)
+        .then(result => {
+            if (result === false) {
+                return res.status(401).json({ message: "Wrong email or password" });
+            }
+            if (result instanceof Error) {
+                return res.status(500).json(prepareObj(result));
+            }
+            const payload = { email: email };
+            const accessToken = generateAccessToken(payload);
+            const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET);
+            dbFunctions.updateToken(email, refreshToken)
+                .then(result => {
+                    if (result === true) {
+                        return res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken });
+                    } else {
+                        return res.sendStatus(500);
+                    }
+                });
+        });
 });
 
 app.post('/register', validateBody, (req, res) => {
@@ -128,22 +125,20 @@ app.post('/register', validateBody, (req, res) => {
     const email = req.body.email;
     const password = req.body.contrasenia;
     const name = req.body.nombre;
-    if (name !== undefined || email !== undefined || password !== undefined) {
-        if (name !== "" || email !== "" || password !== "") {
-            dbFunctions.register(name, email, password)
-                .then(result => {
-                    if (result === true) {
-                        return res.sendStatus(201);
-                    } else {
-                        return res.status(400).json(prepareObj(result));
-                    }
-                });
-        } else {
-            return res.status(400).json({ message: "Nombre, Email or Contrasenia were empty strings" });
-        }
-    } else {
+    if (name === undefined || email === undefined || password === undefined) {
         return res.status(400).json({ message: "Nombre, Email or Contrasenia were unefined" });
     }
+    if (name === "" || email === "" || password === "") {
+        return res.status(400).json({ message: "Nombre, Email or Contrasenia were empty strings" });
+    }
+    dbFunctions.register(name, email, password)
+        .then(result => {
+            if (result === true) {
+                return res.sendStatus(201);
+            } else {
+                return res.status(400).json(prepareObj(result));
+            }
+        });
 });
 
 app.get('/assignments', authenticateToken, (req, res) => {
@@ -152,38 +147,35 @@ app.get('/assignments', authenticateToken, (req, res) => {
         .then(result => {
             if (result instanceof Error) {
                 return res.status(400).json(prepareObj(result));
-            } else {
-                const assignments = result.map(assignment => {
-                    let newAssignment = {};
-                    const daysLeft = Math.floor((new Date(assignment.fechaentrega).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
-                    newAssignment.id = assignment.id;
-                    newAssignment.nombre = assignment.nombre;
-                    newAssignment.materia = assignment.materia;
-                    newAssignment.fechaEntrega = assignment.fechaentrega;
-                    newAssignment.ejHoy = Math.floor((assignment.cantej - assignment.cantejhechos) / daysLeft);
-                    newAssignment.prioridad = w1 * newAssignment.ejHoy - w2 * daysLeft + w3 * assignment.dificultad;
-                    return newAssignment;
-                })
-                res.json(assignments);
             }
+            const assignments = result.map(assignment => {
+                let newAssignment = {};
+                const daysLeft = Math.floor((new Date(assignment.fechaentrega).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+                newAssignment.id = assignment.id;
+                newAssignment.nombre = assignment.nombre;
+                newAssignment.materia = assignment.materia;
+                newAssignment.fechaEntrega = assignment.fechaentrega;
+                newAssignment.ejHoy = Math.floor((assignment.cantej - assignment.cantejhechos) / daysLeft);
+                newAssignment.prioridad = w1 * newAssignment.ejHoy - w2 * daysLeft + w3 * assignment.dificultad;
+                return newAssignment;
+            })
+            return res.json(assignments);
         });
 });
 
 app.get('/assignmentInfo/:id', authenticateToken, (req, res) => {
     console.log("\nRecibi una request GET en /assignmentInfo");
     const id = parseInt(req.params.id);
-    if (!isNaN(id)) {
-            dbFunctions.getAssignmentInfo(id, req.user.email)
-                .then(result => {
-                    if (result instanceof Error) {
-                        return res.status(400).json(prepareObj(result));
-                    } else {
-                        res.json(prepareObj(result));
-                    }
-                });
-    } else {
-        res.status(400).json({ message: "Id was not a number" });
+    if (isNaN(id)) {
+        return res.status(400).json({ message: "Id was not a number" });
     }
+    dbFunctions.getAssignmentInfo(id, req.user.email)
+        .then(result => {
+            if (result instanceof Error) {
+                return res.status(400).json(prepareObj(result));
+            }
+            return res.json(prepareObj(result));
+        });
 });
 
 app.post('/addAssignment', authenticateToken, validateBody, (req, res) => {
@@ -191,10 +183,9 @@ app.post('/addAssignment', authenticateToken, validateBody, (req, res) => {
     dbFunctions.addAssignment(req.user.email, req.body.nombre, req.body.descripcion, req.body.ejercicios, req.body.ejerciciosHechos, req.body.materia, req.body.fecha, req.body.dificultad)
         .then(result => {
             if (result === true) {
-                res.json(prepareObj(result));
-            } else {
-                res.status(400).json(prepareObj(result));
+                return res.sendStatus(201);
             }
+            return res.status(400).json(prepareObj(result));
         });
 });
 
@@ -203,10 +194,9 @@ app.post('/addUser', authenticateToken, validateBody, (req, res) => {
     dbFunctions.addUserToAssignment(req.body.email, req.body.id, req.user.email)
         .then(result => {
             if (result === true) {
-                res.json(prepareObj(result));
-            } else {
-                res.status(400).json(prepareObj(result));
+                return res.sendStatus(201);
             }
+            return res.status(400).json(prepareObj(result));
         });
 });
 
@@ -215,10 +205,9 @@ app.delete('/delete', authenticateToken, validateBody, (req, res) => {
     dbFunctions.deleteAssignment(req.body.id, req.user.email)
         .then(result => {
             if (result === true) {
-                res.json(prepareObj(result));
-            } else {
-                res.status(400).json(prepareObj(result));
+                return res.sendStatus(204);
             }
+            return res.status(400).json(prepareObj(result));
         });
 });
 
@@ -227,10 +216,9 @@ app.put('/update', authenticateToken, validateBody, (req, res) => {
     dbFunctions.updateDoneExercises(req.user.email, req.body.id, req.body.ejercicios)
         .then(result => {
             if (result === true) {
-                res.json(prepareObj(result));
-            } else {
-                res.status(400).json(prepareObj(result));
+                return res.sendStatus(201);
             }
+            return res.status(400).json(prepareObj(result));
         });
 });
 
