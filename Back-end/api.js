@@ -171,7 +171,17 @@ app.get('/assignmentInfo/:id', authenticateToken, (req, res) => {
             if (result instanceof Error) {
                 return res.sendStatus(500);
             }
-            return res.json(prepareObj(result));
+            let assignment = {
+                cantEj: result[0].cantej,
+                cantEjHechos: result[0].cantejhechos,
+                dificultad: result[0].dificultad,
+                descripcion: result[0].descripcion,
+                integrantes: []
+            };
+            result.forEach(obj => {
+                assignment.integrantes.push(obj.email);
+            });
+            return res.json(assignment);
         });
 });
 
