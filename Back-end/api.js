@@ -226,7 +226,7 @@ app.get('/estilo', authenticateToken, (req, res) => {
             if (result instanceof Error) {
                 return res.sendStatus(500);
             }
-            return res.json({ estilo: result.estilo });
+            return res.json(prepareObj(result[0]));
         });
 });
 
