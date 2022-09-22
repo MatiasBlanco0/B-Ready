@@ -169,11 +169,10 @@ app.get('/assignments', authenticateToken, (req, res) => {
         });
 });
 
-app.post('/assignmentInfo', authenticateToken, (req, res) => {
-    console.log("\nRecibi una request POST en /assignmentInfo");
-    const id = req.body.id;
-    if (id !== undefined) {
-        if (id !== "") {
+app.get('/assignmentInfo/:id', authenticateToken, (req, res) => {
+    console.log("\nRecibi una request GET en /assignmentInfo");
+    const id = parseInt(req.params.id);
+    if (!isNaN(id)) {
             dbFunctions.getAssignmentInfo(id, req.user.email)
                 .then(result => {
                     if (result instanceof Error) {
@@ -182,11 +181,8 @@ app.post('/assignmentInfo', authenticateToken, (req, res) => {
                         res.json(prepareObj(result));
                     }
                 });
-        } else {
-            res.status(400).json({ message: "Id was an empty string" });
-        }
     } else {
-        res.status(400).json({ message: "Id was undefined" });
+        res.status(400).json({ message: "Id was not a number" });
     }
 });
 
