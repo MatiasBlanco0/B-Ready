@@ -359,37 +359,37 @@ async function updateDoneExercises(userEmail, id, doneExcercices) {
     }
 }
 
-async function getStyle(user){
-    if(!checkEmail(user)){
+async function getStyle(user) {
+    if (!checkEmail(user)) {
         return new Error(user + " is not a valid email");
     }
     try {
         let sql = "SELECT usuario.estilo FROM usuario WHERE usuario.email=?";
         let promise = await sqlQuery(sql, [user]);
-        if(promise instanceof Error){
+        if (promise instanceof Error) {
             return promise;
         }
         return promise;
-    } catch(err){
+    } catch (err) {
         return err;
     }
 }
 
-async function updateStyle(user, style){
-    if(!checkEmail(user)){
+async function updateStyle(user, style) {
+    if (!checkEmail(user)) {
         return new Error(user + " is not a valid email");
     }
-    if(!checkString(style)){
+    if (!checkString(style)) {
         return new Error(style + " is not a valid style");
     }
     try {
         let sql = "UPDATE usuario(estilo) SET(?) WHERE usuario.email=?";
         let promise = await sqlQuery(sql, [style, user]);
-        if(promise instanceof Error){
+        if (promise instanceof Error) {
             return promise;
         }
         return true;
-    } catch(err){
+    } catch (err) {
         return err;
     }
 }
