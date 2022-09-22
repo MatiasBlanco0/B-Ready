@@ -5,6 +5,7 @@ const cors = require('cors');
 const dbFunctions = require('./dbFunctions.js');
 const jwt = require('jsonwebtoken');
 
+// Priority weights
 const w1 = 1;
 const w2 = 1;
 const w3 = 1;
@@ -81,9 +82,7 @@ app.delete('/logout', validateBody, (req, res) => {
             if (result === true) {
                 return res.sendStatus(204);
             }
-            else {
-                return res.sendStatus(500).json(result);
-            }
+            return res.sendStatus(500);
         });
     });
 });
@@ -104,7 +103,7 @@ app.post('/login', validateBody, (req, res) => {
                 return res.status(401).json({ message: "Wrong email or password" });
             }
             if (result instanceof Error) {
-                return res.status(500).json(prepareObj(result));
+                return res.status(500);
             }
             const payload = { email: email };
             const accessToken = generateAccessToken(payload);
@@ -113,9 +112,8 @@ app.post('/login', validateBody, (req, res) => {
                 .then(result => {
                     if (result === true) {
                         return res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken });
-                    } else {
-                        return res.sendStatus(500);
                     }
+                    return res.sendStatus(500);
                 });
         });
 });
@@ -135,9 +133,8 @@ app.post('/register', validateBody, (req, res) => {
         .then(result => {
             if (result === true) {
                 return res.sendStatus(201);
-            } else {
-                return res.status(400).json(prepareObj(result));
             }
+            return res.sendStatus(500);
         });
 });
 
@@ -146,7 +143,7 @@ app.get('/assignments', authenticateToken, (req, res) => {
     dbFunctions.getAssignments(req.user.email)
         .then(result => {
             if (result instanceof Error) {
-                return res.status(400).json(prepareObj(result));
+                return res.sendStatus(500);
             }
             const assignments = result.map(assignment => {
                 let newAssignment = {};
@@ -172,7 +169,7 @@ app.get('/assignmentInfo/:id', authenticateToken, (req, res) => {
     dbFunctions.getAssignmentInfo(id, req.user.email)
         .then(result => {
             if (result instanceof Error) {
-                return res.status(400).json(prepareObj(result));
+                return res.sendStatus(500);
             }
             return res.json(prepareObj(result));
         });
@@ -185,7 +182,7 @@ app.post('/addAssignment', authenticateToken, validateBody, (req, res) => {
             if (result === true) {
                 return res.sendStatus(201);
             }
-            return res.status(400).json(prepareObj(result));
+            return res.sendStatus(500);
         });
 });
 
@@ -196,7 +193,7 @@ app.post('/addUser', authenticateToken, validateBody, (req, res) => {
             if (result === true) {
                 return res.sendStatus(201);
             }
-            return res.status(400).json(prepareObj(result));
+            return res.sendStatus(500);
         });
 });
 
@@ -207,7 +204,7 @@ app.delete('/delete', authenticateToken, validateBody, (req, res) => {
             if (result === true) {
                 return res.sendStatus(204);
             }
-            return res.status(400).json(prepareObj(result));
+            return res.sendStatus(500);
         });
 });
 
@@ -218,7 +215,9 @@ app.put('/update', authenticateToken, validateBody, (req, res) => {
             if (result === true) {
                 return res.sendStatus(201);
             }
-            return res.status(400).json(prepareObj(result));
+            return res.sendStatus(500);
+        });
+});
 
 app.get('/estilo', authenticateToken, (req, res) => {
     console.log("\nRecibi una request GET en /estilo");
