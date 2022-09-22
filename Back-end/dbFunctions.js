@@ -383,7 +383,7 @@ async function updateStyle(user, style) {
         return new Error(style + " is not a valid style");
     }
     try {
-        let sql = "UPDATE usuario(estilo) SET(?) WHERE usuario.email=?";
+        let sql = "UPDATE usuario SET usuario.estilo=? WHERE usuario.email=?";
         let promise = await sqlQuery(sql, [style, user]);
         if (promise instanceof Error) {
             return promise;
