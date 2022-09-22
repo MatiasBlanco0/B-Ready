@@ -147,7 +147,8 @@ app.get('/assignments', authenticateToken, (req, res) => {
             }
             const assignments = result.map(assignment => {
                 let newAssignment = {};
-                const daysLeft = Math.floor((new Date(assignment.fechaentrega).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+                let daysLeft = Math.floor((new Date(assignment.fechaentrega).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+                if (daysLeft === 0) daysLeft = 1;
                 newAssignment.id = assignment.id;
                 newAssignment.nombre = assignment.nombre;
                 newAssignment.materia = assignment.materia;
@@ -160,9 +161,9 @@ app.get('/assignments', authenticateToken, (req, res) => {
         });
 });
 
-app.get('/assignmentInfo/:id', authenticateToken, (req, res) => {
-    console.log("\nRecibi una request GET en /assignmentInfo");
+app.get('/assignment/:id', authenticateToken, (req, res) => {
     const id = parseInt(req.params.id);
+    console.log("\nRecibi una request GET en /assignment/" + id);
     if (isNaN(id)) {
         return res.status(400).json({ message: "Id was not a number" });
     }
@@ -185,8 +186,8 @@ app.get('/assignmentInfo/:id', authenticateToken, (req, res) => {
         });
 });
 
-app.post('/addAssignment', authenticateToken, validateBody, (req, res) => {
-    console.log("\nRecibi una request POST en /addAssignment");
+app.post('/assignment', authenticateToken, validateBody, (req, res) => {
+    console.log("\nRecibi una request POST en /assignment");
     dbFunctions.addAssignment(req.user.email, req.body.nombre, req.body.descripcion, req.body.ejercicios, req.body.ejerciciosHechos, req.body.materia, req.body.fecha, req.body.dificultad)
         .then(result => {
             if (result === true) {
@@ -196,10 +197,11 @@ app.post('/addAssignment', authenticateToken, validateBody, (req, res) => {
         });
 });
 
-app.post('/addUser', authenticateToken, validateBody, (req, res) => {
-    console.log("\nRecibi una request POST en /addUser");
+app.post('/user', authenticateToken, validateBody, (req, res) => {
+    console.log("\nRecibi una request POST en /user");
     dbFunctions.addUserToAssignment(req.body.email, req.body.id, req.user.email)
         .then(result => {
+            console.log(result);
             if (result === true) {
                 return res.sendStatus(201);
             }
@@ -207,8 +209,8 @@ app.post('/addUser', authenticateToken, validateBody, (req, res) => {
         });
 });
 
-app.delete('/delete', authenticateToken, validateBody, (req, res) => {
-    console.log("\nRecibi una request DELETE en /delete");
+app.delete('/assignment', authenticateToken, validateBody, (req, res) => {
+    console.log("\nRecibi una request DELETE en /assignmet");
     dbFunctions.deleteAssignment(req.body.id, req.user.email)
         .then(result => {
             if (result === true) {
@@ -218,8 +220,8 @@ app.delete('/delete', authenticateToken, validateBody, (req, res) => {
         });
 });
 
-app.put('/update', authenticateToken, validateBody, (req, res) => {
-    console.log("\nRecibi una request PUT en /update");
+app.put('/assignment', authenticateToken, validateBody, (req, res) => {
+    console.log("\nRecibi una request PUT en /assignment");
     dbFunctions.updateDoneExercises(req.user.email, req.body.id, req.body.ejercicios)
         .then(result => {
             if (result === true) {

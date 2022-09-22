@@ -51,7 +51,7 @@ function checkNumber(number) {
 }
 
 function checkDate(date) {
-    if (date !== new Date(date).toISOString()) {
+    if (isNaN(new Date(date))) {
         return false;
     }
     return true;
