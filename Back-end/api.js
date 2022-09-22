@@ -219,8 +219,28 @@ app.put('/update', authenticateToken, validateBody, (req, res) => {
                 return res.sendStatus(201);
             }
             return res.status(400).json(prepareObj(result));
+
+app.get('/estilo', authenticateToken, (req, res) => {
+    console.log("\nRecibi una request GET en /estilo");
+    dbFunctions.getStyle(req.user.email)
+        .then(result => {
+            if (result instanceof Error) {
+                return res.sendStatus(500);
+            }
+            return res.json({ estilo: result.estilo });
         });
 });
+
+app.put('/estilo', authenticateToken, validateBody, (req, res) => {
+    console.log("\nRecibi una request PUT en /estilo");
+    dbFunctions.updateStyle(req.user.email, req.body.estilo)
+        .then(result => {
+            if (result instanceof Error) {
+                return res.sendStatus(500);
+            }
+            return res.sendStatus(201);
+        })
+})
 
 // Start server
 app.listen(port, () => console.log('Server started at http://localhost:' + port));
