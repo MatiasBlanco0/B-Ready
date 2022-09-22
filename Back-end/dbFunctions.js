@@ -58,7 +58,7 @@ function checkDate(date) {
 }
 
 function checkToken(token) {
-    if (typeof token !== "string" || token.length <= 0 || token === ""){
+    if (typeof token !== "string" || token.length <= 0 || token === "") {
         return false;
     }
     return true;
@@ -224,6 +224,25 @@ async function addAssignment(userEmail, name, description, excercices, doneExcer
     }
 }
 
+async function userExists(user) {
+    // Input Validation
+    if (!checkEmail(user)) {
+        return new Error(user + " is not a valid email");
+    }
+    try {
+        let sql = "SELECT 1 FROM usuario WHERE usuario.email=?";
+        let promise = await sqlQuery(sql, [user]);
+        // If the query was not successful return the error
+        if (promise instanceof Error) {
+            return promise;
+        } else {
+            return promise.length > 0;
+        }
+    } catch (err) {
+        return err;
+    }
+}
+
 async function addUserToAssignment(userToAdd, assignmentID, ownerEmail) {
     // Input Validation
     if (!checkEmail(userToAdd)) {
@@ -236,28 +255,34 @@ async function addUserToAssignment(userToAdd, assignmentID, ownerEmail) {
         return new Error(ownerEmail + " is not a valid owner email");
     }
     try {
-        let result = await sqlQuery("SELECT 1 FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.email = ? AND relacion_usuario_tarea.tarea = ?", [ownerEmail, assignmentID]);
-        if (result.length > 0) {
-            result = await sqlQuery("SELECT 1 FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.email = ? AND relacion_usuario_tarea.tarea = ?", [userToAdd, assignmentID]);
-            if (result.length === 0) {
-                let sql = "INSERT INTO relacion_usuario_tarea(email, tarea) VALUES (?, ?)";
-                let promise = await sqlQuery(sql, [userToAdd, assignmentID, ownerEmail, assignmentID]);
-                // If the query was not successful, return the error
-                if (promise instanceof Error) {
-                    return promise;
+        let result = await userExists(userToAdd);
+        if(result === true){
+            result = await sqlQuery("SELECT 1 FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.email = ? AND relacion_usuario_tarea.tarea = ?", [ownerEmail, assignmentID]);
+            if (result.length > 0) {
+                result = await sqlQuery("SELECT 1 FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.email = ? AND relacion_usuario_tarea.tarea = ?", [userToAdd, assignmentID]);
+                if (result.length === 0) {
+                    let sql = "INSERT INTO relacion_usuario_tarea(email, tarea) VALUES (?, ?)";
+                    let promise = await sqlQuery(sql, [userToAdd, assignmentID, ownerEmail, assignmentID]);
+                    // If the query was not successful, return the error
+                    if (promise instanceof Error) {
+                        return promise;
+                    } else {
+                        return true;
+                    }
                 } else {
-                    return true;
+                    return new Error(userToAdd + "is already an owner of the assignment");
                 }
             } else {
-                return new Error(userToAdd + "is already an owner of the assignment");
+                return new Error(ownerEmail + " is not the owner of the assignment");
             }
         } else {
-            return new Error(ownerEmail + " is not the owner of the assignment");
+            return new Error(userToAdd + " is not a user");
         }
     } catch (err) {
         return err;
     }
 }
+
 
 async function getAssignments(userEmail) {
     // Input Validation
