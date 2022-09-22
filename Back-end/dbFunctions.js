@@ -93,9 +93,8 @@ async function logIn(email, password) {
         // If there was an error return it, otherwise return true if the query has results
         if (promise instanceof Error) {
             return promise;
-        } else {
-            return promise.length > 0;
         }
+        return promise.length > 0;
     } catch (err) {
         return err;
     }
@@ -121,9 +120,8 @@ async function register(name, email, password) {
                 return new Error(email + " already is a user");
             }
             return promise
-        } else {
-            return true;
         }
+        return true;
     } catch (err) {
         return err;
     }
@@ -144,9 +142,7 @@ async function updateToken(userEmail, token) {
         if (promise instanceof Error) {
             return promise;
         }
-        else {
-            return true;
-        }
+        return true;
     } catch (err) {
         return err;
     }
@@ -167,9 +163,7 @@ async function tokenExists(userEmail, token) {
         if (promise instanceof Error) {
             return promise;
         }
-        else {
-            return promise.length > 0;
-        }
+        return promise.length > 0;
     } catch (err) {
         return err;
     }
@@ -209,16 +203,13 @@ async function addAssignment(userEmail, name, description, excercices, doneExcer
             return promise;
         }
         // If the query was successful, add the user to the assignment 
-        else {
-            sql = "INSERT INTO relacion_usuario_tarea(email, tarea) VALUES (?, ?)";
-            let result = await sqlQuery(sql, [userEmail, promise.insertId]);
-            // If the query was not successful, return the error
-            if (result instanceof Error) {
-                return result;
-            } else {
-                return true;
-            }
+        sql = "INSERT INTO relacion_usuario_tarea(email, tarea) VALUES (?, ?)";
+        let result = await sqlQuery(sql, [userEmail, promise.insertId]);
+        // If the query was not successful, return the error
+        if (result instanceof Error) {
+            return result;
         }
+        return true;
     } catch (err) {
         return err;
     }
@@ -232,7 +223,7 @@ async function userExists(user) {
 
 async function userInAssignment(user, id) {
     let sql = "SELECT 1 FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.email = ? AND relacion_usuario_tarea.tarea = ?";
-    let promise = await sqlQuery(sql, [user,id]);
+    let promise = await sqlQuery(sql, [user, id]);
     return promise;
 }
 
@@ -249,28 +240,27 @@ async function addUserToAssignment(userToAdd, assignmentID, ownerEmail) {
     }
     try {
         let result = await userExists(userToAdd);
-        if (result === true) {
-            result = await userInAssignment(ownerEmail, assignmentID);
-            if (result.length > 0) {
-                result = await userInAssignment(userToAdd, assignmentID);
-                if (result.length === 0) {
-                    let sql = "INSERT INTO relacion_usuario_tarea(email, tarea) VALUES (?, ?)";
-                    let promise = await sqlQuery(sql, [userToAdd, assignmentID, ownerEmail, assignmentID]);
-                    // If the query was not successful, return the error
-                    if (promise instanceof Error) {
-                        return promise;
-                    } else {
-                        return true;
-                    }
-                } else {
-                    return new Error(userToAdd + "is already an owner of the assignment");
-                }
-            } else {
-                return new Error(ownerEmail + " is not the owner of the assignment");
-            }
-        } else {
+        if (result !== true) {
             return new Error(userToAdd + " is not a user");
         }
+
+        result = await userInAssignment(ownerEmail, assignmentID);
+        if (result.length < 0) {
+            return new Error(ownerEmail + " is not the owner of the assignment");
+        }
+
+        result = await userInAssignment(userToAdd, assignmentID);
+        if (result.length !== 0) {
+            return new Error(userToAdd + "is already an owner of the assignment");
+        }
+
+        let sql = "INSERT INTO relacion_usuario_tarea(email, tarea) VALUES (?, ?)";
+        let promise = await sqlQuery(sql, [userToAdd, assignmentID, ownerEmail, assignmentID]);
+        // If the query was not successful, return the error
+        if (promise instanceof Error) {
+            return promise;
+        }
+        return true;
     } catch (err) {
         return err;
     }
@@ -316,30 +306,26 @@ async function deleteAssignment(id, userEmail) {
     }
     try {
         const isOwner = await sqlQuery("SELECT 1 FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.email = ? AND relacion_usuario_tarea.tarea = ?", [userEmail, id]);
-        if (isOwner.length > 0) {
-            let checkUsers = await sqlQuery("SELECT relacion_usuario_tarea.email WHERE relacion_usuario_tarea.id = ?", [id]);
-            if (checkUsers.length < 2) {
-                let sql = "DELETE FROM tarea WHERE tarea.id = ?; DELETE FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.tarea = ?";
-                let promise = await sqlQuery(sql, [id, id]);
-                // If the query was not successful, return the error
-                if (promise instanceof Error) {
-                    return promise;
-                } else {
-                    return true;
-                }
-            } else {
-                let sql = "DELETE FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.tarea = ? AND relacion_usuario_tarea.email = ?";
-                let result = await sqlQuery(sql, [id, userEmail]);
-                // If the query was not successful, return the error
-                if (result instanceof Error) {
-                    return result;
-                } else {
-                    return true;
-                }
-            }
-        } else {
+        if (isOwner.length < 0) {
             return new Error("This user was not an owner of the assignment");
         }
+        let checkUsers = await sqlQuery("SELECT relacion_usuario_tarea.email WHERE relacion_usuario_tarea.id = ?", [id]);
+        if (checkUsers.length < 2) {
+            let sql = "DELETE FROM tarea WHERE tarea.id = ?; DELETE FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.tarea = ?";
+            let promise = await sqlQuery(sql, [id, id]);
+            // If the query was not successful, return the error
+            if (promise instanceof Error) {
+                return promise;
+            }
+            return true;
+        }
+        let sql = "DELETE FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.tarea = ? AND relacion_usuario_tarea.email = ?";
+        let result = await sqlQuery(sql, [id, userEmail]);
+        // If the query was not successful, return the error
+        if (result instanceof Error) {
+            return result;
+        }
+        return true;
     } catch (err) {
         return err;
     }
@@ -358,18 +344,16 @@ async function updateDoneExercises(userEmail, id, doneExcercices) {
     }
     try {
         const isOwner = await sqlQuery("SELECT 1 FROM relacion_usuario_tareaWHERE relacion_usuario_tarea.email = ? AND relacion_usuario_tarea.tarea = ?", [userEmail, id]);
-        if (isOwner.length > 0) {
-            let sql = "UPDATE tarea SET tarea.cantejhechos = ? WHERE tarea.id = ?";
-            let promise = await sqlQuery(sql, [doneExcercices, id]);
-            // If the query was not successful, return the error
-            if (promise instanceof Error) {
-                return promise;
-            } else {
-                return true;
-            }
-        } else {
+        if (isOwner.length < 0) {
             return new Error("This user was not an owner of the assignment");
         }
+        let sql = "UPDATE tarea SET tarea.cantejhechos = ? WHERE tarea.id = ?";
+        let promise = await sqlQuery(sql, [doneExcercices, id]);
+        // If the query was not successful, return the error
+        if (promise instanceof Error) {
+            return promise;
+        }
+        return true;
     } catch (err) {
         return err;
     }
