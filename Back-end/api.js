@@ -111,7 +111,7 @@ app.post('/login', validateBody, (req, res) => {
             dbFunctions.updateToken(email, refreshToken)
                 .then(result => {
                     if (result === true) {
-                        return res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken });
+                        return res.json({ accessToken: accessToken, refreshToken: refreshToken });
                     }
                     return res.sendStatus(500);
                 });
@@ -133,6 +133,15 @@ app.post('/register', validateBody, (req, res) => {
         .then(result => {
             if (result === true) {
                 return res.sendStatus(201);
+            }
+            else if (result instanceof Error) {
+                const message = result.message;
+                if (message.includes("already is a user")) return res.status(400).send(message)
+                if (message.includes("is not a valid email")) return res.status(400).send(message)
+                if (message.includes("is not a valid password")) return res.status(400).send(message);
+                if (message.includes("is not a valid name")) return res.status(400).send(message);
+
+                return res.sendStatus(500);
             }
             return res.sendStatus(500);
         });
