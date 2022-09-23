@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const fondo = document.getElementById("fondoNegro");
     const lista = document.getElementById("lista");
     lista.style.display = "none";
+    let dificultadN = 0;
 
 
     const renderCalendario = () => {
@@ -58,6 +59,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.querySelector(".slider").addEventListener("input", () => {
         document.getElementById("valor").innerHTML = "Dificultad: " + document.querySelector(".slider").value;
+        dificultadN = (document.querySelector(".slider").value / 100) * 254 - 127;
+        console.log(dificultadN);
     });
 
     document.querySelector(".dias").addEventListener("click", (evento) => {
@@ -88,7 +91,6 @@ document.addEventListener("DOMContentLoaded", () => {
         else {
             document.getElementById("apertura").style.transform = "rotate(90deg)";
             lista.style.display = "none";
-            console.log("elepepe");
         }
     });
 
@@ -123,6 +125,9 @@ document.addEventListener("DOMContentLoaded", () => {
             tareasAgregar += `<div class="facil"> <h4>Fisica</h4><br><h5>Terminar la guia</h5><br><h6>4 Ejercicios para hacer hoy</h6><br><h6>Se entrega el 30/9/2023</h6></div>`;
         }
         tareas.innerHTML = tareasAgregar;
+    }
+    else{
+        document.getElementById("logeate").style.display = "flex";
     }
     fondo.click();
 });

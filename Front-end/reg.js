@@ -5,9 +5,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const imgI = document.getElementById("imgI");
     const imgD = document.getElementById("imgD");
     const email = document.getElementById("mail");
-    const contrasenia = document.getElementById("contraseña"); 
+    const contrasenia = document.getElementById("contraseña");
     const contraseniaConfirm = document.getElementById("conC");
-    const nombreUsuario = document.getElementById("nombre"); 
+    const nombreUsuario = document.getElementById("nombre");
     const enviarReg = document.getElementById("enviarReg");
     const condicion1 = document.getElementById("condicion1");
     const condicion2 = document.getElementById("condicion2");
@@ -19,19 +19,19 @@ document.addEventListener("DOMContentLoaded", () => {
     let loggeado = false;
 
     console.log(window.location.href);
-    
+
     imgI.addEventListener("click", () => {
         window.location.replace("https://campus.ort.edu.ar/");
     });
-    
+
     imgD.addEventListener("click", () => {
         window.location.replace("https://campus.ort.edu.ar/secundaria/belgrano/tic");
     });
-    
+
     logo.addEventListener("click", () => {
         window.location.replace("index.html");
     });
-    
+
     function checkEmail(mailIngresado) {
         const checker = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g; //preguntar con nacho para que pueda agarrar mails como el de ort
         return checker.test(mailIngresado);
@@ -46,23 +46,23 @@ document.addEventListener("DOMContentLoaded", () => {
     let parametros = new URLSearchParams(location.search);
     let gmail = parametros.get("mail");
     console.log(gmail);
-    
-    if(gmail !== null){
+
+    if (gmail !== null) {
         toggle.click();
         cambiar();
         email.value = gmail;
     }
 
     enviarReg.addEventListener("click", () => {
-        if (nombreUsuario.value == "" || contrasenia.value == "" || email.value == "" || contraseniaConfirm.value == ""){
+        if (nombreUsuario.value == "" || contrasenia.value == "" || email.value == "" || contraseniaConfirm.value == "") {
             document.getElementById("errores").style.display = "flex";
             error.textContent = "Falta completar algun campo";
         }
-        else if(checkEmail(email.value) == false){
+        else if (checkEmail(email.value) == false) {
             document.getElementById("errores").style.display = "flex";
             error.textContent = "Ingrese un email valido";
         }
-        else if(contraseniaConfirm.value != contrasenia.value){
+        else if (contraseniaConfirm.value != contrasenia.value) {
             document.getElementById("errores").style.display = "flex";
             error.textContent = "Las contraseñas no coinciden";
         }
@@ -71,47 +71,47 @@ document.addEventListener("DOMContentLoaded", () => {
     contrasenia.addEventListener("keydown", () => {
         let tieneMayus = false;
         let tieneNum = false;
-        if(contrasenia.value.length >= 5){
+        if (contrasenia.value.length >= 5) {
             condicion1.style.color = "green";
         }
-        else{
+        else {
             condicion1.style.color = "red";
         }
 
-        for(let i = 0; i < contrasenia.value.length; i++){
-            if(contrasenia.value[i].toUpperCase() === contrasenia.value[i]){
+        for (let i = 0; i < contrasenia.value.length; i++) {
+            if (contrasenia.value[i].toUpperCase() === contrasenia.value[i]) {
                 tieneMayus = true;
                 break;
             }
-            
+
         }
 
-        for(let i = 0; i < contrasenia.value.length; i++){
-            if(!isNaN(contrasenia.value[i])){
+        for (let i = 0; i < contrasenia.value.length; i++) {
+            if (!isNaN(contrasenia.value[i])) {
                 tieneNum = true;
                 break;
             }
         }
 
-        if(tieneMayus === true && tieneNum === true){
+        if (tieneMayus === true && tieneNum === true) {
             condicion2.style.color = "green";
         }
-        else{
+        else {
             condicion2.style.color = "red";
         }
     });
 
     toggle.addEventListener("click", cambiar);
 
-    function cambiar(){
-        if(pantalla == 0){
+    function cambiar() {
+        if (pantalla == 0) {
             document.getElementById("Register").style.display = "block";
             document.getElementById("LogIn").style.display = "none";
             document.getElementById("HyperPol").style.display = "flex";
             document.getElementById("HyperReg").style.display = "none";
             pantalla = 1;
         }
-        else{
+        else {
             document.getElementById("LogIn").style.display = "block";
             document.getElementById("Register").style.display = "none";
             document.getElementById("HyperReg").style.display = "flex";
@@ -122,34 +122,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //register
     enviarReg.addEventListener("click", () => {
-        fetch("http://localhost:8080/register", {
-        method: "post",
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            email: email.value,
-            contrasenia: contrasenia.value,
-            nombre: nombreUsuario.value
+        fetch("http://localhost:9000/register", {
+            method: "post",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: email.value,
+                contrasenia: contrasenia.value,
+                nombre: nombreUsuario.value
+            })
         })
-    })
-        .then(response => {
-            console.log(typeof response);
-            console.log(response);
-            if (response.ok) {
-                return response.json();
-            }
-        })
-        .then(data => {
-            console.log("Datos: ");
-            console.log(data);
-        })
-        .catch(err => {
-            console.log("Error: ");
-            console.log(err);
-            document.getElementById("alerta").style.display = "flex";
-        });
+            .then(response => {
+                console.log(typeof response);
+                console.log(response);
+                if (response.status === 201) {
+                    location.reload();
+                }
+            })
+            .catch(err => {
+                console.log("Error: ");
+                console.log(err);
+                document.getElementById("alerta").style.display = "flex";
+            });
     });
 
     document.querySelector("#cruz").addEventListener("click", () => {
@@ -158,42 +154,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.querySelector(".Enviar").addEventListener("click", () => {
         //logIn
-    fetch("http://localhost:8080/login", {
-        method: "post",
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            email: document.querySelector("#iCorreo").value,
-            contrasenia: document.querySelector("iContrasenia").value
+        fetch("http://localhost:9000/login", {
+            method: "post",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: document.querySelector("#iCorreo").value,
+                contrasenia: document.querySelector("iContrasenia").value
+            })
         })
-    })
-        .then(response => {
-            console.log(typeof response);
-            console.log(response);
-            if (response.ok) {
-                return response.json();
-            }
-        })
-        .then(data => {
-            console.log("Datos: ");
-            console.log(data);
-            if(data != null){
-                loggeado = true;
-                document.cookie = "token=" + data.accessToken;
-                document.cookie = "refreshtoken" +data.refreshToken;
-            }
-            else if(data === false){
-                //no definido que va a pasar todavia
-            }
-            else{
-                document.getElementById("alerta").style.display = "flex";
-            }
-        })
-        .catch(err => {
-            console.log("Error: ");
-            console.log(err);
-        });
+            .then(response => {
+                console.log(typeof response);
+                console.log(response);
+                if (response.status === 200) {
+                    return response.json();
+                }
+            })
+            .then(data => {
+                console.log("Datos: ");
+                console.log(data);
+                if (data != null) {
+                    loggeado = true;
+                    document.cookie = "token=" + data.accessToken;
+                    document.cookie = "refreshtoken" + data.refreshToken;
+                }
+                else if (data === false) {
+                    document.getElementById("infoIncorrecta").style.display = "flex";
+                }
+                else {
+                    document.getElementById("alerta").style.display = "flex";
+                }
+            })
+            .catch(err => {
+                console.log("Error: ");
+                console.log(err);
+            });
     });
 });

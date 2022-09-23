@@ -10,6 +10,18 @@
     box-sizing: border-box;
 }
 
+#logeate{
+    position: fixed;
+    display: none;
+    flex-direction: column;
+    text-align: center;
+    bottom: 40%;
+    padding: 40px;
+    font-size: 20px;
+    border-radius: 5px;
+    background-color: #2777da;
+}
+
 #tarea{
     display: none;
     flex-direction: column;
@@ -334,6 +346,16 @@ form img{
 #lista *{
     color: #fff;
     font-size: 15px;
+}
+
+#logeate a{
+    text-decoration: none;
+    color: #fff;
+    background-color: green;
+    margin-top: 20px;
+    padding: 5px;
+    border-radius: 5px;
+    width: 100%;
 }
 
 @media all and (max-width: 720px) {

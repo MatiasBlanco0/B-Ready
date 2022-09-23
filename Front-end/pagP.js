@@ -18,14 +18,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.querySelector("#MenuIco").addEventListener("click", () => {
-        if(!abierto){
+        if (!abierto) {
             Menu.style.top = "18.5%";
             Menu.style.transition = "1s";
             document.body.style.overflow = "hidden";
             document.getElementById("pagina").style.filter = "blur(2px)";
             abierto = true;
         }
-        else{
+        else {
             Menu.style.top = "-100%";
             Menu.style.transition = "1s";
             document.body.style.overflow = "scroll";
@@ -35,13 +35,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.getElementById("pagina").addEventListener("click", () => {
-        if(abierto){
+        if (abierto) {
             Menu.style.top = "-100%";
             Menu.style.transition = "1s";
             document.body.style.overflow = "scroll";
             abierto = false;
             document.getElementById("pagina").style.filter = "none";
         }
-    }); 
+    });
 });
 

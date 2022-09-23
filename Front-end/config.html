@@ -33,7 +33,7 @@
         </div>
     </header>
     <section>
-        <div class="sectores">
+        <div id="sectores">
             <button id="Perfil">Perfil</button>
             <button id="Visibilidad">Visibilidad</button>
             <button id="Privacidad">Privacidad</button>
@@ -42,18 +42,9 @@
         </div>
         <div class="opciones">
             <div id="PerfilO">
-                <input id="fondoInput" type="file" accept="image/png, image/jpeg">
-                <div class="imgFondo">
-                    <img src="" alt="" id="editar">
-                </div>
-                <img src="" alt="" id="fotoPerfil">
-                <div class="info">
-                    <h3>Nombre</h3>
-                    <h5>Descripción</h5>
-                </div>
-                <div class="datos">
-                    <p>Email</p>
-                    <p>fecha de registro</p>
+                <div>
+                    <h3>Notificaciones</h3><br>
+                    <p>Permitir Notificaciones</p>                    
                 </div>
             </div>
             <div id="VisibilidadO">
@@ -82,7 +73,46 @@
 
             </div>
             <div id="EstiloO">
-
+                <div class="Estilos">
+                    <div id="Protanopia" class="Conjuntos">
+                        <h3>Protanopia</h3>
+                        <div class="previews">
+                            <img src="Logo_B-Ready.png" alt="">
+                            <img src="Logo_B-Ready.png" alt="">
+                        </div>
+                        <input type="radio" class="tipo" value="Protanopia" name="Estilos">
+                    </div>
+                </div>
+                <div class="Estilos">
+                    <div id="Deuteranopia" class="Conjuntos">
+                        <h3>Deuteranopia</h3>
+                        <div class="previews">
+                            <img src="Logo_B-Ready.png" alt="">
+                            <img src="Logo_B-Ready.png" alt="">
+                        </div>
+                        <input type="radio" class="tipo" value="Deuteranopia" name="Estilos">
+                    </div>
+                </div>
+                <div class="Estilos">
+                    <div id="Tritanopia" class="Conjuntos">
+                        <h3>Tritanopia</h3>
+                        <div class="previews">
+                            <img src="Logo_B-Ready.png" alt="">
+                            <img src="Logo_B-Ready.png" alt="">
+                        </div>
+                        <input type="radio" class="tipo" value="Tritanopia" name="Estilos">
+                    </div>
+                </div>
+                <div class="Estilos">
+                    <div id="Ninguno" class="Conjuntos">
+                        <h3>Por defecto</h3>
+                        <div class="previews">
+                            <img src="Logo_B-Ready.png" alt="">
+                            <img src="Logo_B-Ready.png" alt="">
+                        </div>
+                        <input type="radio" class="tipo" value="Default" name="Estilos">
+                    </div>
+                </div>
             </div>
             <div id="AyudaO">
 
