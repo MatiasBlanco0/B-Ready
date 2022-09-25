@@ -1,0 +1,52 @@
+https://docs.docker.com/desktop/windows/wsl/
+https://linuxhint.com/lamp_server_docker/
+
+
+12:28 PM 9/25/2022
+PRE-REQ: Instalar Docker Desktop for Windows usando WSL2
+
+
+=================   AMBIENTE ===============================
+:: Volumnes: Para Config y para Data 
+docker volume create mysqldb-config
+docker volume create mysqldb-data
+
+Los volumenes en Docker Desktop for Windows se almacenan en \\wsl$\docker-desktop-data\data\docker\volumes
+
+:: Run MySQL
+docker run --name=breadydb -d -v mysqldb-config:/etc/mysql/mysql.conf.d -v mysqldb-data:/var/lib/mysql -e MYSQL_DATABASE=breadydb -e MYSQL_ROOT_PASSWORD=yesbready -p 3307:3306 mysql/mysql-server:latest
+
+
+:: Alow remote connections
+:: Ingresar al container
+docker exec -it breadydb /bin/bash
+echo [mysqld]>/etc/mysql/mysql.conf.d/mysqld.cnf
+echo bind-address=0.0.0.0>> /etc/mysql/mysql.conf.d/mysqld.cnf
+
+:: Connect to MySQL
+mysql -u root -p  (Pide PWD de root)
+CREATE USER 'breadyusr' IDENTIFIED WITH mysql_native_password BY 'yes!bready';   --  WITH mysql_native_password es para ser compatible con modulo mysqljs de Node que no implementa authentication moderna
+GRANT ALL PRIVILEGES ON database_name.breadydb TO 'breadyusr';
+=================   AMBIENTE ===============================
+
+
+Desde Windows Terminal
+======================
+
+:: Detener y eliminar el Container breadydb  
+docker stop breadydb;docker rm breadydb 
+
+:: Eliminar la imagen mysql/mysql-server
+mysql/mysql-server
+
+
+MySQL Handy Commands
+====================
+SELECT User, Host FROM mysql.user;
+SELECT user();
+SHOW GRANTS FOR breadyusr;
+
+SHOW DATABSAES; SHOW SCHEMAS;
+USE <dbname>
+SHOW TABLES
+DESC <TabName>
