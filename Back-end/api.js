@@ -65,8 +65,8 @@ app.post('/token', validateBody, (req, res) => {
             if (err) return res.sendStatus(403);
             const accessToken = generateAccessToken({ email: user.email });
             return res.json({ accessToken: accessToken });
-        })
-    })
+        });
+    });
 });
 
 app.delete('/logout', validateBody, (req, res) => {
