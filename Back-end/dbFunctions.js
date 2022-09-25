@@ -307,7 +307,7 @@ async function deleteAssignment(id, userEmail) {
     try {
         const isOwner = await sqlQuery("SELECT 1 FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.email = ? AND relacion_usuario_tarea.tarea = ?", [userEmail, id]);
         if (isOwner.length < 0) {
-            return new Error("This user was not an owner of the assignment");
+            return new Error(userEmail + " is not an owner of the assignment");
         }
         let checkUsers = await sqlQuery("SELECT relacion_usuario_tarea.email WHERE relacion_usuario_tarea.id = ?", [id]);
         if (checkUsers.length < 2) {
@@ -345,7 +345,7 @@ async function updateDoneExercises(userEmail, id, doneExcercices) {
     try {
         const isOwner = await sqlQuery("SELECT 1 FROM relacion_usuario_tareaWHERE relacion_usuario_tarea.email = ? AND relacion_usuario_tarea.tarea = ?", [userEmail, id]);
         if (isOwner.length < 0) {
-            return new Error("This user was not an owner of the assignment");
+            return new Error(userEmail + " is not an owner of the assignment");
         }
         let sql = "UPDATE tarea SET tarea.cantejhechos = ? WHERE tarea.id = ?";
         let promise = await sqlQuery(sql, [doneExcercices, id]);

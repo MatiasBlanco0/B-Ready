@@ -72,16 +72,12 @@ app.post('/token', validateBody, (req, res) => {
 app.delete('/logout', validateBody, (req, res) => {
     const email = req.body.email;
     dbFunctions.tokenExists(email, req.body.token).then(result => {
-        if (result === false) {
-            return res.sendStatus(403);
-        }
-        if (result instanceof Error) {
-            return res.sendStatus(500);
-        }
+        if (result === false) return res.sendStatus(403);
+        if (result instanceof Error) return res.sendStatus(500);
+
         dbFunctions.updateToken(email, "null").then(result => {
-            if (result === true) {
-                return res.sendStatus(204);
-            }
+            if (result === true) return res.sendStatus(204);
+            if (result instanceof Error) return res.status(400).json({message: result.message});
             return res.sendStatus(500);
         });
     });
@@ -91,28 +87,24 @@ app.post('/login', validateBody, (req, res) => {
     console.log("\nRecibi una request POST en /login");
     const email = req.body.email;
     const password = req.body.contrasenia;
-    if (email === undefined || password === undefined) {
-        return res.status(400).json({ message: "Email or Contrasenia were undefined" });
-    }
-    if (email === "" || password === "") {
-        return res.status(400).json({ message: "Email or Contrasenia were empty strings" });
-    }
+    if (email === undefined || password === undefined) return res.status(400).json({ message: "Email or Contrasenia were undefined" });
+    if (email === "" || password === "") return res.status(400).json({ message: "Email or Contrasenia were empty strings" });
+
     dbFunctions.logIn(email, password)
         .then(result => {
-            if (result === false) {
-                return res.status(401).json({ message: "Wrong email or password" });
-            }
+            if (result === false) return res.status(401).json({ message: "Wrong email or password" });
             if (result instanceof Error) {
-                return res.status(500);
+                const message = result.message;
+                if (message.includes("is not a valid")) return res.status(400).json({ message: message });
+                return res.sendStatus(500);
             }
+
             const payload = { email: email };
             const accessToken = generateAccessToken(payload);
             const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET);
             dbFunctions.updateToken(email, refreshToken)
                 .then(result => {
-                    if (result === true) {
-                        return res.json({ accessToken: accessToken, refreshToken: refreshToken });
-                    }
+                    if (result === true) return res.json({ accessToken: accessToken, refreshToken: refreshToken });
                     return res.sendStatus(500);
                 });
         });
@@ -123,25 +115,16 @@ app.post('/register', validateBody, (req, res) => {
     const email = req.body.email;
     const password = req.body.contrasenia;
     const name = req.body.nombre;
-    if (name === undefined || email === undefined || password === undefined) {
-        return res.status(400).json({ message: "Nombre, Email or Contrasenia were unefined" });
-    }
-    if (name === "" || email === "" || password === "") {
-        return res.status(400).json({ message: "Nombre, Email or Contrasenia were empty strings" });
-    }
+    if (name === undefined || email === undefined || password === undefined) return res.status(400).json({ message: "Nombre, Email or Contrasenia were unefined" });
+    if (name === "" || email === "" || password === "") return res.status(400).json({ message: "Nombre, Email or Contrasenia were empty strings" });
+
     dbFunctions.register(name, email, password)
         .then(result => {
-            if (result === true) {
-                return res.sendStatus(201);
-            }
-            else if (result instanceof Error) {
+            if (result === true) return res.sendStatus(201);
+            if (result instanceof Error) {
                 const message = result.message;
-                if (message.includes("already is a user")) return res.status(400).send(message)
-                if (message.includes("is not a valid email")) return res.status(400).send(message)
-                if (message.includes("is not a valid password")) return res.status(400).send(message);
-                if (message.includes("is not a valid name")) return res.status(400).send(message);
-
-                return res.sendStatus(500);
+                if (message.includes("already is a user")) return res.status(400).json({ message: message });
+                if (message.includes("is not a valid")) return res.status(400).json({ message: message });
             }
             return res.sendStatus(500);
         });
@@ -151,9 +134,9 @@ app.get('/assignments', authenticateToken, (req, res) => {
     console.log("\nRecibi una request GET en /assignments");
     dbFunctions.getAssignments(req.user.email)
         .then(result => {
-            if (result instanceof Error) {
-                return res.sendStatus(500);
-            }
+            if (result instanceof Error) return res.sendStatus(500);
+            if(Object.keys(result).length === 0) return res.sendStatus(204);
+
             const assignments = result.map(assignment => {
                 let newAssignment = {};
                 let daysLeft = Math.floor((new Date(assignment.fechaentrega).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
@@ -165,7 +148,7 @@ app.get('/assignments', authenticateToken, (req, res) => {
                 newAssignment.ejHoy = Math.floor((assignment.cantej - assignment.cantejhechos) / daysLeft);
                 newAssignment.prioridad = w1 * newAssignment.ejHoy - w2 * daysLeft + w3 * assignment.dificultad;
                 return newAssignment;
-            })
+            });
             return res.json(assignments);
         });
 });
@@ -173,14 +156,16 @@ app.get('/assignments', authenticateToken, (req, res) => {
 app.get('/assignment/:id', authenticateToken, (req, res) => {
     const id = parseInt(req.params.id);
     console.log("\nRecibi una request GET en /assignment/" + id);
-    if (isNaN(id)) {
-        return res.status(400).json({ message: "Id was not a number" });
-    }
+    if (isNaN(id)) return res.status(400).json({ message: "Id is not a number" });
+
     dbFunctions.getAssignmentInfo(id, req.user.email)
         .then(result => {
             if (result instanceof Error) {
+                if (result.message.includes("is not a valid assignment id")) return res.status(400).json({ message: "Id is not a valid assignment id" });
                 return res.sendStatus(500);
             }
+            if (Object.keys(result).length === 0) return res.status(404).json({ message: "Assignment not found" });
+
             let assignment = {
                 cantEj: result[0].cantej,
                 cantEjHechos: result[0].cantejhechos,
@@ -199,8 +184,10 @@ app.post('/assignment', authenticateToken, validateBody, (req, res) => {
     console.log("\nRecibi una request POST en /assignment");
     dbFunctions.addAssignment(req.user.email, req.body.nombre, req.body.descripcion, req.body.ejercicios, req.body.ejerciciosHechos, req.body.materia, req.body.fecha, req.body.dificultad)
         .then(result => {
-            if (result === true) {
-                return res.sendStatus(201);
+            if (result === true) return res.sendStatus(201);
+            if(result instanceof Error){
+                const message = result.message;
+                if(message.includes("is not a valid")) return res.status(400).json({ message: message });
             }
             return res.sendStatus(500);
         });
@@ -211,8 +198,13 @@ app.post('/user', authenticateToken, validateBody, (req, res) => {
     dbFunctions.addUserToAssignment(req.body.email, req.body.id, req.user.email)
         .then(result => {
             console.log(result);
-            if (result === true) {
-                return res.sendStatus(201);
+            if (result === true) return res.sendStatus(201);
+            if(result instanceof Error){
+                const message = result.message;
+                if(message.includes("is not a valid")) return res.status(400).json({ message: message });
+                if(message.includes("is not a user")) return res.status(400).json({ message: message });
+                if(message.includes("is not the owner of the assignment")) return res.status(400).json({ message: message });
+                if(message.includes("is already an owner of the assignment")) return res.status(400).json({ message: message });
             }
             return res.sendStatus(500);
         });
@@ -222,8 +214,11 @@ app.delete('/assignment', authenticateToken, validateBody, (req, res) => {
     console.log("\nRecibi una request DELETE en /assignmet");
     dbFunctions.deleteAssignment(req.body.id, req.user.email)
         .then(result => {
-            if (result === true) {
-                return res.sendStatus(204);
+            if (result === true) return res.sendStatus(204);
+            if(result instanceof Error){
+                const message = result.message;
+                if(message.includes("is not a valid")) return res.status(400).json({ message: message });
+                if(message.includes("is not an owner of the assignment")) return res.status(400).json({ message: message });
             }
             return res.sendStatus(500);
         });
@@ -233,8 +228,11 @@ app.put('/assignment', authenticateToken, validateBody, (req, res) => {
     console.log("\nRecibi una request PUT en /assignment");
     dbFunctions.updateDoneExercises(req.user.email, req.body.id, req.body.ejercicios)
         .then(result => {
-            if (result === true) {
-                return res.sendStatus(201);
+            if (result === true) return res.sendStatus(201);
+            if(result instanceof Error){
+                const message = result.message;
+                if(message.includes("is not a valid")) return res.status(400).json({ message: message });
+                if(message.includes("is not an owner of the assignment")) return res.status(400).json({ message: message });
             }
             return res.sendStatus(500);
         });
@@ -244,9 +242,7 @@ app.get('/estilo', authenticateToken, (req, res) => {
     console.log("\nRecibi una request GET en /estilo");
     dbFunctions.getStyle(req.user.email)
         .then(result => {
-            if (result instanceof Error) {
-                return res.sendStatus(500);
-            }
+            if (result instanceof Error) return res.sendStatus(500);
             return res.json(prepareObj(result[0]));
         });
 });
@@ -256,6 +252,7 @@ app.put('/estilo', authenticateToken, validateBody, (req, res) => {
     dbFunctions.updateStyle(req.user.email, req.body.estilo)
         .then(result => {
             if (result instanceof Error) {
+                if (result.message.includes("is not a valid")) return res.status(400).json({ message: result.message });
                 return res.sendStatus(500);
             }
             return res.sendStatus(201);
