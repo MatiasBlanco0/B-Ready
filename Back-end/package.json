@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/MatiasBlanco0/B-Ready#readme",
   "devDependencies": {
+    "eslint": "^8.24.0",
     "nodemon": "^2.0.19"
   }
 }
