@@ -58,7 +58,7 @@ function generateAccessToken(payload) {
 
 app.post('/token', validateBody, (req, res) => {
     const refreshToken = req.body.token;
-    if (refreshToken == null) return res.sendStatus(401);
+    if (refreshToken === undefined) return res.sendStatus(401);
     dbFunctions.tokenExists(req.body.email, refreshToken).then(result => {
         if (result === false) return res.sendStatus(403);
         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
@@ -238,8 +238,8 @@ app.put('/assignment', authenticateToken, validateBody, (req, res) => {
         });
 });
 
-app.get('/estilo', authenticateToken, (req, res) => {
-    console.log("\nRecibi una request GET en /estilo");
+app.get('/style', authenticateToken, (req, res) => {
+    console.log("\nRecibi una request GET en /style");
     dbFunctions.getStyle(req.user.email)
         .then(result => {
             if (result instanceof Error) return res.sendStatus(500);
@@ -247,8 +247,8 @@ app.get('/estilo', authenticateToken, (req, res) => {
         });
 });
 
-app.put('/estilo', authenticateToken, validateBody, (req, res) => {
-    console.log("\nRecibi una request PUT en /estilo");
+app.put('/style', authenticateToken, validateBody, (req, res) => {
+    console.log("\nRecibi una request PUT en /style");
     dbFunctions.updateStyle(req.user.email, req.body.estilo)
         .then(result => {
             if (result instanceof Error) {
