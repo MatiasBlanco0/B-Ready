@@ -1,6 +1,35 @@
 # B-Ready API
 
+# Indice
+
+- [B-Ready API](#b-ready-api)
+- [Indice](#indice)
+- [Endpoints](#endpoints)
+  - [register](#register)
+    - [**POST**:](#post)
+  - [login](#login)
+    - [**POST**:](#post-1)
+  - [logout](#logout)
+    - [**DELETE**:](#delete)
+  - [token](#token)
+    - [**POST**:](#post-2)
+  - [assignments](#assignments)
+    - [**GET**:](#get)
+  - [assignment](#assignment)
+    - [**GET**:](#get-1)
+    - [**POST**:](#post-3)
+    - [**PUT**:](#put)
+    - [**DELETE**:](#delete-1)
+  - [user](#user)
+    - [**POST**:](#post-4)
+  - [style](#style)
+    - [**GET**:](#get-2)
+    - [**PUT**:](#put-1)
+- [Referencias](#referencias)
+
 # Endpoints
+
+Un endpoint es el path que esta despues de la url. La url es la ip del servidor seguido por el puerto que usa la api (9000), ej: 127.0.0.1:1234. Si la computadora hostenado a la api quiere accederla, tiene que usar localhost o 127.0.0.1 como la ip
 
 ## register
 
@@ -110,7 +139,7 @@ Status 200: se envia un array de objetos de este formato
 ```
 Status 401: No se paso la token de acceso en el header de `Authorization`
 
-Status 403: la token de acceso no era valida
+Status 403: la token de acceso no era valida, refrescarla en /token
 
 Status 500: Error interno
 
@@ -141,6 +170,10 @@ Status 200: Devuelve un objeto con la informacion de la tarea,
 
 Status 400: Problema con algun atributo del body, ver el mensaje enviado
 
+Status 401: No se paso la token de acceso en el header de `Authorization`
+
+Status 403: la token de acceso no era valida, refrescarla en /token
+
 Status 404: La tarea no existe
 
 Status 500: Error interno
@@ -167,6 +200,10 @@ Status 201: Se creo la tarea exitosamente
 
 Status 400: Problema con algun atributo del body, ver el mensaje enviado
 
+Status 401: No se paso la token de acceso en el header de `Authorization`
+
+Status 403: la token de acceso no era valida, refrescarla en /token
+
 Status 500: Error interno
 
 ### **PUT**:
@@ -186,6 +223,10 @@ Status 201: Se actualizo la cantidad de ejercicios hechos exitosamente
 
 Status 400: Problema con algun atributo del body, ver el mensaje enviado
 
+Status 401: No se paso la token de acceso en el header de `Authorization`
+
+Status 403: la token de acceso no era valida, refrescarla en /token
+
 Status 500: Error interno
 
 ### **DELETE**:
@@ -203,6 +244,10 @@ Requiere Autenticacion
 Status 204: Se borro la tarea exitosamente
 
 Status 400: Problema con algun atributo del body, ver el mensaje enviado
+
+Status 401: No se paso la token de acceso en el header de `Authorization`
+
+Status 403: la token de acceso no era valida, refrescarla en /token
 
 Status 500: Error interno
 
@@ -224,6 +269,10 @@ Requiere Autenticacion
 Status 201: Se agrego al usuario a la tarea exitosamente
 
 Status 400: Problema con algun atributo del body, ver el mensaje enviado
+
+Status 401: No se paso la token de acceso en el header de `Authorization`
+
+Status 403: la token de acceso no era valida, refrescarla en /token
 
 Status 500: Error interno
 
@@ -258,6 +307,10 @@ Requiere Autenticacion
 Status 201: Se modifico el estilo correctamente
 
 Status 400: Problema con algun atributo del body, ver el mensaje enviado
+
+Status 401: No se paso la token de acceso en el header de `Authorization`
+
+Status 403: la token de acceso no era valida, refrescarla en /token
 
 Status 500: Error interno
 
