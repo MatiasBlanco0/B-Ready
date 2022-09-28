@@ -19,13 +19,15 @@
     - [**POST**:](#post-2)
   - [assignments](#assignments)
     - [**GET**:](#get)
+  - [assignmentsByDay](#assignmentsbyday)
+    - [**POST**:](#post-3)
   - [assignment](#assignment)
     - [**GET**:](#get-1)
-    - [**POST**:](#post-3)
+    - [**POST**:](#post-4)
     - [**PUT**:](#put)
     - [**DELETE**:](#delete-1)
   - [user](#user)
-    - [**POST**:](#post-4)
+    - [**POST**:](#post-5)
   - [style](#style)
     - [**GET**:](#get-2)
     - [**PUT**:](#put-1)
@@ -161,7 +163,36 @@ Status 200: se envia un array de objetos de este formato
 ```
 Status 401: No se paso la token de acceso en el header de `Authorization`
 
-Status 403: la token de acceso no era valida, refrescarla en /token
+Status 403: la token de acceso no era valida o expiro, refrescarla en [/token](#token)
+
+Status 500: Error interno
+
+## assignmentsByDay
+
+### **POST**:
+
+Rquiere Autenticacion
+
+**Body**:
+```json
+  {
+    "fecha": <fecha>
+  }
+```
+**Respuestas**:
+
+Status 200: se envia un array de objetos de este formato:
+```json
+  {
+    "id":<id>,
+    "nombre":<nombre>
+  }
+```
+Status 400: Hubo un problema con alguno de los atributos de body, ver el mensaje enviado.
+
+Status 401: No se paso la token de acceso en header de `Authorization`
+
+Status 403: la token de acceso no era valida o expiro, refrescarla en [/token](#token)
 
 Status 500: Error interno
 
@@ -194,7 +225,7 @@ Status 400: Problema con algun atributo del body, ver el mensaje enviado
 
 Status 401: No se paso la token de acceso en el header de `Authorization`
 
-Status 403: la token de acceso no era valida, refrescarla en /token
+Status 403: la token de acceso no era valida o expiro, refrescarla en [/token](#token)
 
 Status 404: La tarea no existe
 
@@ -224,7 +255,7 @@ Status 400: Problema con algun atributo del body, ver el mensaje enviado
 
 Status 401: No se paso la token de acceso en el header de `Authorization`
 
-Status 403: la token de acceso no era valida, refrescarla en /token
+Status 403: la token de acceso no era valida o expiro, refrescarla en [/token](#token)
 
 Status 500: Error interno
 
@@ -247,7 +278,7 @@ Status 400: Problema con algun atributo del body, ver el mensaje enviado
 
 Status 401: No se paso la token de acceso en el header de `Authorization`
 
-Status 403: la token de acceso no era valida, refrescarla en /token
+Status 403: la token de acceso no era valida o expiro, refrescarla en [/token](#token)
 
 Status 500: Error interno
 
@@ -269,7 +300,7 @@ Status 400: Problema con algun atributo del body, ver el mensaje enviado
 
 Status 401: No se paso la token de acceso en el header de `Authorization`
 
-Status 403: la token de acceso no era valida, refrescarla en /token
+Status 403: la token de acceso no era valida o expiro, refrescarla en [/token](#token)
 
 Status 500: Error interno
 
@@ -294,7 +325,7 @@ Status 400: Problema con algun atributo del body, ver el mensaje enviado
 
 Status 401: No se paso la token de acceso en el header de `Authorization`
 
-Status 403: la token de acceso no era valida, refrescarla en /token
+Status 403: la token de acceso no era valida o expiro, refrescarla en [/token](#token)
 
 Status 500: Error interno
 
@@ -332,7 +363,7 @@ Status 400: Problema con algun atributo del body, ver el mensaje enviado
 
 Status 401: No se paso la token de acceso en el header de `Authorization`
 
-Status 403: la token de acceso no era valida, refrescarla en /token
+Status 403: la token de acceso no era valida o expiro, refrescarla en [/token](#token)
 
 Status 500: Error interno
 
