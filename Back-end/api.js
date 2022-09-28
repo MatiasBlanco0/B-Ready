@@ -115,7 +115,7 @@ app.post('/register', validateBody, (req, res) => {
     const email = req.body.email;
     const password = req.body.contrasenia;
     const name = req.body.nombre;
-    if (name === undefined || email === undefined || password === undefined) return res.status(400).json({ message: "Nombre, Email or Contrasenia were unefined" });
+    if (name === undefined || email === undefined || password === undefined) return res.status(400).json({ message: "Nombre, Email or Contrasenia were undefined" });
     if (name === "" || email === "" || password === "") return res.status(400).json({ message: "Nombre, Email or Contrasenia were empty strings" });
 
     dbFunctions.register(name, email, password)
