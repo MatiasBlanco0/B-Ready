@@ -149,7 +149,7 @@ app.get('/assignments', authenticateToken, (req, res) => {
                 newAssignment.prioridad = w1 * newAssignment.ejHoy - w2 * daysLeft + w3 * assignment.dificultad;
                 return newAssignment;
             });
-            return res.json(assignments);
+            return res.json(assignments.filter(assignment => assignment.ejHoy > 0));
         });
 });
 
