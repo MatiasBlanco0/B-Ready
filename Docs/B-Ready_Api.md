@@ -4,6 +4,10 @@
 
 - [B-Ready API](#b-ready-api)
 - [Indice](#indice)
+- [Usar la api en un nuevo dispositivo](#usar-la-api-en-un-nuevo-dispositivo)
+  - [Crear la base de datos](#crear-la-base-de-datos)
+  - [Instalar modulos de node](#instalar-modulos-de-node)
+  - [Crear el archivo .env](#crear-el-archivo-env)
 - [Endpoints](#endpoints)
   - [register](#register)
     - [**POST**:](#post)
@@ -26,6 +30,24 @@
     - [**GET**:](#get-2)
     - [**PUT**:](#put-1)
 - [Referencias](#referencias)
+
+# Usar la api en un nuevo dispositivo
+
+Para utilizar la api en un nuevo dispositivo, hay que crear la base de datos, instalar los modulos de node y crear el archivo .env.
+
+## Crear la base de datos
+
+Si tenes phpMyAdmin (http://localhost/phpMyAdmin), crear una nueva base de datos con el nombre `b-ready`. Mientras tenes seleccionada la base de datos que creaste recien, hacer click en la pestaña de importar y seleccionar el archivo b-ready.sql que esta en la carpeta de Back-end.
+
+Si no tenes phpMyAdmin, pincho.
+
+## Instalar modulos de node
+
+Abrir la consola de powershell, cmd o la terminal de vs code en la carpeta de .../B-Ready/Back-end, ahi correr el siguiente comando `npm i`. Esto deberia descargar todas las dependencias del proyecto.
+
+## Crear el archivo .env
+
+Ir a la carpeta Back-end del repositorio y crear un archivo con el nombre `.env`, ahi poner las dos cosas que te pase por mensaje privado del campus y tambien poner `ACCESS_TOKEN_LIFE=15m`.
 
 # Endpoints
 
