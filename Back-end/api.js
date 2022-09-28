@@ -77,7 +77,7 @@ app.delete('/logout', validateBody, (req, res) => {
 
         dbFunctions.updateToken(email, "null").then(result => {
             if (result === true) return res.sendStatus(204);
-            if (result instanceof Error) return res.status(400).json({message: result.message});
+            if (result instanceof Error) return res.status(400).json({ message: result.message });
             return res.sendStatus(500);
         });
     });
@@ -135,7 +135,7 @@ app.get('/assignments', authenticateToken, (req, res) => {
     dbFunctions.getAssignments(req.user.email)
         .then(result => {
             if (result instanceof Error) return res.sendStatus(500);
-            if(Object.keys(result).length === 0) return res.sendStatus(204);
+            if (Object.keys(result).length === 0) return res.sendStatus(204);
 
             const assignments = result.map(assignment => {
                 let newAssignment = {};
@@ -150,6 +150,22 @@ app.get('/assignments', authenticateToken, (req, res) => {
                 return newAssignment;
             });
             return res.json(assignments.filter(assignment => assignment.ejHoy > 0));
+        });
+});
+
+app.post('/assignmentsByDay', authenticateToken, (req, res) => {
+    console.log("Recibi una request POST en /assignmentsByDay");
+    const date = req.body.fecha;
+    if (date === undefined) return res.status(400).json({ message: "Date was undefined" });
+    if (date === "") return res.status(400).json({ message: "Date was an empty string" });
+
+    dbFunctions.getAssignmentsByDay(req.user.email, date)
+        .then(result => {
+            if (result instanceof Error) {
+                if (result.message.includes("is not a valid")) return res.status(400).json({ message: result.message });
+                return res.sendStatus(500);
+            }
+            return res.json(result);
         });
 });
 
@@ -185,9 +201,9 @@ app.post('/assignment', authenticateToken, validateBody, (req, res) => {
     dbFunctions.addAssignment(req.user.email, req.body.nombre, req.body.descripcion, req.body.ejercicios, req.body.ejerciciosHechos, req.body.materia, req.body.fecha, req.body.dificultad)
         .then(result => {
             if (result === true) return res.sendStatus(201);
-            if(result instanceof Error){
+            if (result instanceof Error) {
                 const message = result.message;
-                if(message.includes("is not a valid")) return res.status(400).json({ message: message });
+                if (message.includes("is not a valid")) return res.status(400).json({ message: message });
             }
             return res.sendStatus(500);
         });
@@ -199,12 +215,12 @@ app.post('/user', authenticateToken, validateBody, (req, res) => {
         .then(result => {
             console.log(result);
             if (result === true) return res.sendStatus(201);
-            if(result instanceof Error){
+            if (result instanceof Error) {
                 const message = result.message;
-                if(message.includes("is not a valid")) return res.status(400).json({ message: message });
-                if(message.includes("is not a user")) return res.status(400).json({ message: message });
-                if(message.includes("is not the owner of the assignment")) return res.status(400).json({ message: message });
-                if(message.includes("is already an owner of the assignment")) return res.status(400).json({ message: message });
+                if (message.includes("is not a valid")) return res.status(400).json({ message: message });
+                if (message.includes("is not a user")) return res.status(400).json({ message: message });
+                if (message.includes("is not the owner of the assignment")) return res.status(400).json({ message: message });
+                if (message.includes("is already an owner of the assignment")) return res.status(400).json({ message: message });
             }
             return res.sendStatus(500);
         });
@@ -215,10 +231,10 @@ app.delete('/assignment', authenticateToken, validateBody, (req, res) => {
     dbFunctions.deleteAssignment(req.body.id, req.user.email)
         .then(result => {
             if (result === true) return res.sendStatus(204);
-            if(result instanceof Error){
+            if (result instanceof Error) {
                 const message = result.message;
-                if(message.includes("is not a valid")) return res.status(400).json({ message: message });
-                if(message.includes("is not an owner of the assignment")) return res.status(400).json({ message: message });
+                if (message.includes("is not a valid")) return res.status(400).json({ message: message });
+                if (message.includes("is not an owner of the assignment")) return res.status(400).json({ message: message });
             }
             return res.sendStatus(500);
         });
@@ -229,10 +245,10 @@ app.put('/assignment', authenticateToken, validateBody, (req, res) => {
     dbFunctions.updateDoneExercises(req.user.email, req.body.id, req.body.ejercicios)
         .then(result => {
             if (result === true) return res.sendStatus(201);
-            if(result instanceof Error){
+            if (result instanceof Error) {
                 const message = result.message;
-                if(message.includes("is not a valid")) return res.status(400).json({ message: message });
-                if(message.includes("is not an owner of the assignment")) return res.status(400).json({ message: message });
+                if (message.includes("is not a valid")) return res.status(400).json({ message: message });
+                if (message.includes("is not an owner of the assignment")) return res.status(400).json({ message: message });
             }
             return res.sendStatus(500);
         });

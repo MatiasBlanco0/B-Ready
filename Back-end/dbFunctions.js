@@ -380,7 +380,7 @@ async function getAssignmentsByDay(userEmail, date){
         return new Error(date + " is not a valid date");
     }
     try{
-        let sql = "SELECT tarea.id, tarea.nombre FROM tarea WHERE tarea.id=relacion_usuario_tarea.tarea AND relacion_usuario_tarea.email=? AND tarea.fechaentrega=?";
+        let sql = "SELECT tarea.id, tarea.nombre FROM tarea INNER JOIN relacion_usuario_tarea ON tarea.id=relacion_usuario_tarea.tarea WHERE relacion_usuario_tarea.email=? AND tarea.fechaentrega=?";
         let promise = await sqlQuery(sql, [userEmail, date]);
         if (promise instanceof Error){
             return promise;
