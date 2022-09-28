@@ -14,12 +14,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const error = document.getElementById("errores");
     const toggle = document.getElementById("TOGGLE");
     let pantalla = 0;
+    let alerta = document.getElementById("alerta");
+    let alertaT = document.getElementById("alertaT");
 
     //LA VARIABLE MAS IMPORTANTE :O
     let loggeado = false;
-
-    console.log(window.location.href);
-
+    
     imgI.addEventListener("click", () => {
         window.location.replace("https://campus.ort.edu.ar/");
     });
@@ -45,7 +45,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let parametros = new URLSearchParams(location.search);
     let gmail = parametros.get("mail");
-    console.log(gmail);
 
     if (gmail !== null) {
         toggle.click();
@@ -140,6 +139,36 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (response.status === 201) {
                     location.reload();
                 }
+                else if (response.status === 400) {
+                    return response.json();
+                }
+                else if (response.status === 500) {
+                    //error interno
+                }
+            })
+            .then(data => {
+                if (data !== undefined || data !== null) {
+                    if (data.message.includes("already is a user")) {
+                        alerta.style.display = "flex";
+                        alertaT.innerHTML = "El usuario que se a intentado crear ya existe";
+                    }
+                    else if (data.message.includes("is not a valid")) {
+                        alerta.style.display = "flex";
+                        alertaT.innerHTML = "Algun campo ingresado no es texto, o valor valido";
+                    }
+                    else if (data.message.includes("were undefined")) {
+                        alerta.style.display = "flex";
+                        alertaT.innerHTML = "Algun campo es indefinido";
+                    }
+                    else if (data.message.includes("were empty strings")) {
+                        alerta.style.display = "flex";
+                        alertaT.innerHTML = "Algun campo esta vacio";
+                    }
+                    else {
+                        alerta.style.display = "flex";
+                        alertaT.innerHTML = "Error desconocido, porfavor intentarlo mas tarde";
+                    }
+                }
             })
             .catch(err => {
                 console.log("Error: ");
@@ -162,7 +191,7 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             body: JSON.stringify({
                 email: document.querySelector("#iCorreo").value,
-                contrasenia: document.querySelector("iContrasenia").value
+                contrasenia: document.querySelector("#iContrasenia").value
             })
         })
             .then(response => {
@@ -171,20 +200,46 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (response.status === 200) {
                     return response.json();
                 }
+                else if (response.status === 401) {
+                    document.getElementById("infoIncorrecta").style.display = "flex";
+                }
+                else if (response.status === 400) {
+                    return response.json();
+                }
+                else {
+                    //error interno probablemente
+                }
             })
             .then(data => {
                 console.log("Datos: ");
                 console.log(data);
-                if (data != null) {
-                    loggeado = true;
-                    document.cookie = "token=" + data.accessToken;
-                    document.cookie = "refreshtoken" + data.refreshToken;
-                }
-                else if (data === false) {
-                    document.getElementById("infoIncorrecta").style.display = "flex";
-                }
-                else {
-                    document.getElementById("alerta").style.display = "flex";
+                if (data !== undefined || data !== null) {
+                    if (data.message !== undefined) {
+                        if (data.message.includes("is not a valid")) {
+                            alerta.style.display = "flex";
+                            alertaT.innerHTML = "Algun campo ingresado no es texto, o valor valido";
+                        }
+                        else if (data.message.includes("were undefined")) {
+                            alerta.style.display = "flex";
+                            alertaT.innerHTML = "Algun campo es indefinido";
+                        }
+                        else if (data.message.includes("were empty strings")) {
+                            alerta.style.display = "flex";
+                            alertaT.innerHTML = "Algun campo esta vacio";
+                        }
+                        else {
+                            alerta.style.display = "flex";
+                            alertaT.innerHTML = "Error desconocido, porfavor intentarlo mas tarde";
+                        }
+                    }
+                    else {
+                        loggeado = true;
+                        document.cookie = "B-readyToken=" + data.accessToken;
+                        document.cookie = "B-readyRefreshToken=" + data.refreshToken;
+                        document.cookie = "ELPEPE=Ete sech";
+                        console.log("elpepe");
+                        console.log(document.cookie);
+                    }
                 }
             })
             .catch(err => {
