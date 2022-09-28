@@ -338,4 +338,4 @@ Status 500: Error interno
 
 # Referencias
 - [Codigos de status de http](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
-- Requiere Autenticacion: Mandar la token de acceso en el header `Authorization` de forma, `Bearer <token>`
+- Requiere Autenticacion: Mandar la token de acceso en el header `Authorization` de forma, `Bearer <token>`, es decir `Authorization: Bearer <token>`
