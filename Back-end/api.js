@@ -58,9 +58,16 @@ function generateAccessToken(payload) {
 
 app.post('/token', validateBody, (req, res) => {
     const refreshToken = req.body.token;
-    if (refreshToken === undefined) return res.sendStatus(401);
-    dbFunctions.tokenExists(req.body.email, refreshToken).then(result => {
+    const email = req.body.email;
+    if (refreshToken === undefined || email === undefined) return res.sendStatus(401);
+    if(refreshToken === "" || refreshToken === "null" || email === "") return res.sendStatus(401);
+
+    dbFunctions.tokenExists(email, refreshToken).then(result => {
         if (result === false) return res.sendStatus(403);
+        if (result instanceof Error) {
+            if (result.message.includes("is not a valid")) return res.status(400).json({ message: result.message })
+            return res.sendStatus(500);
+        }
         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
             if (err) return res.sendStatus(403);
             const accessToken = generateAccessToken({ email: user.email });
