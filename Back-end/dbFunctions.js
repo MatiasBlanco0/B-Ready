@@ -371,6 +371,26 @@ async function updateDoneExercises(userEmail, id, doneExcercices) {
     }
 }
 
+async function getAssignmentsByDay(userEmail, date){
+    // Input Validation
+    if(!checkEmail(userEmail)){
+        return new Error(userEmail + " is not a valid email");
+    }
+    if(!checkDate(date)){
+        return new Error(date + " is not a valid date");
+    }
+    try{
+        let sql = "SELECT tarea.id, tarea.nombre FROM tarea WHERE tarea.id=relacion_usuario_tarea.tarea AND relacion_usuario_tarea.email=? AND tarea.fechaentrega=?";
+        let promise = await sqlQuery(sql, [userEmail, date]);
+        if (promise instanceof Error){
+            return promise;
+        }
+        return promise;
+    } catch(err){
+        return err;
+    }
+}
+
 async function getStyle(user) {
     if (!checkEmail(user)) {
         return new Error(user + " is not a valid email");
@@ -415,6 +435,7 @@ module.exports = {
     addAssignment: addAssignment,
     addUserToAssignment: addUserToAssignment,
     getAssignments: getAssignments,
+    getAssignmentsByDay: getAssignmentsByDay,
     getAssignmentInfo: getAssignmentInfo,
     deleteAssignment: deleteAssignment,
     updateDoneExercises: updateDoneExercises,
