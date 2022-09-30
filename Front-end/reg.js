@@ -17,6 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let alerta = document.getElementById("alerta");
     let alertaT = document.getElementById("alertaT");
 
+    document.cookie = "ELPEPE=Ete sech";
+    console.log(document.cookie);
     //LA VARIABLE MAS IMPORTANTE :O
     let loggeado = false;
     
@@ -236,7 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         loggeado = true;
                         document.cookie = "B-readyToken=" + data.accessToken;
                         document.cookie = "B-readyRefreshToken=" + data.refreshToken;
-                        document.cookie = "ELPEPE=Ete sech";
+                        
                         console.log("elpepe");
                         console.log(document.cookie);
                     }
