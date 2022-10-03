@@ -320,7 +320,7 @@ form img{
 }
 
 .dificil{
-    background-color: red;
+    background-color: #ff6161;
     text-align: left;
     justify-content: center;
     padding: 10px;
@@ -328,7 +328,7 @@ form img{
 }
 
 .medio{
-    background-color: yellow;
+    background-color: #eeff00;
     text-align: left;
     justify-content: center;
     padding: 10px;
@@ -336,7 +336,7 @@ form img{
 }
 
 .facil{
-    background-color: lightgreen;
+    background-color: #2ee420;
     text-align: left;
     justify-content: center;
     padding: 10px;
@@ -344,7 +344,6 @@ form img{
 }
 
 #lista *{
-    color: #fff;
     font-size: 15px;
 }
 

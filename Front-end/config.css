@@ -179,3 +179,58 @@ section{
     border-radius: 5px;
 }
 
+/*perfilO*/
+#PerfilO{
+    box-shadow: 0 0 2px 1px #000;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 17px;
+}
+
+#Noti{
+    display: flex;
+    justify-content: space-between;
+}
+
+#checkNoti{
+    margin: 0 10px 0 10px;
+    width: 20px;
+    height: 20px;
+}
+
+#AyudaO{
+    display: flex;
+    flex-direction: column;
+}
+
+#Preguntas{
+    display: flex;
+    flex-direction: column;
+    font-size: 17px;
+}
+
+#AyudaO h1{
+    border-bottom: 1px solid #000;
+}
+
+#AyudaO p{
+    display: none;
+}
+
+.Displays{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 10px;
+    border-bottom: 1px solid #000;
+}
+
+.Displays img{
+    width: 20px;
+    height: 20px;
+    margin-left: 20px;
+}
+
+.Displays img:hover{
+    cursor: pointer;
+}

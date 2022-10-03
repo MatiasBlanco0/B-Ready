@@ -60,6 +60,7 @@ nav img{
     color: #000;
     background: 10px #cfe4ff;
     border-radius: 500px;
+    border: 2px dashed #000;
 }
 
 .Hyperlinks a:hover{
