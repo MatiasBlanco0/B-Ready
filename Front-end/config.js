@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const perfilO = document.getElementById("PerfilO");
     const estiloO = document.getElementById("EstiloO");
     const ayudaO = document.getElementById("AyudaO");
+    const dropdowns = document.querySelectorAll(".PD");
 
     visibilidad.addEventListener("focus", () => {
         visibilidadO.style.display = "flex";
@@ -48,4 +49,16 @@ document.addEventListener("DOMContentLoaded", () => {
         visibilidad.focus();
     }
 
+    dropdowns.forEach(DD => {
+        DD.addEventListener("click", function handleClick(event){
+            if(DD.getAttribute("rotate") == null){
+                if(DD.style.transform == "rotate(180deg)"){
+                    DD.style.transform = "rotate(0deg)";
+                }
+                else{
+                    DD.style.transform = "rotate(180deg)";
+                }
+            }
+        });
+    });
 });

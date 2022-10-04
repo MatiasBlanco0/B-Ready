@@ -215,6 +215,11 @@ section{
 
 #AyudaO p{
     display: none;
+    padding-bottom: 10px;
+}
+
+.lineas{
+    border-bottom: 1px solid #000;
 }
 
 .Displays{
@@ -222,7 +227,6 @@ section{
     flex-direction: row;
     justify-content: space-between;
     padding-top: 10px;
-    border-bottom: 1px solid #000;
 }
 
 .Displays img{
