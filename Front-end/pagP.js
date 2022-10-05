@@ -13,10 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.replace("https://campus.ort.edu.ar/secundaria/belgrano/tic");
     });
 
-    document.querySelector("#logB").addEventListener("click", () => {
-        window.location.replace("file:///C:/Users/47297821/Documents/Proyectos%20Unity/B-Ready/Front-end/reg.html");
-    });
-
     document.querySelector("#MenuIco").addEventListener("click", () => {
         if (!abierto) {
             Menu.style.top = "18.5%";
@@ -43,5 +39,18 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("pagina").style.filter = "none";
         }
     });
-});
+
+    // if("digamos que estoy logeado"){
+    //     document.querySelector(".Hyperlinks").style.display = "none";
+    //     document.querySelector("#MenuIco").style.display = "flex"
+    //     document.querySelector("#Menu").style.display = "flex";
+    //     document.querySelector(".log").style.display = "block";
+    //     document.querySelector(".log1").style.display = "block";
+    //     document.querySelector(".deslog").style.display = "none";
+    // }
+    // else{
+    //     document.querySelector(".log").style.display = "none";
+    //     document.querySelector(".deslog").style.display = "block";
+    // }
+}); 
 

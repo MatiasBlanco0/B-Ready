@@ -1,34 +1,39 @@
 <!DOCTYPE html>
 <html lang="es-AR">
+
 <head>
-    <!--Parte basica, incluyendo tipos de caracteres, titulo, autores y etiquetas-->
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta name="author" content="Marco Canton">
-    <meta name="description" content="B-Ready es una aplicación web que ayuda a la gente a organizar sus tareas de manera eficaz y ordenada">
-    <meta name="Copyright" content="None">
-    <title>Calendario</title>
+  <!--Parte basica, incluyendo tipos de caracteres, titulo, autores y etiquetas-->
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta name="author" content="Marco Canton">
+  <meta name="description"
+    content="B-Ready es una aplicación web que ayuda a la gente a organizar sus tareas de manera eficaz y ordenada">
+  <meta name="Copyright" content="None">
+  <title>Calendario</title>
 
-    <!--Visibilidad de la pagina-->
-    <meta name="robots" content="noindex">
-    <meta name="robots" content="nofollow">
+  <!--Visibilidad de la pagina-->
+  <meta name="robots" content="noindex">
+  <meta name="robots" content="nofollow">
 
-    <link rel="icon" href="icono.png">
-    <link rel="stylesheet" href="calendario.css">
+  <link rel="icon" href="icono.png">
+  <link rel="stylesheet" href="calendario.css">
 
-    <!--links para fonts-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+  <!--links para fonts-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
 </head>
+
 <body>
-    <header>
-        <nav>
-            <div class="navegador">
-                <img src="LOGO.png" alt="" id="logo">
-            </div>
-        </nav>
-    </header>
-    <section>
+  <header>
+    <nav>
+      <div class="navegador">
+        <img src="LOGO.png" alt="" id="logo">
+      </div>
+    </nav>
+  </header>
+  <section>
+    <!--<div class="contenido">-->
       <div id="tarea">
         <div class="top">
           <ul class="listaCosas">
@@ -59,40 +64,43 @@
           </div>
         </form>
       </div>
-      <div id="lista"></ul>
+      <div id="lista">
+        </ul>
       </div>
       <div id="fondoNegro">
         <img src="flechita.png" id="apertura">
       </div>
-        <div class="contenedor">
-            <div class="calendario">
-              <div class="mes">
-                <i class="fas fa-angle-left prev"></i>
-                <div class="fecha">
-                  <h1></h1>
-                  <p></p>
-                </div>
-                <i class="fas fa-angle-right next"></i>
-              </div>
-              <div class="diasSemana">
-                <div>Domingo</div>
-                <div>Lunes</div>
-                <div>Martes</div>
-                <div>Miercoles</div>
-                <div>Jueves</div>
-                <div>Viernes</div>
-                <div>Sabado</div>
-              </div>
-              <div class="dias">
-                  
-              </div>
+      <div class="contenedor">
+        <div class="calendario">
+          <div class="mes">
+            <i class="fas fa-angle-left prev"></i>
+            <div class="fecha">
+              <h1></h1>
+              <p></p>
             </div>
+            <i class="fas fa-angle-right next"></i>
           </div>
-        <div id="logeate">
-          <h3>Inicia sesión o registrate para utilizar la pagina</h3>
-          <a href="reg.html">Ir a la pagina</a>
+          <div class="diasSemana">
+            <div>Domingo</div>
+            <div>Lunes</div>
+            <div>Martes</div>
+            <div>Miercoles</div>
+            <div>Jueves</div>
+            <div>Viernes</div>
+            <div>Sabado</div>
+          </div>
+          <div class="dias">
+
+          </div>
         </div>
-    </section>
-    <script src="calendario.js"></script>
+      </div>
+      <div id="logeate">
+        <h3>Inicia sesión o registrate para utilizar la pagina</h3>
+        <a href="reg.html">Ir a la pagina</a>
+      </div>
+    <!--</div>-->
+  </section>
+  <script src="calendario.js"></script>
 </body>
+
 </html>

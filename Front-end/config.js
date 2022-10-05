@@ -10,6 +10,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const ayudaO = document.getElementById("AyudaO");
     const dropdowns = document.querySelectorAll(".PD");
 
+    document.querySelector("#logo").addEventListener("click", () => {
+        window.location.replace("index.html");
+    });
+
     visibilidad.addEventListener("focus", () => {
         visibilidadO.style.display = "flex";
         perfilO.style.display = "none";

@@ -130,4 +130,8 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("logeate").style.display = "flex";
     }
     fondo.click();
+
+    document.querySelector("#logo").addEventListener("click", () => {
+        window.location.replace("index.html");
+    });
 });

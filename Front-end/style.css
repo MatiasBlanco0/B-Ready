@@ -1,16 +1,16 @@
-@font-face{
+@font-face {
     font-family: SundayFont;
     src: url(SUNDAY.ttf);
 }
 
-*{
+* {
     font-family: SundayFont, Arial, Helvetica, sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-header{
+header {
     width: 100%;
     background-color: #4990e7;
     box-shadow: 0px 0px 4px 1px #000;
@@ -23,7 +23,7 @@ header{
     z-index: 9999;
 }
 
-.headerP{
+.headerP {
     max-width: 1200px;
     width: 100%;
     margin: auto;
@@ -32,26 +32,56 @@ header{
     align-items: center;
 }
 
-nav{
+nav {
     display: flex;
 }
 
-nav .Hyperlinks{
+nav .Hyperlinks {
     list-style: none;
     display: inline-flex;
 }
 
-nav img{
+nav img {
     display: none;
     justify-content: center;
     align-items: center;
+    width: 70px;
+    height: 70px;
 }
 
-#Menu{
+#Menu {
+    display: none;
+    flex-direction: column;
+    list-style: none;
+    background-color: #4990e7;
+    margin: 0;
+    position: fixed;
+    right: 0;
+    width: 100%;
+    text-align: center;
+    top: -100%;
+    z-index: 4;
+    border-bottom: 1px solid #000;
+}
+
+.log{
     display: none;
 }
 
-.Hyperlinks a{
+#Menu a {
+    background-color: none;
+    text-decoration: none;
+    color: #000;
+    transition: 0.7s ease;
+    font-size: 25px;
+    padding: 7px;
+}
+
+#Menu a:active {
+    background-color: #4990e7ea;
+}
+
+.Hyperlinks a {
     margin-right: 15px;
     padding: 5px 10px 5px 10px;
     letter-spacing: 1px;
@@ -60,48 +90,89 @@ nav img{
     color: #000;
     background: 10px #cfe4ff;
     border-radius: 500px;
-    border: 2px dashed #000;
+
 }
 
-.Hyperlinks a:hover{
-    text-shadow: 1px 2px #000;
+.Hyperlinks a::before {
+    border: 3px solid #000;
 }
 
-#logo{
+.Hyperlinks a:hover {
+    animation: completar 0.5s linear forwards;
+}
+
+@keyframes completar {
+    0% {
+        border-top: 3px solid #000;
+        border-right: 3px solid transparent;
+        border-bottom: 3px solid transparent;
+        border-left: 3px solid transparent;
+    }
+
+    25% {
+        border-top: 3px solid #000;
+        border-right: 3px solid #000;
+        border-bottom: 3px solid transparent;
+        border-left: 3px solid transparent;
+    }
+
+    50% {
+        border-top: 3px solid #000;
+        border-right: 3px solid #000;
+        border-bottom: 3px solid #000;
+        border-left: 3px solid transparent;
+    }
+
+    100% {
+        border-top: 3px solid #000;
+        border-right: 3px solid #000;
+        border-bottom: 3px solid #000;
+        border-left: 3px solid #000;
+    }
+}
+
+#logo {
     width: 200px;
     height: 80px;
 }
 
-#logo:hover{
-    cursor: pointer;
-}
-
-section{
+section {
     width: 100%;
     background-color: #6db1ff;
 }
 
-.P1{
+.P1 {
     width: 100%;
 }
 
-.texto{
+.texto {
     padding-top: 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     font-size: 35px;
+    animation: agrandar 2s;
 }
 
-.texto *{
+@keyframes agrandar {
+    0% {
+        font-size: 1px;
+    }
+
+    100% {
+        font-size: 35px;
+    }
+}
+
+.texto * {
     color: #fff;
     text-align: center;
     padding-top: 20px;
     text-shadow: 3px 4px #000;
 }
 
-.formulario{
+.formulario {
     padding-top: 400px;
     box-sizing: border-box;
     display: flex;
@@ -110,7 +181,7 @@ section{
     padding-bottom: 400px;
 }
 
-.FI{
+.FI {
     border-radius: 20%;
     flex-direction: column;
     width: 600px;
@@ -121,21 +192,21 @@ section{
     box-shadow: 5px 9px 30px #000;
 }
 
-form{
+form {
     display: flex;
     flex-direction: column;
 }
 
-form input::placeholder{
+form input::placeholder {
     color: #fff;
 }
 
-#prop{
+#prop {
     color: #fff;
     font-size: 30px;
 }
 
-.FI form input{
+.FI form input {
     height: 60px;
     text-align: center;
     border-radius: 500px;
@@ -144,16 +215,16 @@ form input::placeholder{
     background: transparent;
 }
 
-#mail{
+#mail {
     margin-right: 10px;
     font-size: 20px;
 }
 
-#Enviar:active{
+#Enviar:active {
     background-color: #008134;
 }
 
-#Enviar{
+#Enviar {
     border-radius: 500px;
     margin-top: 20px;
     font-size: 20px;
@@ -161,15 +232,15 @@ form input::placeholder{
     padding: 5px 20px 5px 20px;
 }
 
-#Enviar:hover{
+#Enviar:hover {
     cursor: pointer;
 }
 
-#mail:focus{
+#mail:focus {
     background-color: #fff;
 }
 
-#imagen{
+#imagen {
     margin-left: 100px;
     flex-direction: row;
     width: 600px;
@@ -177,13 +248,13 @@ form input::placeholder{
     box-shadow: 3px 3px 30px #000;
 }
 
-.formulario *{
+.formulario * {
     justify-content: center;
     align-items: center;
     display: flex;
 }
 
-.P2{
+.P2 {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -193,32 +264,32 @@ form input::placeholder{
     font-size: 20px;
 }
 
-.P2 *{
+.P2 * {
     display: flex;
     justify-content: center;
 }
 
-.arriba{
+.arriba {
     padding-top: 100px;
     display: flex;
     flex: row;
 }
 
-.abajo{
+.abajo {
     padding-top: 100px;
     padding-bottom: 100px;
     flex-direction: row;
     display: flex;
 }
 
-.textos{
+.textos {
     flex-direction: column;
     text-align: center;
     margin-left: 50px;
     margin-right: 50px;
 }
 
-.P2 img{
+.P2 img {
     max-width: 100%;
     width: 450px;
     margin-left: 50px;
@@ -227,7 +298,7 @@ form input::placeholder{
     border: 2px solid #000;
 }
 
-footer{
+footer {
     width: 100%;
     padding-bottom: 10px;
     display: flex;
@@ -235,7 +306,7 @@ footer{
     flex-direction: column;
 }
 
-.footerP{
+.footerP {
     display: flex;
     flex-direction: column;
     max-width: 1200px;
@@ -243,47 +314,47 @@ footer{
     width: 100%;
 }
 
-footer *{
+footer * {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-footer img{
+footer img {
     display: flex;
     height: 100px;
     width: 100px;
 }
 
-#imgI{
+#imgI {
     width: 150px;
 }
 
-#imgI:hover{
+#imgI:hover {
     cursor: pointer;
 }
 
-#imgD:hover{
+#imgD:hover {
     cursor: pointer;
 }
 
-footer div{
+footer div {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
 @media all and (max-width: 720px) {
-    
-    nav .Hyperlinks{
+
+    nav .Hyperlinks {
         display: none;
     }
 
-    nav img{
+    nav img {
         display: flex;
         width: 70px;
         height: 70px;
     }
 
-    #Menu{
+    #Menu {
         display: flex;
         flex-direction: column;
         list-style: none;
@@ -298,7 +369,7 @@ footer div{
         border-bottom: 1px solid #000;
     }
 
-    #Menu a{
+    #Menu a {
         background-color: none;
         text-decoration: none;
         color: #000;
@@ -307,123 +378,153 @@ footer div{
         padding: 7px;
     }
 
-    #Menu a:active{
+    #Menu a:active {
         background-color: #4990e7ea;
     }
 
-    .texto{
+    .texto {
         font-size: 25px;
         padding: 5px 5px 5px 5px;
     }
 
-    .formulario{
+    @keyframes agrandar {
+        0% {
+            font-size: 1px;
+        }
+
+        100% {
+            font-size: 25px;
+        }
+    }
+
+    .formulario {
         padding-top: 200px;
         padding-bottom: 200px;
         flex-direction: column;
     }
 
-    #imagen{
+    #imagen {
         margin-top: 50px;
         margin-left: 0px;
         justify-content: center;
-        align-items: center ;
+        align-items: center;
     }
 
-    .FI{
+    .FI {
         width: 500px;
         height: 600px;
     }
 
-    .FI form input{
+    .FI form input {
         height: 50px;
     }
 
-    #Enviar{
+    #Enviar {
         font-size: 15px;
     }
 
-    #mail{
+    #mail {
         margin-top: 10px;
         font-size: 15px;
     }
 
-    #prop{
+    #prop {
         font-size: 25px;
     }
 
-    .P2 *{
+    .P2 * {
         flex-direction: column;
         justify-content: center;
         align-items: center;
     }
 
-    #img1{
+    #img1 {
         margin-bottom: -30px;
     }
 
-    #img2{
+    #img2 {
         margin-top: 30px;
     }
 
-    .abajo{
+    .abajo {
         display: flex;
         flex-direction: column-reverse;
     }
 }
 
 @media all and (max-width: 480px) {
-    
-    
-    .texto{
+
+
+    .texto {
         font-size: 20px;
         padding: 7px 7px 7px 7px;
     }
 
-    .texto *{
+    @keyframes agrandar {
+        0% {
+            font-size: 1px;
+        }
+
+        100% {
+            font-size: 20px;
+        }
+    }
+
+    .texto * {
         text-shadow: 3px 3px #000;
     }
 
-    .FI{
+    .FI {
         width: 350px;
     }
 
-    #prop{
+    #prop {
         font-size: 20px;
         padding: 3px 3px 3px 3px;
     }
 
-    #mail{
+    #mail {
         width: 300px;
     }
 
-    #Enviar{
+    #Enviar {
         width: 100px;
     }
 
-    #imagen{
+    #imagen {
         width: 350px;
         margin-bottom: -100px;
     }
 }
 
 @media all and (max-width: 320px) {
-    .texto{
+    .texto {
         font-size: 15px;
     }
 
-    .texto *{
+    @keyframes agrandar {
+        0% {
+            font-size: 1px;
+        }
+
+        100% {
+            font-size: 15px;
+        }
+    }
+
+    .texto * {
         text-shadow: 1px 2px #000;
     }
 
-    .FI{
+    .FI {
         width: 300px;
     }
 
-    #prop{
+    #prop {
         font-size: 18px;
     }
 
-    #mail{
+    #mail {
         width: 250px;
     }
 

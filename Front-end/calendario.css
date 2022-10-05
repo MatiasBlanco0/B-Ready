@@ -96,7 +96,13 @@ section{
     align-items: center;
     display: flex;
     justify-content: center;
+    width: 100%;
 }
+
+/*.contenedido{
+    width: 100%;
+    max-width: 1200px;
+}*/
 
 #fondoNegro{
     display: flex;
@@ -317,6 +323,7 @@ form img{
     justify-content: center;
     align-items: center;
     margin-top: 15px;
+    border-bottom: 1px solid #000;
 }
 
 .dificil{
@@ -355,6 +362,12 @@ form img{
     padding: 5px;
     border-radius: 5px;
     width: 100%;
+}
+
+@media all and (max-height: 1080px){
+    section{
+        height: 100vh;
+    }
 }
 
 @media all and (max-width: 720px) {
