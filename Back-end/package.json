@@ -12,8 +12,8 @@
   "description": "API for B-Ready project",
   "main": "api.js",
   "scripts": {
-    "start": "node api.js",
-    "dev": "nodemon api.js"
+    "start": "node B-Ready_API.js",
+    "dev": "nodemon B-Ready_API.js"
   },
   "repository": {
     "type": "git",
