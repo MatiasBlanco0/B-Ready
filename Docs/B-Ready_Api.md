@@ -49,7 +49,7 @@ Abrir la consola de powershell, cmd o la terminal de vs code en la carpeta de ..
 
 ## Crear el archivo .env
 
-Ir a la carpeta Back-end del repositorio y crear un archivo con el nombre `.env`, ahi poner las dos cosas que te pase por mensaje privado del campus y tambien poner `ACCESS_TOKEN_LIFE=15m`.
+Ir a la carpeta Back-end del repositorio y crear un archivo con el nombre `.env`, ahi poner las dos cosas que te pase por mensaje privado del campus y tambien poner `ACCESS_TOKEN_LIFE=15`.
 
 # Endpoints
 
