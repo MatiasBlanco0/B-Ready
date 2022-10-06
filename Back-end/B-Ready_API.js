@@ -53,11 +53,11 @@ function authenticateToken(req, res, next) {
 }
 
 function generateAccessToken(payload) {
-    return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_LIFE });
+    return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_LIFE + 'm' });
 }
 
 app.post('/token', validateBody, (req, res) => {
-    const refreshToken = req.body.token;
+    const refreshToken = req.body.token.split(' ')[1];
     const email = req.body.email;
     if (refreshToken === undefined || email === undefined) return res.sendStatus(401);
     if (refreshToken === "" || refreshToken === "null" || email === "") return res.sendStatus(401);
@@ -166,7 +166,7 @@ app.get('/assignments', authenticateToken, (req, res) => {
 });
 
 app.post('/assignmentsByDay', authenticateToken, (req, res) => {
-    console.log("Recibi una request POST en /assignmentsByDay");
+    console.log("\nRecibi una request POST en /assignmentsByDay");
     const date = req.body.fecha;
     if (date === undefined) return res.status(400).json({ message: "Date was undefined" });
     if (date === "") return res.status(400).json({ message: "Date was an empty string" });
@@ -225,7 +225,6 @@ app.post('/user', authenticateToken, validateBody, (req, res) => {
     console.log("\nRecibi una request POST en /user");
     dbFunctions.addUserToAssignment(req.body.email, req.body.id, req.user.email)
         .then(result => {
-            console.log(result);
             if (result === true) return res.sendStatus(201);
             if (result instanceof Error) {
                 const message = result.message;
