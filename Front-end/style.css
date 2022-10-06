@@ -98,7 +98,7 @@ nav img {
 }
 
 .Hyperlinks a:hover {
-    animation: completar 0.5s linear forwards;
+    animation: completar 1s linear forwards;
 }
 
 @keyframes completar {
