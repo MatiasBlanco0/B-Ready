@@ -1,5 +1,5 @@
 // Import modules
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const sha256 = require('js-sha256');
 
 // Create a connection pool function
@@ -81,7 +81,7 @@ async function sqlQuery(query, values) {
     try {
         console.log("Running query");
         return await new Promise((resolve, reject) => {
-            pool.query(query, values, (err, result) => {
+            pool.execute(query, values, (err, result) => {
                 if (err) reject(err);
                 resolve(result);
             });
