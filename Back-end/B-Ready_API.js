@@ -60,7 +60,7 @@ app.post('/token', validateBody, (req, res) => {
     const refreshToken = req.body.token;
     const email = req.body.email;
     if (refreshToken === undefined || email === undefined) return res.sendStatus(401);
-    if(refreshToken === "" || refreshToken === "null" || email === "") return res.sendStatus(401);
+    if (refreshToken === "" || refreshToken === "null" || email === "") return res.sendStatus(401);
 
     dbFunctions.tokenExists(email, refreshToken).then(result => {
         if (result === false) return res.sendStatus(403);
@@ -71,7 +71,7 @@ app.post('/token', validateBody, (req, res) => {
         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
             if (err) return res.sendStatus(403);
             const accessToken = generateAccessToken({ email: user.email });
-            res.cookie("BReadyAccessToken", "Bearer " + accessToken, {expires: new Date() + process.env.ACCESS_TOKEN_LIFE * 60000, httpOnly: true})
+            res.cookie("BReadyAccessToken", "Bearer " + accessToken, { expires: new Date(Date.now() + process.env.ACCESS_TOKEN_LIFE * 60000), httpOnly: true })
             return res.json("Cookie Set");
         });
     });
@@ -112,9 +112,9 @@ app.post('/login', validateBody, (req, res) => {
             const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET);
             dbFunctions.updateToken(email, refreshToken)
                 .then(result => {
-                    if (result === true){
-                        res.cookie("BReadyAccessToken", "Bearer " + accessToken, {expires: new Date() + process.env.ACCESS_TOKEN_LIFE * 60000, httpOnly: true});
-                        res.cookie("BReadyRefreshToken", "Bearer " + refreshToken, {httpOnly: true});
+                    if (result === true) {
+                        res.cookie("BReadyAccessToken", "Bearer " + accessToken, { expires: new Date(Date.now() + process.env.ACCESS_TOKEN_LIFE * 60000), httpOnly: true });
+                        res.cookie("BReadyRefreshToken", "Bearer " + refreshToken, { httpOnly: true });
                         return res.json("Cookies set");
                     }
                     return res.sendStatus(500);
