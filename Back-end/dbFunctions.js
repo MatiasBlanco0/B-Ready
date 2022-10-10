@@ -1,28 +1,31 @@
 // Import modules
+require('dotenv').config();
 const mysql = require('mysql2');
 const sha256 = require('js-sha256');
-
+let pool;
 // Create a connection pool function
 //ORT
-const pool = mysql.createPool({
-    connectionLimit: 100,
-    host: "localhost",
-    port: 3306,
-    user: "root",
-    password: "rootroot",
-    database: "b-ready"
-});
+if (process.env.MODE === "ORT") {
+    pool = mysql.createPool({
+        connectionLimit: 100,
+        host: "localhost",
+        port: 3306,
+        user: "root",
+        password: "rootroot",
+        database: "b-ready"
+    });
+}
 //Home
-/*
-const pool = mysql.createPool({
-    connectionLimit: 100,
-    host: "localhost",
-    port: 3307,
-    user: "breadyusr",
-    password: "yes!bready",
-    database: "breadydb"
-});
-*/
+else if (process.env.MODE === "HOME") {
+    pool = mysql.createPool({
+        connectionLimit: 100,
+        host: "localhost",
+        port: 3307,
+        user: "breadyusr",
+        password: "yes!bready",
+        database: "breadydb"
+    });
+}
 // Don't use this function, it's only for testing purposes
 function closePool() {
     pool.end((err) => {
@@ -371,22 +374,22 @@ async function updateDoneExercises(userEmail, id, doneExcercices) {
     }
 }
 
-async function getAssignmentsByDay(userEmail, date){
+async function getAssignmentsByDay(userEmail, date) {
     // Input Validation
-    if(!checkEmail(userEmail)){
+    if (!checkEmail(userEmail)) {
         return new Error(userEmail + " is not a valid email");
     }
-    if(!checkDate(date)){
+    if (!checkDate(date)) {
         return new Error(date + " is not a valid date");
     }
-    try{
+    try {
         let sql = "SELECT tarea.id, tarea.nombre FROM tarea INNER JOIN relacion_usuario_tarea ON tarea.id=relacion_usuario_tarea.tarea WHERE relacion_usuario_tarea.email=? AND tarea.fechaentrega=?";
         let promise = await sqlQuery(sql, [userEmail, date]);
-        if (promise instanceof Error){
+        if (promise instanceof Error) {
             return promise;
         }
         return promise;
-    } catch(err){
+    } catch (err) {
         return err;
     }
 }
