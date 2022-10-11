@@ -89,6 +89,13 @@ nav{
     cursor: pointer;
 }
 
+#error{
+    color: red;
+    display: flex;
+    font-size: 15px;
+    padding-top: 5px;
+}
+
 section{
     background-color: #6db1ff;
     padding-top: 15px;

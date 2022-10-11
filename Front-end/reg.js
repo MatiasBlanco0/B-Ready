@@ -233,12 +233,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         }
                     }
                     else {
-                        loggeado = true;
-                        //document.cookie = "B-readyToken=" + data.accessToken;
-                        //document.cookie = "B-readyRefreshToken=" + data.refreshToken;
-                        
-                        console.log("elpepe");
-                        console.log(document.cookie);
+                        window.location.replace("calendario.html");
                     }
                 }
             })
