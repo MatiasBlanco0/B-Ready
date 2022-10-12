@@ -83,7 +83,7 @@ app.post('/token', validateBody, (req, res) => {
         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
             if (err) return res.sendStatus(403);
             const accessToken = generateAccessToken({ email: user.email });
-            return res.status(201).cookie("BReadyAccessToken", "Bearer " + accessToken, { expires: new Date(Date.now() + process.env.ACCESS_TOKEN_LIFE * 60000), httpOnly: true });
+            return res.cookie("BReadyAccessToken", "Bearer " + accessToken, { expires: new Date(Date.now() + process.env.ACCESS_TOKEN_LIFE * 60000), httpOnly: true, sameSite: 'lax' });
         });
     });
 });
@@ -95,7 +95,7 @@ app.delete('/logout', validateBody, (req, res) => {
         if (result instanceof Error) return res.sendStatus(500);
 
         dbFunctions.updateToken(email, "null").then(result => {
-            if (result === true) return res.clearCookie("BReadyAccessToken", { httpOnly: true }).clearCookie("BReadyRefreshToken", { httpOnly: true }).sendStatus(204);
+            if (result === true) return res.clearCookie("BReadyAccessToken", { httpOnly: true, sameSite: 'lax' }).clearCookie("BReadyRefreshToken", { httpOnly: true, sameSite: 'lax' }).sendStatus(204);
             if (result instanceof Error) return res.status(400).json({ message: result.message });
             return res.sendStatus(500);
         });
@@ -124,8 +124,8 @@ app.post('/login', validateBody, (req, res) => {
             dbFunctions.updateToken(email, refreshToken)
                 .then(result => {
                     if (result === true) {
-                        return res.status(201).cookie("BReadyAccessToken", "Bearer " + accessToken, { expires: new Date(Date.now() + process.env.ACCESS_TOKEN_LIFE * 60000), httpOnly: true })
-                            .cookie("BReadyRefreshToken", "Bearer " + refreshToken, { httpOnly: true });
+                        return res.cookie("BReadyAccessToken", "Bearer " + accessToken, { expires: new Date(Date.now() + process.env.ACCESS_TOKEN_LIFE * 60000), httpOnly: true, sameSite: 'lax' })
+                            .cookie("BReadyRefreshToken", "Bearer " + refreshToken, { httpOnly: true, sameSite: 'lax' });
                     }
                     return res.sendStatus(500);
                 });
