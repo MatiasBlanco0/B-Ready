@@ -14,7 +14,19 @@ const w3 = 1;
 const app = express();
 const port = process.env.PORT || 9000;
 
-app.use(cors());
+const whitelist = ['http://127.0.0.1:5500', 'http://localhost:5500'];
+const corsOptions = {
+    credentials: true,
+    origin: (origin, callback) => {
+        if (whitelist.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    }
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 function prepareObj(error) {
@@ -71,8 +83,8 @@ app.post('/token', validateBody, (req, res) => {
         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
             if (err) return res.sendStatus(403);
             const accessToken = generateAccessToken({ email: user.email });
-            res.cookie("BReadyAccessToken", "Bearer " + accessToken, { expires: new Date(Date.now() + process.env.ACCESS_TOKEN_LIFE * 60000), httpOnly: true })
-            return res.json("Cookie Set");
+            return res.cookie("BReadyAccessToken", "Bearer " + accessToken, { expires: new Date(Date.now() + process.env.ACCESS_TOKEN_LIFE * 60000), httpOnly: true, sameSite: 'lax', domain: 'http://localhost:5500' })
+            .sendStatus(200);
         });
     });
 });
@@ -84,7 +96,7 @@ app.delete('/logout', validateBody, (req, res) => {
         if (result instanceof Error) return res.sendStatus(500);
 
         dbFunctions.updateToken(email, "null").then(result => {
-            if (result === true) return res.sendStatus(204);
+            if (result === true) return res.clearCookie("BReadyAccessToken", { httpOnly: true, sameSite: 'lax', domain: 'http://localhost:5500' }).clearCookie("BReadyRefreshToken", { httpOnly: true, sameSite: 'lax', domain: 'http://localhost:5500' }).sendStatus(204);
             if (result instanceof Error) return res.status(400).json({ message: result.message });
             return res.sendStatus(500);
         });
@@ -113,9 +125,9 @@ app.post('/login', validateBody, (req, res) => {
             dbFunctions.updateToken(email, refreshToken)
                 .then(result => {
                     if (result === true) {
-                        res.cookie("BReadyAccessToken", "Bearer " + accessToken, { expires: new Date(Date.now() + process.env.ACCESS_TOKEN_LIFE * 60000), httpOnly: true });
-                        res.cookie("BReadyRefreshToken", "Bearer " + refreshToken, { httpOnly: true });
-                        return res.json("Cookies set");
+                        return res.cookie("BReadyAccessToken", "Bearer " + accessToken, { expires: new Date(Date.now() + process.env.ACCESS_TOKEN_LIFE * 60000), httpOnly: true, sameSite: 'lax', domain: 'http://localhost:5500' })
+                            .cookie("BReadyRefreshToken", "Bearer " + refreshToken, { httpOnly: true, sameSite: 'lax', domain: 'http://localhost:5500' })
+                            .sendStatus(200);
                     }
                     return res.sendStatus(500);
                 });

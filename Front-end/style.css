@@ -68,6 +68,10 @@ nav img {
     display: none;
 }
 
+.log1{
+    display: none;
+}
+
 #Menu a {
     background-color: none;
     text-decoration: none;

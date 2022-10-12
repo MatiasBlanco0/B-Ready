@@ -170,6 +170,10 @@ section{
     margin-bottom: 20px;
 }
 
+.Conjuntos h3{
+    text-decoration: underline;
+}
+
 .Conjuntos input{
     height: 20px;
     width: 20px;
