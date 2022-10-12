@@ -71,8 +71,8 @@ app.post('/token', validateBody, (req, res) => {
         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
             if (err) return res.sendStatus(403);
             const accessToken = generateAccessToken({ email: user.email });
-            res.cookie("BReadyAccessToken", "Bearer " + accessToken, { expires: new Date(Date.now() + process.env.ACCESS_TOKEN_LIFE * 60000), httpOnly: true })
-            return res.json("Cookie Set");
+            return res.cookie("BReadyAccessToken", "Bearer " + accessToken, { expires: new Date(Date.now() + process.env.ACCESS_TOKEN_LIFE * 60000), httpOnly: true })
+            .json("Cookie Set");
         });
     });
 });
@@ -113,9 +113,9 @@ app.post('/login', validateBody, (req, res) => {
             dbFunctions.updateToken(email, refreshToken)
                 .then(result => {
                     if (result === true) {
-                        res.cookie("BReadyAccessToken", "Bearer " + accessToken, { expires: new Date(Date.now() + process.env.ACCESS_TOKEN_LIFE * 60000), httpOnly: true });
-                        res.cookie("BReadyRefreshToken", "Bearer " + refreshToken, { httpOnly: true });
-                        return res.json("Cookies set");
+                        return res.cookie("BReadyAccessToken", "Bearer " + accessToken, { expires: new Date(Date.now() + process.env.ACCESS_TOKEN_LIFE * 60000), httpOnly: true })
+                        .cookie("BReadyRefreshToken", "Bearer " + refreshToken, { httpOnly: true })
+                        .json("Cookies set");
                     }
                     return res.sendStatus(500);
                 });
