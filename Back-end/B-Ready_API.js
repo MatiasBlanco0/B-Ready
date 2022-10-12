@@ -14,7 +14,19 @@ const w3 = 1;
 const app = express();
 const port = process.env.PORT || 9000;
 
-app.use(cors());
+const whitelist = ['http://127.0.0.1:5500', 'http://localhost:5500'];
+const corsOptions = {
+    credentials: true,
+    origin: (origin, callback) => {
+        if (whitelist.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    }
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 function prepareObj(error) {
@@ -71,7 +83,7 @@ app.post('/token', validateBody, (req, res) => {
         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
             if (err) return res.sendStatus(403);
             const accessToken = generateAccessToken({ email: user.email });
-            return res.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5500").status(201).cookie("BReadyAccessToken", "Bearer " + accessToken, { expires: new Date(Date.now() + process.env.ACCESS_TOKEN_LIFE * 60000), httpOnly: true });
+            return res.status(201).cookie("BReadyAccessToken", "Bearer " + accessToken, { expires: new Date(Date.now() + process.env.ACCESS_TOKEN_LIFE * 60000), httpOnly: true });
         });
     });
 });
@@ -112,7 +124,7 @@ app.post('/login', validateBody, (req, res) => {
             dbFunctions.updateToken(email, refreshToken)
                 .then(result => {
                     if (result === true) {
-                        return res.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5500").status(201).cookie("BReadyAccessToken", "Bearer " + accessToken, { expires: new Date(Date.now() + process.env.ACCESS_TOKEN_LIFE * 60000), httpOnly: true })
+                        return res.status(201).cookie("BReadyAccessToken", "Bearer " + accessToken, { expires: new Date(Date.now() + process.env.ACCESS_TOKEN_LIFE * 60000), httpOnly: true })
                             .cookie("BReadyRefreshToken", "Bearer " + refreshToken, { httpOnly: true });
                     }
                     return res.sendStatus(500);
