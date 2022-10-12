@@ -147,7 +147,6 @@ app.get('/assignments', authenticateToken, (req, res) => {
     dbFunctions.getAssignments(req.user.email)
         .then(result => {
             if (result instanceof Error) return res.sendStatus(500);
-            if (Object.keys(result).length === 0) return res.sendStatus(204);
 
             const assignments = result.map(assignment => {
                 let newAssignment = {};
@@ -158,6 +157,7 @@ app.get('/assignments', authenticateToken, (req, res) => {
                 newAssignment.materia = assignment.materia;
                 newAssignment.fechaEntrega = assignment.fechaentrega;
                 newAssignment.ejHoy = Math.floor((assignment.cantej - assignment.cantejhechos) / daysLeft);
+                newAssignment.dificultad = assignment.dificultad;
                 newAssignment.prioridad = w1 * newAssignment.ejHoy - w2 * daysLeft + w3 * assignment.dificultad;
                 return newAssignment;
             });
