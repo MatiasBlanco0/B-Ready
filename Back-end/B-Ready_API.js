@@ -83,7 +83,8 @@ app.post('/token', validateBody, (req, res) => {
         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
             if (err) return res.sendStatus(403);
             const accessToken = generateAccessToken({ email: user.email });
-            return res.cookie("BReadyAccessToken", "Bearer " + accessToken, { expires: new Date(Date.now() + process.env.ACCESS_TOKEN_LIFE * 60000), httpOnly: true, sameSite: 'lax' });
+            return res.cookie("BReadyAccessToken", "Bearer " + accessToken, { expires: new Date(Date.now() + process.env.ACCESS_TOKEN_LIFE * 60000), httpOnly: true, sameSite: 'lax' })
+            .sendStatus(200);
         });
     });
 });
@@ -125,7 +126,8 @@ app.post('/login', validateBody, (req, res) => {
                 .then(result => {
                     if (result === true) {
                         return res.cookie("BReadyAccessToken", "Bearer " + accessToken, { expires: new Date(Date.now() + process.env.ACCESS_TOKEN_LIFE * 60000), httpOnly: true, sameSite: 'lax' })
-                            .cookie("BReadyRefreshToken", "Bearer " + refreshToken, { httpOnly: true, sameSite: 'lax' });
+                            .cookie("BReadyRefreshToken", "Bearer " + refreshToken, { httpOnly: true, sameSite: 'lax' })
+                            .sendStatus(200);
                     }
                     return res.sendStatus(500);
                 });
