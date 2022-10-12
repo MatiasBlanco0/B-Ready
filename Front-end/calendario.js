@@ -250,6 +250,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (refreshToken != null) {
             fetch("http://localhost:9000/token", {
                 method: "POST",
+                credentials: "include",
                 headers: {
                     "Accept": "application/json",
                     "Content-Type": "application/json"
@@ -279,6 +280,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         else {
             //window.location.replace("index.html");
+            console.log("elpepe");
         }
     }
     else {

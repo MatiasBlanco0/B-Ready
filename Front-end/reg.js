@@ -185,6 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
         //logIn
         fetch("http://localhost:9000/login", {
             method: "post",
+            credentials: "include",
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json"
