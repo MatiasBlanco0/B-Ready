@@ -56,6 +56,11 @@ function generateAccessToken(payload) {
     return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_LIFE + 'm' });
 }
 
+app.all(['/login','/token'], (req,res,next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:5500');
+    next();
+})
+
 app.post('/token', validateBody, (req, res) => {
     const refreshToken = req.body.token.split(' ')[1];
     const email = req.body.email;
