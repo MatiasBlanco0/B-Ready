@@ -393,10 +393,10 @@ form img{
         height: 100%; 
     }
 
-    .contenido{
-        padding-top: 100px;
+    section{
+        background-color: #6db1ff;
     }
-    
+
     .calendario{
         width: 500px;
         height: 575px;
@@ -453,7 +453,7 @@ form img{
     }
 
     #formulario{
-        height: 450px;
+        height: 500px;
         bottom: 7.5%;
     }
 }
@@ -521,7 +521,36 @@ form img{
     }
 
     #formulario{
-        height: 350px;
-        bottom: 7.5%;
+        height: 500px;
+        bottom: 10%;
+    }
+}
+
+@media all and (max-width: 320px){
+    .contenido{
+        flex-direction: column;
+    }
+
+    #fondoNegro{
+        width: 150px;
+        height: 40px;
+    }
+
+    #lista{
+        width: 300px;
+        height: 200px;
+    }
+
+    #apertura{
+        transform: rotate(180deg);
+    }
+
+    #tarea{
+        width: 300px;
+    }
+
+    #cruz{
+        width: 25px;
+        height: 25px;
     }
 }
