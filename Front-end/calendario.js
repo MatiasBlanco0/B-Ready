@@ -101,21 +101,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 })
             })
                 .then(response => {
-                    if(response.status === 200){
+                    if (response.status === 200) {
                         return response.json();
                     }
-                    else if(response.status === 403){
+                    else if (response.status === 403) {
                         location.reload();
                     }
-                    else{ //errores 401, 400 y 500 
+                    else { //errores 401, 400 y 500 
                         window.location.replace("index.html");
                     }
                 })
-                .then(data =>  {
-                    if(data.length !== 0){
-                        tareasDiarias += `<li class="displays">${data.nombre}</li>`; 
+                .then(data => {
+                    if (data.length !== 0) {
+                        tareasDiarias += `<li class="displays">${data.nombre}</li>`;
                     }
-                    else{
+                    else {
                         tareasDiarias += `<li>Aun no hay tareas ingresadas</li>`;
                     }
                     listaCosas.innerHTML = tareasDiarias;
@@ -136,13 +136,25 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     fondo.addEventListener("click", () => {
-        if (lista.style.display === "none") {
-            document.getElementById("apertura").style.transform = "rotate(-90deg)";
-            lista.style.display = "flex";
+        if (window.screen.width > 320) {
+            if (lista.style.display === "none") {
+                document.getElementById("apertura").style.transform = "rotate(-90deg)";
+                lista.style.display = "flex";
+            }
+            else {
+                document.getElementById("apertura").style.transform = "rotate(90deg)";
+                lista.style.display = "none";
+            }
         }
         else {
-            document.getElementById("apertura").style.transform = "rotate(90deg)";
-            lista.style.display = "none";
+            if (lista.style.display === "none") {
+                document.getElementById("apertura").style.transform = "rotate(0deg)";
+                lista.style.display = "flex";
+            }
+            else {
+                document.getElementById("apertura").style.transform = "rotate(180deg)";
+                lista.style.display = "none";
+            }
         }
     });
 
@@ -164,16 +176,16 @@ document.addEventListener("DOMContentLoaded", () => {
             })
         })
             .then(response => {
-                if(response.status === 201){ //todo joya
+                if (response.status === 201) { //todo joya
                     location.reload();
                 }
-                else if(response.status === 400){ //error en campos
+                else if (response.status === 400) { //error en campos
                     document.querySelector("#error").display = "flex";
                 }
-                else if(response.status === 403){ //autenticación
+                else if (response.status === 403) { //autenticación
                     location.reload(); //hace un refresh para que el codigo de la refresh token se ejecute
                 }
-                else{ //error interno, etc
+                else { //error interno, etc
                     location.reload();
                 }
             })
@@ -290,7 +302,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 "Authorization": accessToken
             }
         })
-            .then(response => { 
+            .then(response => {
                 if (response.status === 200) {
                     return response.json();
                 }
