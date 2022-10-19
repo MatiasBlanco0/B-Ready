@@ -11,6 +11,10 @@ const w1 = 1;
 const w2 = 1;
 const w3 = 1;
 
+// Cookie settings
+const accessTokenConfig = { expires: new Date(Date.now() + process.env.ACCESS_TOKEN_LIFE * 60000), httpOnly: true, sameSite: 'lax', domain: 'http://127.0.0.1:5500' };
+const refreshTokenConfig = { httpOnly: true, sameSite: 'lax', domain: 'http://127.0.0.1:5500' };
+
 // Create a new express application
 const app = express();
 const port = process.env.PORT || 9000;
@@ -89,7 +93,7 @@ app.post('/token', validateBody, (req, res) => {
         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
             if (err) return res.sendStatus(403);
             const accessToken = generateAccessToken({ email: user.email });
-            return res.cookie("BReadyAccessToken", "Bearer " + accessToken, { expires: new Date(Date.now() + process.env.ACCESS_TOKEN_LIFE * 60000), httpOnly: true, sameSite: 'lax', domain: 'http://127.0.0.1:5500' })
+            return res.cookie("BReadyAccessToken", "Bearer " + accessToken, accessTokenConfig)
             .sendStatus(200);
         });
     });
@@ -102,7 +106,7 @@ app.delete('/logout', validateBody, (req, res) => {
         if (result instanceof Error) return res.sendStatus(500);
 
         dbFunctions.updateToken(email, "null").then(result => {
-            if (result === true) return res.clearCookie("BReadyAccessToken", { httpOnly: true, sameSite: 'lax', domain: 'http://127.0.0.1:5500' }).clearCookie("BReadyRefreshToken", { httpOnly: true, sameSite: 'lax', domain: 'http://127.0.0.1:5500' }).sendStatus(204);
+            if (result === true) return res.clearCookie("BReadyAccessToken", { httpOnly: true, sameSite: 'lax', domain: 'http://127.0.0.1:5500' }).clearCookie("BReadyRefreshToken", refreshTokenConfig).sendStatus(204);
             if (result instanceof Error) return res.status(400).json({ message: result.message });
             return res.sendStatus(500);
         });
@@ -131,8 +135,8 @@ app.post('/login', validateBody, (req, res) => {
             dbFunctions.updateToken(email, refreshToken)
                 .then(result => {
                     if (result === true) {
-                        return res.cookie("BReadyAccessToken", "Bearer " + accessToken, { expires: new Date(Date.now() + process.env.ACCESS_TOKEN_LIFE * 60000), httpOnly: true, sameSite: 'lax', domain: 'http://127.0.0.1:5500' })
-                            .cookie("BReadyRefreshToken", "Bearer " + refreshToken, { httpOnly: true, sameSite: 'lax', domain: 'http://127.0.0.1:5500' })
+                        return res.cookie("BReadyAccessToken", "Bearer " + accessToken, accessTokenConfig)
+                            .cookie("BReadyRefreshToken", "Bearer " + refreshToken, refreshTokenConfig)
                             .sendStatus(200);
                     }
                     return res.sendStatus(500);
