@@ -76,6 +76,10 @@ header{
     align-items: center;
 }
 
+body{
+    background-color: #6db1ff;
+}
+
 nav{
     display: flex;
 }
@@ -389,6 +393,10 @@ form img{
 }
 
 @media all and (max-width: 720px) {
+    body{
+        background-color: #6db1ff;
+    }
+    
     .contenedor{
         height: 100%; 
     }

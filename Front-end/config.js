@@ -128,18 +128,48 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    let estiloSelected = "";
+    let temaSelected = "";
+
+    function activado(nombre) {
+        var elemento = document.getElementsByName(nombre);
+        console.log(nombre);
+
+        for (i = 0; i < elemento.length; i++) {
+            if (elemento[i].checked) {
+                if (nombre == "Estilos") {
+                    estiloSelected = elemento[i].value;
+                }
+                else if (nombre == "Tema") {
+                    temaSelected = elemento[i].value;
+                }
+            }
+        }
+    }
+
     variables.forEach(V => {
         V.addEventListener("change", () => {
-            fetch("http://localhost:9000/style", {
-                method: "POST",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify ({
-
+            activado(V.getAttribute("name"));
+            if (temaSelected != "" && estiloSelected != "") {
+                fetch("http://localhost:9000/style", {
+                    method: "POST",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        estilo: temaSelected + "-" + estiloSelected
+                    })
                 })
-            })
+                    .then(response => {
+                        if(response.status === 201){ //se modifico el estilo correctamente
+
+                        }
+                        else{ //otros errores (revisar con blanco)
+
+                        }
+                    })
+            }
         });
     })
 });

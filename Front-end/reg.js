@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             })
             .then(data => {
-                if (data !== undefined || data !== null) {
+                if (data !== undefined && data !== null) {
                     if (data.message.includes("already is a user")) {
                         alerta.style.display = "flex";
                         alertaT.innerHTML = "El usuario que se a intentado crear ya existe";
@@ -199,7 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log(typeof response);
                 console.log(response);
                 if (response.status === 200) {
-                    return response.json();
+                    window.location.replace("calendario.html");
                 }
                 else if (response.status === 401) {
                     document.getElementById("infoIncorrecta").style.display = "flex";
@@ -214,7 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(data => {
                 console.log("Datos: ");
                 console.log(data);
-                if (data !== undefined || data !== null) {
+                if (data !== undefined && data !== null) {
                     if (data.message !== undefined) {
                         if (data.message.includes("is not a valid")) {
                             alerta.style.display = "flex";
@@ -232,9 +232,6 @@ document.addEventListener("DOMContentLoaded", () => {
                             alerta.style.display = "flex";
                             alertaT.innerHTML = "Error desconocido, porfavor intentarlo mas tarde";
                         }
-                    }
-                    else {
-                        window.location.replace("calendario.html");
                     }
                 }
             })
