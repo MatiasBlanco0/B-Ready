@@ -12,8 +12,8 @@ const w2 = 1;
 const w3 = 1;
 
 // Cookie settings
-const accessTokenConfig = { maxAge: process.env.ACCESS_TOKEN_LIFE * 60000, httpOnly: true, sameSite: 'lax', domain:'127.0.0.1:9000' };
-const refreshTokenConfig = { httpOnly: true, sameSite: 'lax', domain:'127.0.0.1:9000' };
+const accessTokenConfig = { maxAge: process.env.ACCESS_TOKEN_LIFE * 60000, httpOnly: false, sameSite: 'lax', domain:'127.0.0.1:9000' }; // CAMBIAR HTTPONLY A TRUE, TAMBIEN EN LA LINEA 120
+const refreshTokenConfig = { httpOnly: false, sameSite: 'lax', domain:'127.0.0.1:9000' }; // CAMBIAR HTTPONLY A TRUE
 
 // Create a new express application
 const app = express();
@@ -23,6 +23,7 @@ const whitelist = ['http://127.0.0.1:5500', 'http://localhost:5500', 'http://loc
 const corsOptions = {
     credentials: true,
     origin: (origin, callback) => {
+        console.log("Origen: ", origin);
         if (whitelist.indexOf(origin) !== -1) {
             callback(null, true);
         } else {
@@ -81,7 +82,7 @@ function generateAccessToken(payload) {
 app.get('/cookie', (req, res) => {
     console.log(req.cookies);
     console.log(req.signedCookies);
-    res.cookie("Test", "TEST", {maxAge: 30000});
+    res.cookie("Test", "TEST", {maxAge: 30000, sameSite: 'lax'});
     res.send(req.cookies);
 });
 
@@ -117,7 +118,7 @@ app.delete('/logout', validateBody, (req, res) => {
         if (result instanceof Error) return res.sendStatus(500);
 
         dbFunctions.updateToken(email, "null").then(result => {
-            if (result === true) return res.clearCookie("BReadyAccessToken", { httpOnly: true, sameSite: 'lax', domain:'127.0.0.1:9000' })
+            if (result === true) return res.clearCookie("BReadyAccessToken", { httpOnly: false, sameSite: 'lax', domain:'127.0.0.1:9000' })
                 .clearCookie("BReadyRefreshToken", refreshTokenConfig).sendStatus(204);
             if (result instanceof Error) return res.status(400).json({ message: result.message });
             return res.sendStatus(500);
