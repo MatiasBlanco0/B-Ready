@@ -108,6 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("LogIn").style.display = "none";
             document.getElementById("HyperPol").style.display = "flex";
             document.getElementById("HyperReg").style.display = "none";
+            document.querySelector(".definidor").innerHTML = "Registrarse";
             pantalla = 1;
         }
         else {
@@ -115,6 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("Register").style.display = "none";
             document.getElementById("HyperReg").style.display = "flex";
             document.getElementById("HyperPol").style.display = "none";
+            document.querySelector(".definidor").innerHTML = "Iniciar Sesión";
             pantalla = 0;
         }
     }
@@ -185,7 +187,6 @@ document.addEventListener("DOMContentLoaded", () => {
         //logIn
         fetch("http://localhost:9000/login", {
             method: "post",
-            credentials: "include",
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json"

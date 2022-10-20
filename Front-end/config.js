@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (DD.getAttribute("rotate") == null) {
                 if (DD.style.transform == "rotate(180deg)") {
                     DD.style.transform = "rotate(0deg)";
-                }
+                }//node parent, selectores de dom
                 else {
                     DD.style.transform = "rotate(180deg)";
                 }
