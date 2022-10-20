@@ -304,7 +304,8 @@ app.get('/style', authenticateToken, (req, res) => {
     dbFunctions.getStyle(req.user.email)
         .then(result => {
             if (result instanceof Error) return res.sendStatus(500);
-            return res.json(prepareObj(result[0]));
+            if (result.length === 0) return res.sendStatus(404);
+            return res.json(result[0]);
         });
 });
 
