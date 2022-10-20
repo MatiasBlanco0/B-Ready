@@ -26,13 +26,6 @@ else if (process.env.MODE === "HOME") {
         database: "breadydb"
     });
 }
-// Don't use this function, it's only for testing purposes
-function closePool() {
-    pool.end((err) => {
-        if (err) throw err;
-        console.log("Closing pool");
-    });
-}
 
 function checkEmail(email) {
     const emailRegEx = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
