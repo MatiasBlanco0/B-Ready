@@ -12,8 +12,8 @@ const w2 = 1;
 const w3 = 1;
 
 // Cookie settings
-const accessTokenConfig = { maxAge: process.env.ACCESS_TOKEN_LIFE * 60000, httpOnly: false, sameSite: 'lax', domain:'127.0.0.1:9000' }; // CAMBIAR HTTPONLY A TRUE, TAMBIEN EN LA LINEA 120
-const refreshTokenConfig = { httpOnly: false, sameSite: 'lax', domain:'127.0.0.1:9000' }; // CAMBIAR HTTPONLY A TRUE
+const accessTokenConfig = { maxAge: process.env.ACCESS_TOKEN_LIFE * 60000, httpOnly: false, sameSite: 'lax', domain:'localhost:9000' }; // CAMBIAR HTTPONLY A TRUE, TAMBIEN EN LA LINEA 120
+const refreshTokenConfig = { httpOnly: false, sameSite: 'lax', domain:'localhost:9000' }; // CAMBIAR HTTPONLY A TRUE
 
 // Create a new express application
 const app = express();
@@ -99,7 +99,7 @@ app.delete('/logout', validateBody, (req, res) => {
         if (result instanceof Error) return res.sendStatus(500);
 
         dbFunctions.updateToken(email, "null").then(result => {
-            if (result === true) return res.clearCookie("BReadyAccessToken", { httpOnly: false, sameSite: 'lax', domain:'127.0.0.1:9000' })
+            if (result === true) return res.clearCookie("BReadyAccessToken", { httpOnly: false, sameSite: 'lax', domain:'localhost:9000' })
                 .clearCookie("BReadyRefreshToken", refreshTokenConfig).sendStatus(204);
             if (result instanceof Error) return res.status(400).json({ message: result.message });
             return res.sendStatus(500);
