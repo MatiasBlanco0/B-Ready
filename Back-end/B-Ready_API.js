@@ -19,33 +19,14 @@ const refreshTokenConfig = { httpOnly: false, sameSite: 'lax', domain:'127.0.0.1
 const app = express();
 const port = process.env.PORT || 9000;
 
-const whitelist = ['http://127.0.0.1:5500', 'http://localhost:5500', 'http://localhost:9000', 'http://127.0.0.1:9000'];
 const corsOptions = {
     credentials: true,
-    origin: (origin, callback) => {
-        console.log("Origen: ", origin);
-        if (whitelist.indexOf(origin) !== -1) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    }
+    origin: ['http://127.0.0.1:5500', 'http://localhost:5500', 'http://localhost:9000', 'http://127.0.0.1:9000']
 };
 
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
-
-function prepareObj(error) {
-    // If it is an error return an object with the message
-    if (error instanceof Error) {
-        return { message: error.toString() };
-    }
-    // If it is not an error return the valua
-    else {
-        return error;
-    }
-}
 
 function validateBody(req, res, next) {
     if (Object.keys(req.body).length <= 0) {
@@ -80,8 +61,8 @@ function generateAccessToken(payload) {
 }
 
 app.get('/cookie', (req, res) => {
-    console.log(req.cookies);
-    console.log(req.signedCookies);
+    console.log("Cookies: ", req.cookies);
+    console.log("Signed Cookies: ", req.signedCookies);
     res.cookie("Test", "TEST", {maxAge: 30000, sameSite: 'lax'});
     res.send(req.cookies);
 });
