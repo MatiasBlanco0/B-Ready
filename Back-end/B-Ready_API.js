@@ -1,7 +1,6 @@
 // Import modules
 require('dotenv').config();
 const express = require('express');
-const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const dbFunctions = require('./dbFunctions.js');
 const jwt = require('jsonwebtoken');
@@ -10,10 +9,6 @@ const jwt = require('jsonwebtoken');
 const w1 = 1;
 const w2 = 1;
 const w3 = 1;
-
-// Cookie settings
-const accessTokenConfig = { maxAge: process.env.ACCESS_TOKEN_LIFE * 60000, httpOnly: false, sameSite: 'lax'/*, domain:'127.0.0.1:9000'*/, secure: false }; // CAMBIAR HTTPONLY A TRUE, TAMBIEN EN LA LINEA 120
-const refreshTokenConfig = { httpOnly: false, sameSite: 'lax'/*, domain:'127.0.0.1:9000'*/, secure: false }; // CAMBIAR HTTPONLY A TRUE
 
 // Create a new express application
 const app = express();
@@ -26,7 +21,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use(cookieParser());
 
 function validateBody(req, res, next) {
     if (Object.keys(req.body).length <= 0) {
@@ -37,9 +31,7 @@ function validateBody(req, res, next) {
 }
 
 function authenticateToken(req, res, next) {
-    console.log("Cookies: ");
-    console.table(req.cookies);
-    const authHeader = req.cookies.BReadyAccessToken;
+    const authHeader = req.headers.authorization;
     const token = authHeader && authHeader.split(' ')[1];
 
     if (token == null) {
@@ -60,19 +52,12 @@ function generateAccessToken(payload) {
     return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_LIFE + 'm' });
 }
 
-app.get('/cookie', (req, res) => {
-    console.log("Cookies: ", req.cookies);
-    console.log("Signed Cookies: ", req.signedCookies);
-    res.cookie("Test", "TEST", {maxAge: 30000, sameSite: 'lax'});
-    res.send(req.cookies);
-});
-
 app.get('/user', authenticateToken, (req, res) => {
     res.send(req.user.email);
 });
 
 app.post('/token', validateBody, (req, res) => {
-    const refreshToken = req.cookies.BReadyRefreshToken.split(' ')[1];
+    const refreshToken = req.body.refreshToken.split(' ')[1];
     const email = req.body.email;
     if (refreshToken === undefined || email === undefined) return res.sendStatus(401);
     if (refreshToken === "" || refreshToken === "null" || email === "") return res.sendStatus(401);
@@ -86,8 +71,7 @@ app.post('/token', validateBody, (req, res) => {
         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
             if (err) return res.sendStatus(403);
             const accessToken = generateAccessToken({ email: user.email });
-            res.cookie("BReadyAccessToken", "Bearer " + accessToken, accessTokenConfig);
-            return res.sendStatus(200);
+            return res.json({ accessToken: accessToken });
         });
     });
 });
@@ -99,8 +83,7 @@ app.delete('/logout', validateBody, (req, res) => {
         if (result instanceof Error) return res.sendStatus(500);
 
         dbFunctions.updateToken(email, "null").then(result => {
-            if (result === true) return res.clearCookie("BReadyAccessToken", { httpOnly: false, sameSite: 'lax'/*, domain:'127.0.0.1:9000'*/, secure: false })
-                .clearCookie("BReadyRefreshToken", refreshTokenConfig).sendStatus(204);
+            if (result === true) return res.sendStatus(204)
             if (result instanceof Error) return res.status(400).json({ message: result.message });
             return res.sendStatus(500);
         });
@@ -129,9 +112,7 @@ app.post('/login', validateBody, (req, res) => {
             dbFunctions.updateToken(email, refreshToken)
                 .then(result => {
                     if (result === true) {
-                        res.cookie("BReadyAccessToken", "Bearer " + accessToken, accessTokenConfig);
-                        res.cookie("BReadyRefreshToken", "Bearer " + refreshToken, refreshTokenConfig);
-                        return res.sendStatus(200);
+                        return res.json({ accessToken: accessToken, refreshToken: refreshToken });
                     }
                     return res.sendStatus(500);
                 });
