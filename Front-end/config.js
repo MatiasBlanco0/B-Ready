@@ -62,6 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 }//node parent, selectores de dom
                 else {
                     DD.style.transform = "rotate(180deg)";
+                    ((DD.parentNode).parentNode).lastElementChild.display = "flex";
+                    console.log(((DD.parentNode).parentNode).lastElementChild.display);
                 }
             }
         });

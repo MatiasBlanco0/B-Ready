@@ -214,12 +214,15 @@ section{
     font-size: 17px;
 }
 
+#Preguntas p{
+    display: none;
+}
+
 #AyudaO h1{
     border-bottom: 1px solid #000;
 }
 
 #AyudaO p{
-    display: none;
     padding-bottom: 10px;
 }
 
@@ -301,6 +304,7 @@ section{
 @media all and (max-width: 320px){
     .opciones{
         width: 73%;
+        padding-top: 0px;
     }
 
     #sectores{
@@ -309,5 +313,34 @@ section{
 
     #sectores button{
         font-size: 12px;
+    }
+
+    #PerfilO h3{
+        font-size: 15px;
+    }
+
+    #PerfilO p{
+        font-size: 14px;
+    }
+
+    .idiomas select{
+        width: 200px;
+    }
+
+    .Conjuntos img{
+        width: 200px;
+        height: 150px;
+    }
+
+    #Preguntas{
+        width: 200px;
+    }
+
+    #Preguntas h4{
+        font-size: 14px;
+    }
+
+    .Encabezado{
+        font-size: 16px;
     }
 }
