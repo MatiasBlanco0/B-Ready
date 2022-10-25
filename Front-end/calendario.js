@@ -280,10 +280,10 @@ document.addEventListener("DOMContentLoaded", () => {
             })
                 .then(response => {
                     if (response.status === 401 || response.status === 400) { //la refresh token es invalida
-                        window.location.replace("index.html");
+                        window.location.replace("reg.html");
                     }
                     else if (response.status === 403) { //la refresh token no es la correcta
-                        window.location.replace("index.html");
+                        window.location.replace("reg.html");
                     }
                     else if (response.status === 200) { //todo esta bien
                         return response.json();
