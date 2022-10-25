@@ -191,10 +191,13 @@ app.get('/assignment/:id', authenticateToken, (req, res) => {
             if (Object.keys(result).length === 0) return res.status(404).json({ message: "Assignment not found" });
 
             let assignment = {
-                cantEj: result[0].cantej,
-                cantEjHechos: result[0].cantejhechos,
-                dificultad: result[0].dificultad,
+                nombre: result[0].nombre,
                 descripcion: result[0].descripcion,
+                materia: result[0].materia,
+                fechaEntrega: result[0].fechaentrega,
+                ejercicios: result[0].cantej,
+                ejerciciosHechos: result[0].cantejhechos,
+                dificultad: result[0].dificultad,
                 integrantes: []
             };
             result.forEach(obj => {
