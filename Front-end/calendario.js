@@ -21,6 +21,13 @@ document.addEventListener("DOMContentLoaded", () => {
         "Noviembre": 11,
         "Diciembre": 12,
     };
+    const urlParams = new URLSearchParams(window.location.search);
+    let accessToken = urlParams.get("at");
+    let refreshToken = urlParams.get("rt");
+
+    if (accessToken == null || refreshToken == null || accessToken === "" || refreshToken === "") {
+        window.location.replace("reg.html");
+    }
 
 
     const renderCalendario = () => {
@@ -93,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
             fetch("http://localhost:9000/assignmentsByDay", {
                 method: "POST",
                 headers: {
-                    "Authorization": accessToken,
+                    "Authorization": "Bearer " + accessToken,
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
@@ -105,18 +112,21 @@ document.addEventListener("DOMContentLoaded", () => {
                         return response.json();
                     }
                     else if (response.status === 403) {
-                        location.reload();
+                        refreshAccess();
                     }
                     else { //errores 401, 400 y 500 
                         window.location.replace("index.html");
                     }
                 })
                 .then(data => {
+                    tareasDiarias = "";
                     if (data.length !== 0) {
-                        tareasDiarias += `<li class="displays">${data.nombre}</li>`;
+                        data.forEach((elem) => {
+                            tareasDiarias += `<li class="displays">${elem.nombre}</li>`;
+                        })
                     }
                     else {
-                        tareasDiarias += `<li>Aun no hay tareas ingresadas</li>`;
+                        tareasDiarias = `<li>Aun no hay tareas ingresadas</li>`;
                     }
                     listaCosas.innerHTML = tareasDiarias;
                 })
@@ -159,23 +169,25 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     enviar.addEventListener("click", () => {
+        console.log(accessToken);
         fetch("http://localhost:9000/assignment", {
             method: "POST",
             headers: {
-                "Authorization": accessToken,
+                "Authorization": "Bearer " + accessToken,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                "nombre": document.querySelector("#primerI"),
-                "descripcion": document.querySelector("#descripcion"),
-                "ejercicios": document.querySelector("#ET"),
-                "ejerciciosHechos": document.querySelector("#EH"),
-                "materia": document.querySelector("#NM"),
+                "nombre": document.querySelector("#primerI").value,
+                "descripcion": document.querySelector("#descripcion").value,
+                "ejercicios": parseInt(document.querySelector("#ET").value),
+                "ejerciciosHechos": parseInt(document.querySelector("#EH").value),
+                "materia": document.querySelector("#NM").value,
                 "dificultad": dificultadN,
                 "fecha": diaClickeado
             })
         })
             .then(response => {
+                console.log(response.status);
                 if (response.status === 201) { //todo joya
                     location.reload();
                 }
@@ -183,7 +195,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     document.querySelector("#error").display = "flex";
                 }
                 else if (response.status === 403) { //autenticación
-                    location.reload(); //hace un refresh para que el codigo de la refresh token se ejecute
+                    refreshAccess(); //hace un refresh para que el codigo de la refresh token se ejecute
                 }
                 else { //error interno, etc
                     location.reload();
@@ -255,20 +267,15 @@ document.addEventListener("DOMContentLoaded", () => {
         return decodeURI(cookie.substring(inicio + prefijo.length, fin)); //fijar si la cookie viene codificada y es necesario el decodeURI
     }
 
-    let accessToken = BuscarCookie("BReadyAccessToken");
-    let refreshToken = BuscarCookie("BReadyRefreshToken");
-
-    if (accessToken == null) {
-        if (refreshToken != null) {
-            fetch("http://localhost:9000/token", {
+    const refreshAccess = () => {
+        fetch("http://localhost:9000/token", {
                 method: "POST",
-                credentials: "include",
                 headers: {
                     "Accept": "application/json",
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    token: refreshToken
+                    token: "Bearer " + refreshToken
                 })
             })
                 .then(response => {
@@ -279,16 +286,27 @@ document.addEventListener("DOMContentLoaded", () => {
                         window.location.replace("index.html");
                     }
                     else if (response.status === 200) { //todo esta bien
-                        location.reload();
+                        return response.json();
                     }
                     else { //Error interno
                         window.location.replace("index.html");
+                    }
+                })
+                .then(data => {
+                    console.log(data);
+                    if(data) {
+                        window.location.replace(`calendario.html?at=${data.accessToken}&rt=${refreshToken}`);
                     }
                 })
                 .catch(err => {
                     console.log("Error: ");
                     console.log(err);
                 });
+    }
+
+    if (accessToken == null) {
+        if (refreshToken != null) {
+            refreshAccess();
         }
         else {
             //window.location.replace("index.html");
@@ -299,12 +317,18 @@ document.addEventListener("DOMContentLoaded", () => {
         fetch("http://localhost:9000/assignments", {
             method: "GET",
             headers: {
-                "Authorization": accessToken
+                "Authorization": "Bearer " + accessToken
             }
         })
             .then(response => {
                 if (response.status === 200) {
                     return response.json();
+                }
+                else if (response.status === 401) {
+                    window.location.replace("reg.html");
+                }
+                else if (response.status === 403) {
+                    refreshAccess();
                 }
                 else { //error interno
                     location.reload();
