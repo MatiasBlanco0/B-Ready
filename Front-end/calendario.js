@@ -344,13 +344,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     });
                     data.forEach(tarea => {
                         if (tarea.dificultad >= 42 && tarea.dificultad < 128) {//falta la descripcion
-                            tareasAgregar += `<div class="dificil"> <h4>${tarea.nombre}</h4><h4>${tarea.materia}</h4><br><br><h6>${tarea.ejHoy} Ejercicios para hacer hoy</h6><br><h6>Fecha de entrega: ${tarea.fechaEntrega}</h6></div>`;
+                            tareasAgregar += `<div class="dificil"> <h4>${tarea.nombre}</h4><h4>${tarea.materia}</h4><br><br><h6>${tarea.ejHoy} Ejercicios para hacer hoy</h6><br><h6>Fecha de entrega: ${tarea.fechaEntrega.split('T')[0]}</h6></div>`;
                         }
                         else if (tarea.dificultad >= -43 && tarea.dificultad < 42) {
-                            tareasAgregar += `<div class="medio"> <h4>${tarea.nombre}</h4><h4>${tarea.materia}</h4><br><br><h6>${tarea.ejHoy} Ejercicios para hacer hoy</h6><br><h6>Fecha de entrega: ${tarea.fechaEntrega}</h6></div>`;
+                            tareasAgregar += `<div class="medio"> <h4>${tarea.nombre}</h4><h4>${tarea.materia}</h4><br><br><h6>${tarea.ejHoy} Ejercicios para hacer hoy</h6><br><h6>Fecha de entrega: ${tarea.fechaEntrega.split('T')[0]}</h6></div>`;
                         }
                         else {
-                            tareasAgregar += `<div class="facil"> <h4>${tarea.nombre}</h4><h4>${tarea.materia}</h4><br><br><h6>${tarea.ejHoy} Ejercicios para hacer hoy</h6><br><h6>Fecha de entrega: ${tarea.fechaEntrega}</h6></div>`;
+                            tareasAgregar += `<div class="facil"> <h4>${tarea.nombre}</h4><h4>${tarea.materia}</h4><br><br><h6>${tarea.ejHoy} Ejercicios para hacer hoy</h6><br><h6>Fecha de entrega: ${tarea.fechaEntrega.split('T')[0]}</h6></div>`;
                         }
                     });
                     tareas.innerHTML = tareasAgregar;
