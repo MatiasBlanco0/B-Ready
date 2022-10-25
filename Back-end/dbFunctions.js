@@ -75,7 +75,6 @@ function checkToken(token) {
 // Function to execute queries
 async function sqlQuery(query, values) {
     try {
-        console.log("Running query");
         return await new Promise((resolve, reject) => {
             pool.execute(query, values, (err, result) => {
                 if (err) reject(err);
