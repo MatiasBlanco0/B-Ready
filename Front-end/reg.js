@@ -199,14 +199,12 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(response => {
                 console.log(typeof response);
                 console.log(response);
-                if (response.status === 200) {
-                    window.location.replace("calendario.html");
+                if (response.status === 200 || response.status === 400) {
+                    //window.location.replace("calendario.html");
+                    return response.json();
                 }
                 else if (response.status === 401) {
                     document.getElementById("infoIncorrecta").style.display = "flex";
-                }
-                else if (response.status === 400) {
-                    return response.json();
                 }
                 else {
                     //error interno probablemente
@@ -234,6 +232,12 @@ document.addEventListener("DOMContentLoaded", () => {
                             alertaT.innerHTML = "Error desconocido, porfavor intentarlo mas tarde";
                         }
                     }
+                    else if(data.accessToken && data.refreshToken){
+                        window.location.replace(`calendario.html?at=${data.accessToken}&rt=${data.refreshToken}`);
+                    }
+                }
+                else {
+                    console.log("No se que paso");
                 }
             })
             .catch(err => {
