@@ -354,7 +354,7 @@ async function updateDoneExercises(userEmail, id, doneExcercices) {
         if (isOwner.length < 0) {
             return new Error(userEmail + " is not an owner of the assignment");
         }
-        let sql = "UPDATE tarea SET tarea.cantejhechos = ? WHERE tarea.id = ?";
+        let sql = "UPDATE tarea SET tarea.cantejhechos = tarea.cantejhechos + ? WHERE tarea.id = ?";
         let promise = await sqlQuery(sql, [doneExcercices, id]);
         // If the query was not successful, return the error
         if (promise instanceof Error) {
