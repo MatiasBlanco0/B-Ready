@@ -267,6 +267,10 @@ section{
     list-style: none;
 }
 
+.listaCosas ul{
+    list-style: none;
+}
+
 .Agregar{
     width: 200px;
     height: 40px;

@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
         perfilO.style.display = "none";
         estiloO.style.display = "none";
         ayudaO.style.display = "flex";
-        document.getElementById("sectores").style.height = "100vh";
+        document.getElementById("sectores").style.height = "125vh";
     });
 
     if ("chequea si la token de login existe usando un fetch") {
@@ -53,17 +53,26 @@ document.addEventListener("DOMContentLoaded", () => {
         perfilO.style.display = "none";
         visibilidad.focus();
     }
-
+    
+    const lista = document.querySelectorAll("p.respuestas");
     dropdowns.forEach(DD => {
         DD.addEventListener("click", function handleClick(event) {
             if (DD.getAttribute("rotate") == null) {
                 if (DD.style.transform == "rotate(180deg)") {
                     DD.style.transform = "rotate(0deg)";
+                    lista.forEach(element => {
+                        if(element === ((DD.parentNode).parentNode).lastElementChild){
+                            element.style.display = "none";
+                        }
+                    });
                 }//node parent, selectores de dom
                 else {
                     DD.style.transform = "rotate(180deg)";
-                    ((DD.parentNode).parentNode).lastElementChild.display = "flex";
-                    console.log(((DD.parentNode).parentNode).lastElementChild.display);
+                    lista.forEach(element => {
+                        if(element === ((DD.parentNode).parentNode).lastElementChild){
+                            element.style.display = "flex";
+                        }
+                    });
                 }
             }
         });
