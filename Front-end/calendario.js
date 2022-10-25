@@ -203,6 +203,15 @@ document.addEventListener("DOMContentLoaded", () => {
             })
     });
 
+    const displays = document.querySelectorAll(".displays");
+    displays.forEach(D => {
+        D.addEventListener("click", (elemento) => {
+            document.querySelector(".info").style.display = "flex";
+            console.log(elemento.id);
+            // fetch("http://localhost:9000/assignment/" + elemento)
+        });
+    })
+
     function checkNum(numero) {
         const regEx = /^[1-9]\d*$/g;
         return regEx.test(numero);
@@ -269,39 +278,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const refreshAccess = () => {
         fetch("http://localhost:9000/token", {
-                method: "POST",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    token: "Bearer " + refreshToken
-                })
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                token: "Bearer " + refreshToken
             })
-                .then(response => {
-                    if (response.status === 401 || response.status === 400) { //la refresh token es invalida
-                        window.location.replace("reg.html");
-                    }
-                    else if (response.status === 403) { //la refresh token no es la correcta
-                        window.location.replace("reg.html");
-                    }
-                    else if (response.status === 200) { //todo esta bien
-                        return response.json();
-                    }
-                    else { //Error interno
-                        window.location.replace("index.html");
-                    }
-                })
-                .then(data => {
-                    console.log(data);
-                    if(data) {
-                        window.location.replace(`calendario.html?at=${data.accessToken}&rt=${refreshToken}`);
-                    }
-                })
-                .catch(err => {
-                    console.log("Error: ");
-                    console.log(err);
-                });
+        })
+            .then(response => {
+                if (response.status === 401 || response.status === 400) { //la refresh token es invalida
+                    window.location.replace("reg.html");
+                }
+                else if (response.status === 403) { //la refresh token no es la correcta
+                    window.location.replace("reg.html");
+                }
+                else if (response.status === 200) { //todo esta bien
+                    return response.json();
+                }
+                else { //Error interno
+                    window.location.replace("index.html");
+                }
+            })
+            .then(data => {
+                console.log(data);
+                if (data) {
+                    window.location.replace(`calendario.html?at=${data.accessToken}&rt=${refreshToken}`);
+                }
+            })
+            .catch(err => {
+                console.log("Error: ");
+                console.log(err);
+            });
     }
 
     if (accessToken == null) {
@@ -344,13 +353,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     });
                     data.forEach(tarea => {
                         if (tarea.dificultad >= 42 && tarea.dificultad < 128) {//falta la descripcion
-                            tareasAgregar += `<div class="dificil"> <h4>${tarea.nombre}</h4><h4>${tarea.materia}</h4><br><br><h6>${tarea.ejHoy} Ejercicios para hacer hoy</h6><br><h6>Fecha de entrega: ${tarea.fechaEntrega.split('T')[0]}</h6></div>`;
+                            tareasAgregar += `<div class="dificil" class="displays"> <h4>${tarea.nombre}</h4><h4>${tarea.materia}</h4><br><br><h6>${tarea.ejHoy} Ejercicios para hacer hoy</h6><br><h6>Fecha de entrega: ${tarea.fechaEntrega.split('T')[0]}</h6></div>`;
                         }
                         else if (tarea.dificultad >= -43 && tarea.dificultad < 42) {
-                            tareasAgregar += `<div class="medio"> <h4>${tarea.nombre}</h4><h4>${tarea.materia}</h4><br><br><h6>${tarea.ejHoy} Ejercicios para hacer hoy</h6><br><h6>Fecha de entrega: ${tarea.fechaEntrega.split('T')[0]}</h6></div>`;
+                            tareasAgregar += `<div class="medio" class="displays"> <h4>${tarea.nombre}</h4><h4>${tarea.materia}</h4><br><br><h6>${tarea.ejHoy} Ejercicios para hacer hoy</h6><br><h6>Fecha de entrega: ${tarea.fechaEntrega.split('T')[0]}</h6></div>`;
                         }
                         else {
-                            tareasAgregar += `<div class="facil"> <h4>${tarea.nombre}</h4><h4>${tarea.materia}</h4><br><br><h6>${tarea.ejHoy} Ejercicios para hacer hoy</h6><br><h6>Fecha de entrega: ${tarea.fechaEntrega.split('T')[0]}</h6></div>`;
+                            tareasAgregar += `<div class="facil" class="displays"> <h4>${tarea.nombre}</h4><h4>${tarea.materia}</h4><br><br><h6>${tarea.ejHoy} Ejercicios para hacer hoy</h6><br><h6>Fecha de entrega: ${tarea.fechaEntrega.split('T')[0]}</h6></div>`;
                         }
                     });
                     tareas.innerHTML = tareasAgregar;

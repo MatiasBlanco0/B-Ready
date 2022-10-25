@@ -272,7 +272,8 @@ section{
 }
 
 .info{
-    display: flex;
+    flex-direction: column;
+    display: none;
     position: fixed;
     background-color: #4990e7;
     width: 500px;
@@ -286,6 +287,10 @@ section{
     height: 50px;
     border: none;
     border-radius: 5px;
+}
+
+.informacion{
+    height: 225px;
 }
 
 .Eliminar{
@@ -402,6 +407,10 @@ form img{
     justify-content: center;
     padding: 10px;
     border-bottom: 1px solid #000;
+}
+
+.displays:hover{
+    cursor: pointer;
 }
 
 #lista *{
