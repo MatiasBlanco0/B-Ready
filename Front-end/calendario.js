@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.querySelector(".slider").addEventListener("input", () => {
         document.getElementById("valor").innerHTML = "Dificultad: " + document.querySelector(".slider").value;
-        dificultadN = (document.querySelector(".slider").value / 100) * 256 - 128;
+        dificultadN = (document.querySelector(".slider").value - 128) * 255;
     });
 
     let tareasDiarias = "";
@@ -174,7 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 })
                                     .then(response => {
                                         if (response.status === 204) {
-                                            location.reload();
+                                            window.location.replace(`calendario.html?at=${accessToken}&rt=${refreshToken}`);;
                                         }
                                         else if (response.status === 403) {
                                             refreshAccess();
@@ -183,7 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                             window.location.replace("reg.html");
                                         }
                                         else if (response.status === 400) {
-                                            location.reload();
+                                            window.location.replace(`calendario.html?at=${accessToken}&rt=${refreshToken}`);;
                                         }
                                         else { //error interno (500)
                                             window.location.replace("index.html");
@@ -252,7 +252,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(response => {
                 console.log(response.status);
                 if (response.status === 201) { //todo joya
-                    location.reload();
+                    window.location.replace(`calendario.html?at=${accessToken}&rt=${refreshToken}`);;
                 }
                 else if (response.status === 400) { //error en campos
                     document.querySelector("#error").display = "flex";
@@ -261,7 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     refreshAccess(); //hace un refresh para que el codigo de la refresh token se ejecute
                 }
                 else { //error interno, etc
-                    location.reload();
+                    window.location.replace(`calendario.html?at=${accessToken}&rt=${refreshToken}`);;
                 }
             })
     });
@@ -399,7 +399,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     refreshAccess();
                 }
                 else { //error interno
-                    location.reload();
+                    window.location.replace(`calendario.html?at=${accessToken}&rt=${refreshToken}`);;
                 }
             })
             .then(data => {
