@@ -237,9 +237,11 @@ app.post('/user', authenticateToken, validateBody, (req, res) => {
         });
 });
 
-app.delete('/assignment', authenticateToken, validateBody, (req, res) => {
+app.delete('/assignment/:id', authenticateToken, validateBody, (req, res) => {
     console.log("\n"+Date(Date.now())+": Recibi una request DELETE en /assignmet");
-    dbFunctions.deleteAssignment(req.body.id, req.user.email)
+    const id = parseInt(req.params.id);
+    if(isNaN(id)) return res.status(400).json({message: "El id no era un numero"});
+    dbFunctions.deleteAssignment(id, req.user.email)
         .then(result => {
             if (result === true) return res.sendStatus(204);
             if (result instanceof Error) {
