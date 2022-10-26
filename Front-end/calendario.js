@@ -174,7 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 })
                                     .then(response => {
                                         if (response.status === 204) {
-                                            window.location.replace(`calendario.html?at=${accessToken}&rt=${refreshToken}`);;
+                                            location.reload();
                                         }
                                         else if (response.status === 403) {
                                             refreshAccess();
@@ -183,7 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                             window.location.replace("reg.html");
                                         }
                                         else if (response.status === 400) {
-                                            window.location.replace(`calendario.html?at=${accessToken}&rt=${refreshToken}`);;
+                                            location.reload();
                                         }
                                         else { //error interno (500)
                                             window.location.replace("index.html");
@@ -252,7 +252,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(response => {
                 console.log(response.status);
                 if (response.status === 201) { //todo joya
-                    window.location.replace(`calendario.html?at=${accessToken}&rt=${refreshToken}`);;
+                    location.reload();
                 }
                 else if (response.status === 400) { //error en campos
                     document.querySelector("#error").display = "flex";
@@ -261,7 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     refreshAccess(); //hace un refresh para que el codigo de la refresh token se ejecute
                 }
                 else { //error interno, etc
-                    window.location.replace(`calendario.html?at=${accessToken}&rt=${refreshToken}`);;
+                    location.reload();
                 }
             })
     });
@@ -399,7 +399,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     refreshAccess();
                 }
                 else { //error interno
-                    window.location.replace(`calendario.html?at=${accessToken}&rt=${refreshToken}`);;
+                    location.reload();
                 }
             })
             .then(data => {
