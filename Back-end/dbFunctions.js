@@ -316,23 +316,26 @@ async function deleteAssignment(id, userEmail) {
         if (isOwner.length < 0) {
             return new Error(userEmail + " is not an owner of the assignment");
         }
-        let checkUsers = await sqlQuery("SELECT relacion_usuario_tarea.email WHERE relacion_usuario_tarea.id = ?", [id]);
+        let checkUsers = await sqlQuery("SELECT relacion_usuario_tarea.email FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.id = ?", [id]);
+        console.log("Users: ", checkUsers);
         if (checkUsers.length < 2) {
-            let sql = "DELETE FROM tarea WHERE tarea.id = ?; DELETE FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.tarea = ?";
-            let promise = await sqlQuery(sql, [id, id]);
+            let sql = "DELETE relacion_usuario_tarea, tarea FROM relacion_usuario_tarea INNER JOIN tarea ON relacion_usuario_tarea.tarea = tarea.id WHERE relacion_usuario_tarea.tarea = ?";
+            let promise = await sqlQuery(sql, [id]);
             // If the query was not successful, return the error
             if (promise instanceof Error) {
                 return promise;
             }
             return true;
         }
-        let sql = "DELETE FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.tarea = ? AND relacion_usuario_tarea.email = ?";
-        let result = await sqlQuery(sql, [id, userEmail]);
-        // If the query was not successful, return the error
-        if (result instanceof Error) {
-            return result;
+        else {
+            let sql = "DELETE FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.tarea = ? AND relacion_usuario_tarea.email = ?";
+            let result = await sqlQuery(sql, [id, userEmail]);
+            // If the query was not successful, return the error
+            if (result instanceof Error) {
+                return result;
+            }
+            return true;
         }
-        return true;
     } catch (err) {
         return err;
     }

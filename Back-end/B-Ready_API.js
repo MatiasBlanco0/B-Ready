@@ -150,7 +150,7 @@ app.get('/assignments', authenticateToken, (req, res) => {
             const assignments = result.map(assignment => {
                 let newAssignment = {};
                 let daysLeft = Math.floor((new Date(assignment.fechaentrega).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
-                if (daysLeft === 0) daysLeft = 1;
+                if (daysLeft <= 0) daysLeft = 1;
                 newAssignment.id = assignment.id;
                 newAssignment.nombre = assignment.nombre;
                 newAssignment.materia = assignment.materia;
