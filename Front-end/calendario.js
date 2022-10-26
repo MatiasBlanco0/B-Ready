@@ -128,7 +128,69 @@ document.addEventListener("DOMContentLoaded", () => {
                     else {
                         tareasDiarias = `<li>Aun no hay tareas ingresadas</li>`;
                     }
-                    listaCosas.innerHTML = tareasDiarias;
+                    listaCosas.innerHTML = tareasDiarias; 
+                    const displays = document.querySelectorAll(".displays");
+                    displays.forEach(D => {
+                        D.addEventListener("click", (elemento) => {
+                            document.querySelector(".info").style.display = "flex";
+                            fetch("http://localhost:9000/assignment/" + elemento.id, {
+                                method: "GET",
+                                headers: {
+                                    "Authorization": "Bearer " + accessToken
+                                }
+                            })
+                                .then(response => {
+                                    if (response.status === 200) {
+                                        return response.json();
+                                    }
+                                    else if (response.status === 403) {
+                                        refreshAccess();
+                                    }
+                                    else if (response.status === 401) {
+                                        window.location.replace("reg.html");
+                                    }
+                                    else { // error interno, cuanod esto ocurra simplemente que el usuario vuelva a la pagina principal
+                                        window.location.replace("index.html");
+                                    }
+                                })
+                                .then(data => {
+                                    document.querySelector(".Nombre").innerHTML = data.nombre;
+                                    document.querySelector(".Materia").innerHTML = data.materia;
+                                    document.querySelector(".Descripcion").innerHTML = data.descripcion;
+                                    document.querySelector(".EjerciciosTotales").innerHTML = "Ejercicios: " + data.ejercicios;
+                                    document.querySelector(".EjerciciosHechos").innerHTML = "Ejercicios hechos: " + data.ejerciciosHechos;
+                                    document.querySelector(".Dificultad").innerHTML = "Dificultad: " + data.dificultad;
+                                    document.querySelector(".FechaEntrega").innerHTML = data.fechaEntrega;
+                                })
+
+                            //eliminar tarea
+                            document.querySelector(".Eliminar").addEventListener("click", () => {
+                                fetch("http://localhost:9000/assignment/" + elemento.id, {
+                                    method: "DELETE",
+                                    headers: {
+                                        "Authorization": "Bearer " + accessToken
+                                    }
+                                })
+                                    .then(response => {
+                                        if (response.status === 204) {
+                                            document.querySelector(".info").style.display = "none";
+                                        }
+                                        else if (response.status === 403) {
+                                            refreshAccess();
+                                        }
+                                        else if (response.status === 401) {
+                                            window.location.replace("reg.html");
+                                        }
+                                        else if (response.status === 400) {
+                                            location.reload();
+                                        }
+                                        else { //error interno (500)
+                                            window.location.replace("index.html");
+                                        }
+                                    })
+                            })
+                        });
+                    })
                 })
         }
     });
@@ -203,40 +265,10 @@ document.addEventListener("DOMContentLoaded", () => {
             })
     });
 
-    const displays = document.querySelectorAll(".displays");
-    displays.forEach(D => {
-        D.addEventListener("click", (elemento) => {
-            document.querySelector(".info").style.display = "flex";
-            fetch("http://localhost:9000/assignment/" + elemento.id, {
-                method: "GET",
-                headers: {
-                    "Authorization": "Bearer " + accessToken
-                }
-            })
-                .then(response => {
-                    if(response.status === 200){
-                        return response.json();
-                    }
-                    else if (response.status === 403){
-                        refreshAccess();
-                    }
-                    else if (response.status === 401){
-                        window.location.replace("reg.html");
-                    }
-                    else{ // error interno, cuanod esto ocurra simplemente que el usuario vuelva a la pagina principal
-                        window.location.replace("index.html");
-                    }
-                })
-                .then(data => {
-                    document.querySelector(".Nombre").innerHTML = data.nombre;
-                    document.querySelector(".Materia").innerHTML = data.materia;
-                    document.querySelector(".Descripcion").innerHTML = data.descripcion;
-                    document.querySelector(".EjerciciosTotales").innerHTML = "Ejercicios: " + data.ejercicios;
-                    document.querySelector(".EjerciciosHechos").innerHTML = "Ejercicios hechos: " + data.ejerciciosHechos;
-                    document.querySelector(".Dificultad").innerHTML = "Dificultad: " + data.dificultad;
-                    document.querySelector(".FechaEntrega").innerHTML = data.fechaEntrega;
-                })
-        });
+
+
+    document.querySelector(".cancelar").addEventListener("click", () => {
+        document.querySelector(".info").style.display = "none";
     })
 
     function checkNum(numero) {
