@@ -290,6 +290,10 @@ section{
     border-radius: 5px;
 }
 
+.info button:hover{
+    cursor: pointer;
+}
+
 .informacion{
     height: 325px;
 }
