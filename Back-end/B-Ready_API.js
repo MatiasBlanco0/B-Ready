@@ -55,7 +55,7 @@ app.get('/user', authenticateToken, (req, res) => {
 });
 
 app.post('/token', validateBody, (req, res) => {
-    console.log("Token: ", req.body.refreshToken);
+    if(req.body.refreshToken === undefined) return res.sendStatus(401);
     const refreshToken = req.body.refreshToken.split(' ')[1];
     const email = req.body.email;
     if (refreshToken === undefined || email === undefined) return res.sendStatus(401);
