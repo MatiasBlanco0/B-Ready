@@ -133,7 +133,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     displays.forEach(D => {
                         D.addEventListener("click", (elemento) => {
                             document.querySelector(".info").style.display = "flex";
-                            fetch("http://localhost:9000/assignment/" + elemento.id.split("-")[1], {
+                            const tareaID = elemento.target.id.split("-")[1];
+                            fetch("http://localhost:9000/assignment/" + tareaID, {
                                 method: "GET",
                                 headers: {
                                     "Authorization": "Bearer " + accessToken
@@ -164,8 +165,8 @@ document.addEventListener("DOMContentLoaded", () => {
                                 })
 
                             //eliminar tarea
-                            document.querySelector(".Eliminar").addEventListener("click", () => {
-                                fetch("http://localhost:9000/assignment/" + elemento.id, {
+                            document.querySelector(".Eliminar").addEventListener("click", (elemento) => {
+                                fetch("http://localhost:9000/assignment/" + tareaID, {
                                     method: "DELETE",
                                     headers: {
                                         "Authorization": "Bearer " + accessToken
@@ -173,7 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 })
                                     .then(response => {
                                         if (response.status === 204) {
-                                            document.querySelector(".info").style.display = "none";
+                                            location.reload();
                                         }
                                         else if (response.status === 403) {
                                             refreshAccess();
