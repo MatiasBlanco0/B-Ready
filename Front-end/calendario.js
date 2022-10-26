@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let refreshToken = urlParams.get("rt");
 
     if (accessToken == null || refreshToken == null || accessToken === "" || refreshToken === "") {
-        window.location.replace("reg.html");
+        //window.location.replace("reg.html");
     }
 
 
@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     tareasDiarias = "";
                     if (data.length !== 0) {
                         data.forEach((elem) => {
-                            tareasDiarias += `<li class="displays">${elem.nombre}</li>`;
+                            tareasDiarias += `<li class="displays" id="${elem.id}">${elem.nombre}</li>`;
                         })
                     }
                     else {
@@ -207,8 +207,35 @@ document.addEventListener("DOMContentLoaded", () => {
     displays.forEach(D => {
         D.addEventListener("click", (elemento) => {
             document.querySelector(".info").style.display = "flex";
-            console.log(elemento.id);
-            // fetch("http://localhost:9000/assignment/" + elemento)
+            fetch("http://localhost:9000/assignment/" + elemento.id, {
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + accessToken
+                }
+            })
+                .then(response => {
+                    if(response.status === 200){
+                        return response.json();
+                    }
+                    else if (response.status === 403){
+                        refreshAccess();
+                    }
+                    else if (response.status === 401){
+                        window.location.replace("reg.html");
+                    }
+                    else{ // error interno, cuanod esto ocurra simplemente que el usuario vuelva a la pagina principal
+                        window.location.replace("index.html");
+                    }
+                })
+                .then(data => {
+                    document.querySelector(".Nombre").innerHTML = data.nombre;
+                    document.querySelector(".Materia").innerHTML = data.materia;
+                    document.querySelector(".Descripcion").innerHTML = data.descripcion;
+                    document.querySelector(".EjerciciosTotales").innerHTML = "Ejercicios: " + data.ejercicios;
+                    document.querySelector(".EjerciciosHechos").innerHTML = "Ejercicios hechos: " + data.ejerciciosHechos;
+                    document.querySelector(".Dificultad").innerHTML = "Dificultad: " + data.dificultad;
+                    document.querySelector(".FechaEntrega").innerHTML = data.fechaEntrega;
+                })
         });
     })
 
@@ -317,9 +344,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (refreshToken != null) {
             refreshAccess();
         }
-        else {
+        else { //RECORDATORIO: SACAR EL COMENTARIO QUE SINO NO VA A FUNCIONAR
             //window.location.replace("index.html");
-            console.log("elpepe");
         }
     }
     else {
