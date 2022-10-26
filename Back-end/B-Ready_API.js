@@ -214,7 +214,6 @@ app.post('/assignment', authenticateToken, validateBody, (req, res) => {
     console.log("\n"+(new Date(Date.now())).toISOString()+": Recibi una request POST en /assignment");
     dbFunctions.addAssignment(req.user.email, req.body.nombre, req.body.descripcion, req.body.ejercicios, req.body.ejerciciosHechos, req.body.materia, req.body.fecha, req.body.dificultad)
         .then(result => {
-            console.log("Resultado: ", result);
             if (result === true) return res.sendStatus(201);
             if (result instanceof Error) {
                 const message = result.message;
