@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     tareasDiarias = "";
                     if (data.length !== 0) {
                         data.forEach((elem) => {
-                            tareasDiarias += `<li class="displays" id="${elem.id}">${elem.nombre}</li>`;
+                            tareasDiarias += `<li class="displays" id="tarea-${elem.id}">${elem.nombre}</li>`;
                         })
                     }
                     else {
@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     displays.forEach(D => {
                         D.addEventListener("click", (elemento) => {
                             document.querySelector(".info").style.display = "flex";
-                            fetch("http://localhost:9000/assignment/" + elemento.id, {
+                            fetch("http://localhost:9000/assignment/" + elemento.id.split("-")[1], {
                                 method: "GET",
                                 headers: {
                                     "Authorization": "Bearer " + accessToken
