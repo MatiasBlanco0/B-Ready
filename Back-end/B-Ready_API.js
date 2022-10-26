@@ -240,7 +240,7 @@ app.post('/user', authenticateToken, validateBody, (req, res) => {
         });
 });
 
-app.delete('/assignment/:id', authenticateToken, validateBody, (req, res) => {
+app.delete('/assignment/:id', authenticateToken, (req, res) => {
     console.log("\n"+(new Date(Date.now())).toISOString()+": Recibi una request DELETE en /assignmet");
     const id = parseInt(req.params.id);
     if(isNaN(id)) return res.status(400).json({message: "El id no era un numero"});
