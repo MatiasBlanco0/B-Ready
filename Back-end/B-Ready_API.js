@@ -51,12 +51,12 @@ function generateAccessToken(payload) {
 }
 
 app.get('/user', authenticateToken, (req, res) => {
-    console.log("\n"+Date(Date.now()).toISOString()+": Recibi una request GET en /user");
+    console.log("\n"+(new Date(Date.now())).toISOString()+": Recibi una request GET en /user");
     res.send(req.user.email);
 });
 
 app.post('/token', validateBody, (req, res) => {
-    console.log("\n"+Date(Date.now()).toISOString()+": Recibi una request POST en /token");
+    console.log("\n"+(new Date(Date.now())).toISOString()+": Recibi una request POST en /token");
     if(req.body.refreshToken === undefined) return res.sendStatus(401);
     const refreshToken = req.body.refreshToken.split(' ')[1];
     const email = req.body.email;
@@ -78,7 +78,7 @@ app.post('/token', validateBody, (req, res) => {
 });
 
 app.delete('/logout', validateBody, (req, res) => {
-    console.log("\n"+Date(Date.now()).toISOString()+": Recibi una request DELETE en /logout");
+    console.log("\n"+(new Date(Date.now())).toISOString()+": Recibi una request DELETE en /logout");
     const email = req.body.email;
     dbFunctions.tokenExists(email, req.body.token).then(result => {
         if (result === false) return res.sendStatus(403);
@@ -93,7 +93,7 @@ app.delete('/logout', validateBody, (req, res) => {
 });
 
 app.post('/login', validateBody, (req, res) => {
-    console.log("\n"+Date(Date.now()).toISOString()+": Recibi una request POST en /login");
+    console.log("\n"+(new Date(Date.now())).toISOString()+": Recibi una request POST en /login");
     const email = req.body.email;
     const password = req.body.contrasenia;
     if (email === undefined || password === undefined) return res.status(400).json({ message: "Email or Contrasenia were undefined" });
@@ -122,7 +122,7 @@ app.post('/login', validateBody, (req, res) => {
 });
 
 app.post('/register', validateBody, (req, res) => {
-    console.log("\n"+Date(Date.now()).toISOString()+": Recibi una request POST en /register");
+    console.log("\n"+(new Date(Date.now())).toISOString()+": Recibi una request POST en /register");
     const email = req.body.email;
     const password = req.body.contrasenia;
     const name = req.body.nombre;
@@ -142,7 +142,7 @@ app.post('/register', validateBody, (req, res) => {
 });
 
 app.get('/assignments', authenticateToken, (req, res) => {
-    console.log("\n"+Date(Date.now()).toISOString()+": Recibi una request GET en /assignments");
+    console.log("\n"+(new Date(Date.now())).toISOString()+": Recibi una request GET en /assignments");
     dbFunctions.getAssignments(req.user.email)
         .then(result => {
             if (result instanceof Error) return res.sendStatus(500);
@@ -165,7 +165,7 @@ app.get('/assignments', authenticateToken, (req, res) => {
 });
 
 app.post('/assignmentsByDay', authenticateToken, (req, res) => {
-    console.log("\n"+Date(Date.now()).toISOString()+": Recibi una request POST en /assignmentsByDay");
+    console.log("\n"+(new Date(Date.now())).toISOString()+": Recibi una request POST en /assignmentsByDay");
     const date = req.body.fecha;
     if (date === undefined) return res.status(400).json({ message: "Date was undefined" });
     if (date === "") return res.status(400).json({ message: "Date was an empty string" });
@@ -182,7 +182,7 @@ app.post('/assignmentsByDay', authenticateToken, (req, res) => {
 
 app.get('/assignment/:id', authenticateToken, (req, res) => {
     const id = parseInt(req.params.id);
-    console.log("\n"+Date(Date.now()).toISOString()+": Recibi una request GET en /assignment/" + id);
+    console.log("\n"+(new Date(Date.now())).toISOString()+": Recibi una request GET en /assignment/" + id);
     if (isNaN(id)) return res.status(400).json({ message: "Id is not a number" });
 
     dbFunctions.getAssignmentInfo(id, req.user.email)
@@ -211,7 +211,7 @@ app.get('/assignment/:id', authenticateToken, (req, res) => {
 });
 
 app.post('/assignment', authenticateToken, validateBody, (req, res) => {
-    console.log("\n"+Date(Date.now()).toISOString()+": Recibi una request POST en /assignment");
+    console.log("\n"+(new Date(Date.now())).toISOString()+": Recibi una request POST en /assignment");
     dbFunctions.addAssignment(req.user.email, req.body.nombre, req.body.descripcion, req.body.ejercicios, req.body.ejerciciosHechos, req.body.materia, req.body.fecha, req.body.dificultad)
         .then(result => {
             console.log("Resultado: ", result);
@@ -225,7 +225,7 @@ app.post('/assignment', authenticateToken, validateBody, (req, res) => {
 });
 
 app.post('/user', authenticateToken, validateBody, (req, res) => {
-    console.log("\n"+Date(Date.now()).toISOString()+": Recibi una request POST en /user");
+    console.log("\n"+(new Date(Date.now())).toISOString()+": Recibi una request POST en /user");
     dbFunctions.addUserToAssignment(req.body.email, req.body.id, req.user.email)
         .then(result => {
             if (result === true) return res.sendStatus(201);
@@ -241,7 +241,7 @@ app.post('/user', authenticateToken, validateBody, (req, res) => {
 });
 
 app.delete('/assignment/:id', authenticateToken, validateBody, (req, res) => {
-    console.log("\n"+Date(Date.now()).toISOString()+": Recibi una request DELETE en /assignmet");
+    console.log("\n"+(new Date(Date.now())).toISOString()+": Recibi una request DELETE en /assignmet");
     const id = parseInt(req.params.id);
     if(isNaN(id)) return res.status(400).json({message: "El id no era un numero"});
     dbFunctions.deleteAssignment(id, req.user.email)
@@ -257,7 +257,7 @@ app.delete('/assignment/:id', authenticateToken, validateBody, (req, res) => {
 });
 
 app.put('/assignment', authenticateToken, validateBody, (req, res) => {
-    console.log("\n"+Date(Date.now()).toISOString()+": Recibi una request PUT en /assignment");
+    console.log("\n"+(new Date(Date.now())).toISOString()+": Recibi una request PUT en /assignment");
     dbFunctions.updateDoneExercises(req.user.email, req.body.id, req.body.ejercicios)
         .then(result => {
             if (result === true) return res.sendStatus(201);
@@ -271,7 +271,7 @@ app.put('/assignment', authenticateToken, validateBody, (req, res) => {
 });
 
 app.get('/style', authenticateToken, (req, res) => {
-    console.log("\n"+Date(Date.now()).toISOString()+": Recibi una request GET en /style");
+    console.log("\n"+(new Date(Date.now())).toISOString()+": Recibi una request GET en /style");
     dbFunctions.getStyle(req.user.email)
         .then(result => {
             if (result instanceof Error) return res.sendStatus(500);
@@ -281,7 +281,7 @@ app.get('/style', authenticateToken, (req, res) => {
 });
 
 app.put('/style', authenticateToken, validateBody, (req, res) => {
-    console.log("\n"+Date(Date.now()).toISOString()+": Recibi una request PUT en /style");
+    console.log("\n"+(new Date(Date.now())).toISOString()+": Recibi una request PUT en /style");
     dbFunctions.updateStyle(req.user.email, req.body.estilo)
         .then(result => {
             if (result instanceof Error) {
