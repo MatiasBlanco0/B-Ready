@@ -317,7 +317,6 @@ async function deleteAssignment(id, userEmail) {
             return new Error(userEmail + " is not an owner of the assignment");
         }
         let checkUsers = await sqlQuery("SELECT relacion_usuario_tarea.email FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.id = ?", [id]);
-        console.log("Users: ", checkUsers);
         if (checkUsers.length < 2) {
             let sql = "DELETE relacion_usuario_tarea, tarea FROM relacion_usuario_tarea INNER JOIN tarea ON relacion_usuario_tarea.tarea = tarea.id WHERE relacion_usuario_tarea.tarea = ?";
             let promise = await sqlQuery(sql, [id]);
