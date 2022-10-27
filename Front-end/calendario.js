@@ -308,7 +308,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fondo.click();
 
     document.querySelector("#logo").addEventListener("click", () => {
-        window.location.replace("index.html");
+        window.location.replace(`index.html?at=${accessToken}&rt=${refreshToken}`);
     });
 
     //momento copy paste >:)
