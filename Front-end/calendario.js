@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "Noviembre": 11,
         "Diciembre": 12,
     };
+    let tareaID = "";
     const urlParams = new URLSearchParams(window.location.search);
     let accessToken = urlParams.get("at");
     let refreshToken = urlParams.get("rt");
@@ -133,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     displays.forEach(D => {
                         D.addEventListener("click", (elemento) => {
                             document.querySelector(".info").style.display = "flex";
-                            const tareaID = elemento.target.id.split("-")[1];
+                            tareaID = elemento.target.id.split("-")[1];
                             fetch("http://localhost:9000/assignment/" + tareaID, {
                                 method: "GET",
                                 headers: {
@@ -428,4 +429,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log(err);
             });
     }
+    querySelectorAll(".completar").addEventListener("click", () =>{
+        fetch(`http://localhost:9000/assignment/${tareaID}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": "Bearer " + accessToken
+            }
+        })
+            .then(response => {
+                if(response.status === 204){
+                    location.reload();
+                }
+                else{ //error interno o otro
+                    window.location.replace("index.html");
+                }
+            })
+    });
 });

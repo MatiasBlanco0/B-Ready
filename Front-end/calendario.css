@@ -352,6 +352,18 @@ form input{
     align-items: center;
 }
 
+.botonesT button{
+    margin-top: 10px;
+    width: 150px;
+    height: 25px;
+    border: none;
+}
+
+.botonesT button:hover{
+    cursor: pointer;
+    background-color: gray;
+}
+
 .botones *{
     width: 100px;
     border:none
