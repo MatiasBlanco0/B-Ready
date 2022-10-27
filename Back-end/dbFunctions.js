@@ -75,12 +75,22 @@ function checkToken(token) {
 // Function to execute queries
 async function sqlQuery(query, values) {
     try {
-        return await new Promise((resolve, reject) => {
-            pool.execute(query, values, (err, result) => {
-                if (err) reject(err);
-                resolve(result);
+        if (values === undefined){
+            return await new Promise((resolve, reject) => {
+                pool.execute(query, (err, result) => {
+                    if (err) reject(err);
+                    resolve(result);
+                });
             });
-        });
+        }
+        else {
+            return await new Promise((resolve, reject) => {
+                pool.execute(query, values, (err, result) => {
+                    if (err) reject(err);
+                    resolve(result);
+                });
+            });
+        }
     } catch (err) {
         return err;
     }
@@ -356,7 +366,7 @@ async function updateDoneExercises(userEmail, id, doneExcercices) {
         if (isOwner.length < 0) {
             return new Error(userEmail + " is not an owner of the assignment");
         }
-        let sql = "UPDATE tarea SET tarea.cantejhechos = tarea.cantejhechos + ? WHERE tarea.id = ?";
+        let sql = "UPDATE tarea SET tarea.cantejhechos = tarea.cantejhechos + ?, tarea.trabajohoy = 1 WHERE tarea.id = ?";
         let promise = await sqlQuery(sql, [doneExcercices, id]);
         // If the query was not successful, return the error
         if (promise instanceof Error) {
@@ -425,6 +435,7 @@ async function updateStyle(user, style) {
 
 // Export functions
 module.exports = {
+    sqlQuery: sqlQuery,
     logIn: logIn,
     register: register,
     updateToken: updateToken,
