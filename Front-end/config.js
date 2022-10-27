@@ -122,7 +122,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 })
             })
                 .then(response => {
-                    console.log(response.status);
                     if (response.status === 401 || response.status === 400) { //la refresh token es invalida
                         window.location.replace("reg.html");
                     }
@@ -161,7 +160,6 @@ document.addEventListener("DOMContentLoaded", () => {
     function activado(nombre) {
         var elemento = document.getElementsByName(nombre);
         console.log(nombre);
-        console.table({estilo:estiloSelected, tema:temaSelected});
 
         for (i = 0; i < elemento.length; i++) {
             if (elemento[i].checked) {
@@ -191,7 +189,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     })
                 })
                     .then(response => {
-                        console.log(response.status);
                         if(response.status === 201){ //se modifico el estilo correctamente
 
                         }
