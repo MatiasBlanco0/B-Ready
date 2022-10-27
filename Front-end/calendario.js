@@ -161,8 +161,8 @@ document.addEventListener("DOMContentLoaded", () => {
                                     document.querySelector(".Descripcion").innerHTML = data.descripcion;
                                     document.querySelector(".EjerciciosTotales").innerHTML = "Ejercicios: " + data.ejercicios;
                                     document.querySelector(".EjerciciosHechos").innerHTML = "Ejercicios hechos: " + data.ejerciciosHechos;
-                                    document.querySelector(".Dificultad").innerHTML = "Dificultad: " + ((data.dificultad+128)/2.55);
-                                    document.querySelector(".FechaEntrega").innerHTML = data.fechaEntrega;
+                                    document.querySelector(".Dificultad").innerHTML = "Dificultad: " + Math.floor((data.dificultad+128)/255*100);
+                                    document.querySelector(".FechaEntrega").innerHTML = data.fechaEntrega.split('T')[0];
                                 })
 
                             //eliminar tarea
@@ -412,24 +412,42 @@ document.addEventListener("DOMContentLoaded", () => {
                     });
                     data.forEach(tarea => {
                         if (tarea.dificultad >= 42 && tarea.dificultad < 128) {//falta la descripcion
-                            tareasAgregar += `<div class="dificil" class="displays"> <h4>${tarea.nombre}</h4><h4>${tarea.materia}</h4><br><br><h6>${tarea.ejHoy} Ejercicios para hacer hoy</h6><br><h6>Fecha de entrega: ${tarea.fechaEntrega.split('T')[0]}</h6><div class="botonesT"><button class="completar">Completado</button></div></div>`;
+                            tareasAgregar += `<div class="dificil" class="displays"> <h4>${tarea.nombre}</h4><h4>${tarea.materia}</h4><br><br><h6>${tarea.ejHoy} Ejercicios para hacer hoy</h6><br><h6>Fecha de entrega: ${tarea.fechaEntrega.split('T')[0]}</h6><div class="botonesT"><button class="completar" id="agenda-${tarea.id}">Completado</button></div></div>`;
                         }
                         else if (tarea.dificultad >= -43 && tarea.dificultad < 42) {
-                            tareasAgregar += `<div class="medio" class="displays"> <h4>${tarea.nombre}</h4><h4>${tarea.materia}</h4><br><br><h6>${tarea.ejHoy} Ejercicios para hacer hoy</h6><br><h6>Fecha de entrega: ${tarea.fechaEntrega.split('T')[0]}</h6><div class="botonesT"><button class="completar">Completado</button></div></div>`;
+                            tareasAgregar += `<div class="medio" class="displays"> <h4>${tarea.nombre}</h4><h4>${tarea.materia}</h4><br><br><h6>${tarea.ejHoy} Ejercicios para hacer hoy</h6><br><h6>Fecha de entrega: ${tarea.fechaEntrega.split('T')[0]}</h6><div class="botonesT"><button class="completar" id="agenda-${tarea.id}">Completado</button></div></div>`;
                         }
                         else {
-                            tareasAgregar += `<div class="facil" class="displays"> <h4>${tarea.nombre}</h4><h4>${tarea.materia}</h4><br><br><h6>${tarea.ejHoy} Ejercicios para hacer hoy</h6><br><h6>Fecha de entrega: ${tarea.fechaEntrega.split('T')[0]}</h6><div class="botonesT"><button class="completar">Completado</button></div></div>`;
+                            tareasAgregar += `<div class="facil" class="displays"> <h4>${tarea.nombre}</h4><h4>${tarea.materia}</h4><br><br><h6>${tarea.ejHoy} Ejercicios para hacer hoy</h6><br><h6>Fecha de entrega: ${tarea.fechaEntrega.split('T')[0]}</h6><div class="botonesT"><button class="completar" id="agenda-${tarea.id}">Completado</button></div></div>`;
                         }
                     });
                     tareas.innerHTML = tareasAgregar;
                 }
+                // document.querySelectorAll(".completar").addEventListener("click", (elemento) => {
+                //     completado(elemento.target.id.split('-')[1]);
+                // })
             })
             .catch(err => {
                 console.log("Error: ");
                 console.log(err);
             });
     }
-    querySelectorAll(".completar").addEventListener("click", () =>{
+
+    //ejercicios completados
+    // function completado(id){
+    //     fetch(`http://localhost:9000/assignment`, {
+    //         method: "PUT",
+    //         headers: {
+    //             "Authorization": "Bearer " + accessToken
+    //         },
+    //         body: JSON.stringify({
+    //             id: id
+    //             ejercicios: 
+    //         }),
+    //     })
+    // }
+
+    document.querySelectorAll(".completar").addEventListener("click", () =>{
         fetch(`http://localhost:9000/assignment/${tareaID}`, {
             method: "DELETE",
             headers: {

@@ -346,6 +346,26 @@ form input{
     margin-bottom: 20px;
 }
 
+.head img{
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+}
+
+.head{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-bottom: 20px;
+    font-size: 20px;
+}
+
+.textoH{
+    display: flex;
+    flex-direction: column;
+}
+
 .botonesT{
     display: flex;
     justify-content: center;
