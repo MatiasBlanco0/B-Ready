@@ -290,7 +290,7 @@ async function getAssignments(userEmail) {
         return new Error(userEmail + " is not a valid email");
     }
     try {
-        let sql = "SELECT tarea.id, tarea.nombre, tarea.cantej, tarea.cantejhechos, tarea.materia, tarea.fechaentrega, tarea.dificultad FROM tarea INNER JOIN relacion_usuario_tarea ON tarea.id = relacion_usuario_tarea.tarea WHERE relacion_usuario_tarea.email = ?";
+        let sql = "SELECT tarea.id, tarea.nombre, tarea.cantej, tarea.cantejhechos, tarea.materia, tarea.fechaentrega, tarea.dificultad FROM tarea INNER JOIN relacion_usuario_tarea ON tarea.id = relacion_usuario_tarea.tarea WHERE relacion_usuario_tarea.email = ? AND tarea.trabajohoy = 0";
         return await sqlQuery(sql, [userEmail]);
     } catch (err) {
         return err;
