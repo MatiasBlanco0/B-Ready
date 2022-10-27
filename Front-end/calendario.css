@@ -346,6 +346,12 @@ form input{
     margin-bottom: 20px;
 }
 
+.botonesT{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .botones *{
     width: 100px;
     border:none

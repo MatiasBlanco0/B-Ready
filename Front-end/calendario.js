@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let refreshToken = urlParams.get("rt");
 
     if (accessToken == null || refreshToken == null || accessToken === "" || refreshToken === "") {
-        //window.location.replace("reg.html");
+        window.location.replace("reg.html");
     }
 
 
@@ -412,13 +412,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     });
                     data.forEach(tarea => {
                         if (tarea.dificultad >= 42 && tarea.dificultad < 128) {//falta la descripcion
-                            tareasAgregar += `<div class="dificil" class="displays"> <h4>${tarea.nombre}</h4><h4>${tarea.materia}</h4><br><br><h6>${tarea.ejHoy} Ejercicios para hacer hoy</h6><br><h6>Fecha de entrega: ${tarea.fechaEntrega.split('T')[0]}</h6></div>`;
+                            tareasAgregar += `<div class="dificil" class="displays"> <h4>${tarea.nombre}</h4><h4>${tarea.materia}</h4><br><br><h6>${tarea.ejHoy} Ejercicios para hacer hoy</h6><br><h6>Fecha de entrega: ${tarea.fechaEntrega.split('T')[0]}</h6><div class="botonesT"><button class="completar">Completado</button></div></div>`;
                         }
                         else if (tarea.dificultad >= -43 && tarea.dificultad < 42) {
-                            tareasAgregar += `<div class="medio" class="displays"> <h4>${tarea.nombre}</h4><h4>${tarea.materia}</h4><br><br><h6>${tarea.ejHoy} Ejercicios para hacer hoy</h6><br><h6>Fecha de entrega: ${tarea.fechaEntrega.split('T')[0]}</h6></div>`;
+                            tareasAgregar += `<div class="medio" class="displays"> <h4>${tarea.nombre}</h4><h4>${tarea.materia}</h4><br><br><h6>${tarea.ejHoy} Ejercicios para hacer hoy</h6><br><h6>Fecha de entrega: ${tarea.fechaEntrega.split('T')[0]}</h6><div class="botonesT"><button class="completar">Completado</button></div></div>`;
                         }
                         else {
-                            tareasAgregar += `<div class="facil" class="displays"> <h4>${tarea.nombre}</h4><h4>${tarea.materia}</h4><br><br><h6>${tarea.ejHoy} Ejercicios para hacer hoy</h6><br><h6>Fecha de entrega: ${tarea.fechaEntrega.split('T')[0]}</h6></div>`;
+                            tareasAgregar += `<div class="facil" class="displays"> <h4>${tarea.nombre}</h4><h4>${tarea.materia}</h4><br><br><h6>${tarea.ejHoy} Ejercicios para hacer hoy</h6><br><h6>Fecha de entrega: ${tarea.fechaEntrega.split('T')[0]}</h6><div class="botonesT"><button class="completar">Completado</button></div></div>`;
                         }
                     });
                     tareas.innerHTML = tareasAgregar;
