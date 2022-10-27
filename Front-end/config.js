@@ -11,6 +11,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const dropdowns = document.querySelectorAll(".PD");
     const variables = document.querySelectorAll(".tipo");
 
+    const urlParams = new URLSearchParams(window.location.search);
+    let accessToken = urlParams.get("at");
+    let refreshToken = urlParams.get("rt");
+
     document.querySelector("#logo").addEventListener("click", () => {
         window.location.replace("index.html");
     });
@@ -78,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    function BuscarCookie(nombre) {
+    /* function BuscarCookie(nombre) {
         let cookie = document.cookie;
         let prefijo = nombre + "=";
         let inicio = cookie.indexOf("; " + prefijo);
@@ -103,11 +107,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     let accessToken = BuscarCookie("BReadyAccessToken");
-    let refreshToken = BuscarCookie("BReadyRefreshToken");
+    let refreshToken = BuscarCookie("BReadyRefreshToken"); */
 
-    if (accessToken == null) {
-        if (refreshToken != null) {
-            fetch("http://localhost:9000/token", {
+    function refreshAccess() {
+        fetch("http://localhost:9000/token", {
                 method: "POST",
                 credentials: "include",
                 headers: {
@@ -119,6 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 })
             })
                 .then(response => {
+                    console.log(response.status);
                     if (response.status === 401 || response.status === 400) { //la refresh token es invalida
                         window.location.replace("reg.html");
                     }
@@ -126,16 +130,28 @@ document.addEventListener("DOMContentLoaded", () => {
                         window.location.replace("reg.html");
                     }
                     else if (response.status === 200) { //todo esta bien
-                        location.reload();
+                        response.json();
                     }
                     else { //Error interno
                         window.location.replace("reg.html");
+                    }
+                })
+                .then(data => {
+                    if(data !== undefined){
+                        if(data.accessToken !== undefined){
+                            window.location.replace(`config.html?at=${data.accessToken}&rt=${refreshToken}`);
+                        }
                     }
                 })
                 .catch(err => {
                     console.log("Error: ");
                     console.log(err);
                 });
+    }
+
+    if (accessToken == null) {
+        if (refreshToken != null) {
+            refreshAccess();   
         }
     }
 
@@ -145,6 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function activado(nombre) {
         var elemento = document.getElementsByName(nombre);
         console.log(nombre);
+        console.table({estilo:estiloSelected, tema:temaSelected});
 
         for (i = 0; i < elemento.length; i++) {
             if (elemento[i].checked) {
@@ -163,8 +180,9 @@ document.addEventListener("DOMContentLoaded", () => {
             activado(V.getAttribute("name"));
             if (temaSelected != "" && estiloSelected != "") {
                 fetch("http://localhost:9000/style", {
-                    method: "POST",
+                    method: "PUT",
                     headers: {
+                        "Authorization": "Bearer " + accessToken,
                         "Accept": "application/json",
                         "Content-Type": "application/json"
                     },
@@ -173,8 +191,15 @@ document.addEventListener("DOMContentLoaded", () => {
                     })
                 })
                     .then(response => {
+                        console.log(response.status);
                         if(response.status === 201){ //se modifico el estilo correctamente
 
+                        }
+                        else if(response.status === 404){
+                            // TODo: poner valores por default
+                        }
+                        else if (response.status === 403){
+                            refreshAccess();
                         }
                         else{ //otros errores (revisar con blanco)
 

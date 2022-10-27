@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let refreshToken = urlParams.get("rt");
 
     document.querySelector('.log').href = `calendario.html?at=${accessToken}&rt=${refreshToken}`;
+    document.querySelector('#configuracion').href = `config.html?at=${accessToken}&rt=${refreshToken}`;
 
     if (accessToken != null) {
         //cambios cuando uno se logea
