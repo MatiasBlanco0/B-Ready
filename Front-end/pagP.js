@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let accessToken = urlParams.get("at");
     let refreshToken = urlParams.get("rt");
 
+    document.querySelector('.log').href = `calendario.html?at=${accessToken}&rt=${refreshToken}`;
+
     if (accessToken != null) {
         //cambios cuando uno se logea
         document.querySelector(".Hyperlinks").style.display = "none";
