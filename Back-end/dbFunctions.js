@@ -75,12 +75,22 @@ function checkToken(token) {
 // Function to execute queries
 async function sqlQuery(query, values) {
     try {
-        return await new Promise((resolve, reject) => {
-            pool.execute(query, values, (err, result) => {
-                if (err) reject(err);
-                resolve(result);
+        if (values === undefined){
+            return await new Promise((resolve, reject) => {
+                pool.execute(query, (err, result) => {
+                    if (err) reject(err);
+                    resolve(result);
+                });
             });
-        });
+        }
+        else {
+            return await new Promise((resolve, reject) => {
+                pool.execute(query, values, (err, result) => {
+                    if (err) reject(err);
+                    resolve(result);
+                });
+            });
+        }
     } catch (err) {
         return err;
     }
@@ -280,7 +290,7 @@ async function getAssignments(userEmail) {
         return new Error(userEmail + " is not a valid email");
     }
     try {
-        let sql = "SELECT tarea.id, tarea.nombre, tarea.cantej, tarea.cantejhechos, tarea.materia, tarea.fechaentrega, tarea.dificultad FROM tarea INNER JOIN relacion_usuario_tarea ON tarea.id = relacion_usuario_tarea.tarea WHERE relacion_usuario_tarea.email = ?";
+        let sql = "SELECT tarea.id, tarea.nombre, tarea.cantej, tarea.cantejhechos, tarea.materia, tarea.fechaentrega, tarea.dificultad FROM tarea INNER JOIN relacion_usuario_tarea ON tarea.id = relacion_usuario_tarea.tarea WHERE relacion_usuario_tarea.email = ? AND tarea.trabajohoy = 0";
         return await sqlQuery(sql, [userEmail]);
     } catch (err) {
         return err;
@@ -317,7 +327,6 @@ async function deleteAssignment(id, userEmail) {
             return new Error(userEmail + " is not an owner of the assignment");
         }
         let checkUsers = await sqlQuery("SELECT relacion_usuario_tarea.email FROM relacion_usuario_tarea WHERE relacion_usuario_tarea.id = ?", [id]);
-        console.log("Users: ", checkUsers);
         if (checkUsers.length < 2) {
             let sql = "DELETE relacion_usuario_tarea, tarea FROM relacion_usuario_tarea INNER JOIN tarea ON relacion_usuario_tarea.tarea = tarea.id WHERE relacion_usuario_tarea.tarea = ?";
             let promise = await sqlQuery(sql, [id]);
@@ -357,7 +366,7 @@ async function updateDoneExercises(userEmail, id, doneExcercices) {
         if (isOwner.length < 0) {
             return new Error(userEmail + " is not an owner of the assignment");
         }
-        let sql = "UPDATE tarea SET tarea.cantejhechos = tarea.cantejhechos + ? WHERE tarea.id = ?";
+        let sql = "UPDATE tarea SET tarea.cantejhechos = tarea.cantejhechos + ?, tarea.trabajohoy = 1 WHERE tarea.id = ?";
         let promise = await sqlQuery(sql, [doneExcercices, id]);
         // If the query was not successful, return the error
         if (promise instanceof Error) {
@@ -426,6 +435,7 @@ async function updateStyle(user, style) {
 
 // Export functions
 module.exports = {
+    sqlQuery: sqlQuery,
     logIn: logIn,
     register: register,
     updateToken: updateToken,
