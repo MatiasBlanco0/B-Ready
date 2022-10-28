@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.querySelector(".slider").addEventListener("input", () => {
         document.getElementById("valor").innerHTML = "Dificultad: " + document.querySelector(".slider").value;
-        dificultadN = document.querySelector(".slider").value/100 * 255 - 128;
+        dificultadN = document.querySelector(".slider").value / 100 * 255 - 128;
     });
 
     let tareasDiarias = "";
@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     else {
                         tareasDiarias = `<li>Aun no hay tareas ingresadas</li>`;
                     }
-                    listaCosas.innerHTML = tareasDiarias; 
+                    listaCosas.innerHTML = tareasDiarias;
                     const displays = document.querySelectorAll(".displays");
                     displays.forEach(D => {
                         D.addEventListener("click", (elemento) => {
@@ -161,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                     document.querySelector(".Descripcion").innerHTML = data.descripcion;
                                     document.querySelector(".EjerciciosTotales").innerHTML = "Ejercicios: " + data.ejercicios;
                                     document.querySelector(".EjerciciosHechos").innerHTML = "Ejercicios hechos: " + data.ejerciciosHechos;
-                                    document.querySelector(".Dificultad").innerHTML = "Dificultad: " + Math.floor((data.dificultad+128)/255*100);
+                                    document.querySelector(".Dificultad").innerHTML = "Dificultad: " + Math.floor((data.dificultad + 128) / 255 * 100);
                                     document.querySelector(".FechaEntrega").innerHTML = data.fechaEntrega.split('T')[0];
                                 })
 
@@ -377,8 +377,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (refreshToken != null) {
             refreshAccess();
         }
-        else { //RECORDATORIO: SACAR EL COMENTARIO QUE SINO NO VA A FUNCIONAR
-            //window.location.replace("index.html");
+        else {
+            window.location.replace("index.html");
         }
     }
     else {
@@ -423,9 +423,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     });
                     tareas.innerHTML = tareasAgregar;
                 }
-                // document.querySelectorAll(".completar").addEventListener("click", (elemento) => {
-                //     completado(elemento.target.id.split('-')[1]);
-                // })
+                completar = document.querySelectorAll(".completar");
+                let ejerciciosCompletados;
+                completar.forEach(C => {
+                    C.addEventListener("click", (elemento) => {
+                        let padre = (C.parentNode).parentNode;
+                        ejerciciosCompletados = (padre.childNodes[5].innerText.split(" ")[0]);
+                        completado(elemento.target.id.split('-')[1], ejerciciosCompletados);
+                    })
+                })
+
             })
             .catch(err => {
                 console.log("Error: ");
@@ -434,33 +441,108 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     //ejercicios completados
-    // function completado(id){
-    //     fetch(`http://localhost:9000/assignment`, {
-    //         method: "PUT",
-    //         headers: {
-    //             "Authorization": "Bearer " + accessToken
-    //         },
-    //         body: JSON.stringify({
-    //             id: id
-    //             ejercicios: 
-    //         }),
-    //     })
-    // }
-
-    document.querySelectorAll(".completar").addEventListener("click", () =>{
-        fetch(`http://localhost:9000/assignment/${tareaID}`, {
-            method: "DELETE",
+    function completado(id, ejercicios) {
+        fetch(`http://localhost:9000/assignment`, {
+            method: "PUT",
             headers: {
                 "Authorization": "Bearer " + accessToken
-            }
+            },
+            body: JSON.stringify({
+                id: id,
+                ejercicios: ejercicios
+            })
         })
             .then(response => {
-                if(response.status === 204){
-                    location.reload();
+                if (response.status === 201) {
+                    document.querySelector("#confetti").style.zIndex = "";
                 }
-                else{ //error interno o otro
+                else if (response.status === 403) {
+                    refreshAccess();
+                }
+                else if (response.status === 401) {
+                    window.location.replace("reg.html");
+                }
+                else {//error interno
                     window.location.replace("index.html");
                 }
             })
-    });
+    }
+
+    //confetti
+    let canvas = document.getElementById('confetti');
+
+    canvas.width = 640;
+    canvas.height = 480;
+
+    let ctx = canvas.getContext('2d');
+    let pieces = [];
+    let numberOfPieces = 50;
+    let lastUpdateTime = Date.now();
+
+    function randomColor() {
+        let colors = ['#f00', '#0f0', '#00f', '#0ff', '#f0f', '#ff0'];
+        return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    function update() {
+        let now = Date.now(),
+            dt = now - lastUpdateTime;
+
+        for (let i = pieces.length - 1; i >= 0; i--) {
+            let p = pieces[i];
+
+            if (p.y > canvas.height) {
+                pieces.splice(i, 1);
+                continue;
+            }
+
+            p.y += p.gravity * dt;
+            p.rotation += p.rotationSpeed * dt;
+        }
+
+
+        while (pieces.length < numberOfPieces) {
+            pieces.push(new Piece(Math.random() * canvas.width, -20));
+        }
+
+        lastUpdateTime = now;
+
+        setTimeout(update, 1);
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        pieces.forEach(function (p) {
+            ctx.save();
+
+            ctx.fillStyle = p.color;
+
+            ctx.translate(p.x + p.size / 2, p.y + p.size / 2);
+            ctx.rotate(p.rotation);
+
+            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+
+            ctx.restore();
+        });
+
+        requestAnimationFrame(draw);
+    }
+
+    function Piece(x, y) {
+        this.x = x;
+        this.y = y;
+        this.size = (Math.random() * 0.5 + 0.75) * 15;
+        this.gravity = (Math.random() * 0.5 + 0.75) * 0.1;
+        this.rotation = (Math.PI * 2) * Math.random();
+        this.rotationSpeed = (Math.PI * 2) * (Math.random() - 0.5) * 0.001;
+        this.color = randomColor();
+    }
+
+    while (pieces.length < numberOfPieces) {
+        pieces.push(new Piece(Math.random() * canvas.width, Math.random() * canvas.height));
+    }
+
+    update();
+    draw();
 });
