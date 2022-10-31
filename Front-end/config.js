@@ -190,7 +190,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 })
                     .then(response => {
                         if(response.status === 201){ //se modifico el estilo correctamente
-
+                            window.alert("Estilo cambiado con exito");
                         }
                         else if(response.status === 404){
                             // TODo: poner valores por default

@@ -425,11 +425,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 completar = document.querySelectorAll(".completar");
                 let ejerciciosCompletados;
+                let parent;
                 completar.forEach(C => {
                     C.addEventListener("click", (elemento) => {
                         let padre = (C.parentNode).parentNode;
                         ejerciciosCompletados = (padre.childNodes[5].innerText.split(" ")[0]);
-                        completado(elemento.target.id.split('-')[1], ejerciciosCompletados);
+                        parent = elemento.target.id.split('-')[1];
+                        completado(parent, ejerciciosCompletados);
                     })
                 })
 
@@ -454,7 +456,8 @@ document.addEventListener("DOMContentLoaded", () => {
         })
             .then(response => {
                 if (response.status === 201) {
-                    document.querySelector("#confetti").style.zIndex = "";
+                    document.querySelector("#confetti").style.display = "flex";
+                    setTimeout(festejo, 4000);
                 }
                 else if (response.status === 403) {
                     refreshAccess();
@@ -463,9 +466,17 @@ document.addEventListener("DOMContentLoaded", () => {
                     window.location.replace("reg.html");
                 }
                 else {//error interno
-                    window.location.replace("index.html");
+                    console.log(id);
+                    console.log(ejercicios);
+                    //window.location.replace("index.html");
+                    //aca hay un error de blanco, dado que tira siempre error 400 y segun los console.log
+                    //los parametros estan bien
                 }
             })
+    }
+
+    function festejo(){
+        document.querySelector("#confetti").style.display = "none";
     }
 
     //confetti
