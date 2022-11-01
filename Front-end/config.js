@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
         perfilO.style.display = "none";
         visibilidad.focus();
     }
-    
+
     const lista = document.querySelectorAll("p.respuestas");
     dropdowns.forEach(DD => {
         DD.addEventListener("click", function handleClick(event) {
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (DD.style.transform == "rotate(180deg)") {
                     DD.style.transform = "rotate(0deg)";
                     lista.forEach(element => {
-                        if(element === ((DD.parentNode).parentNode).lastElementChild){
+                        if (element === ((DD.parentNode).parentNode).lastElementChild) {
                             element.style.display = "none";
                         }
                     });
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 else {
                     DD.style.transform = "rotate(180deg)";
                     lista.forEach(element => {
-                        if(element === ((DD.parentNode).parentNode).lastElementChild){
+                        if (element === ((DD.parentNode).parentNode).lastElementChild) {
                             element.style.display = "flex";
                         }
                     });
@@ -111,49 +111,68 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function refreshAccess() {
         fetch("http://localhost:9000/token", {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    token: refreshToken
-                })
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                token: refreshToken
             })
-                .then(response => {
-                    if (response.status === 401 || response.status === 400) { //la refresh token es invalida
-                        window.location.replace("reg.html");
+        })
+            .then(response => {
+                if (response.status === 401 || response.status === 400) { //la refresh token es invalida
+                    window.location.replace("reg.html");
+                }
+                else if (response.status === 403) { //la refresh token no es la correcta
+                    window.location.replace("reg.html");
+                }
+                else if (response.status === 200) { //todo esta bien
+                    response.json();
+                }
+                else { //Error interno
+                    window.location.replace("reg.html");
+                }
+            })
+            .then(data => {
+                if (data !== undefined) {
+                    if (data.accessToken !== undefined) {
+                        window.location.replace(`config.html?at=${data.accessToken}&rt=${refreshToken}`);
                     }
-                    else if (response.status === 403) { //la refresh token no es la correcta
-                        window.location.replace("reg.html");
-                    }
-                    else if (response.status === 200) { //todo esta bien
-                        response.json();
-                    }
-                    else { //Error interno
-                        window.location.replace("reg.html");
-                    }
-                })
-                .then(data => {
-                    if(data !== undefined){
-                        if(data.accessToken !== undefined){
-                            window.location.replace(`config.html?at=${data.accessToken}&rt=${refreshToken}`);
-                        }
-                    }
-                })
-                .catch(err => {
-                    console.log("Error: ");
-                    console.log(err);
-                });
+                }
+            })
+            .catch(err => {
+                console.log("Error: ");
+                console.log(err);
+            });
     }
 
     if (accessToken == null) {
         if (refreshToken != null) {
-            refreshAccess();   
+            refreshAccess();
         }
     }
-
+    else {
+        fetch("http://localhost:9000/style", {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + accessToken
+            }
+        })
+            .then(response => {
+                if (response.status === 200) { //agarro el estilo bien
+                    return response.json();
+                }
+                else {
+                    window.location.replace("reg.html");
+                }
+            })
+            .then(data => {
+                
+            })
+    }
+    
     let estiloSelected = "";
     let temaSelected = "";
 
@@ -176,33 +195,37 @@ document.addEventListener("DOMContentLoaded", () => {
     variables.forEach(V => {
         V.addEventListener("change", () => {
             activado(V.getAttribute("name"));
-            if (temaSelected != "" && estiloSelected != "") {
-                fetch("http://localhost:9000/style", {
-                    method: "PUT",
-                    headers: {
-                        "Authorization": "Bearer " + accessToken,
-                        "Accept": "application/json",
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        estilo: temaSelected + "-" + estiloSelected
-                    })
-                })
-                    .then(response => {
-                        if(response.status === 201){ //se modifico el estilo correctamente
-                            window.alert("Estilo cambiado con exito");
-                        }
-                        else if(response.status === 404){
-                            // TODo: poner valores por default
-                        }
-                        else if (response.status === 403){
-                            refreshAccess();
-                        }
-                        else{ //otros errores (revisar con blanco)
-
-                        }
-                    })
+            if (temaSelected != "" && estiloSelected == "") {
+                estiloSelected = "Default";
             }
+            else if (estiloSelected != "" && temaSelected == "") {
+                temaSelected = "Claro";
+            }
+            fetch("http://localhost:9000/style", {
+                method: "PUT",
+                headers: {
+                    "Authorization": "Bearer " + accessToken,
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    estilo: temaSelected + "-" + estiloSelected
+                })
+            })
+                .then(response => {
+                    if (response.status === 201) { //se modifico el estilo correctamente
+                        window.alert("Estilo cambiado con éxito, por favor refresque la página");
+                    }
+                    else if (response.status === 404) { //medio raro esto, en la documentacion de la api no figura un error 404
+                        // TODo: poner valores por default
+                    }
+                    else if (response.status === 403) {
+                        refreshAccess();
+                    }
+                    else { //otros errores (revisar con blanco)
+                        location.reload();
+                    }
+                })
         });
     })
 });

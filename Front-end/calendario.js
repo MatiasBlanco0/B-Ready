@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let refreshToken = urlParams.get("rt");
 
     if (accessToken == null || refreshToken == null || accessToken === "" || refreshToken === "") {
-        window.location.replace("reg.html");
+        //window.location.replace("reg.html");
     }
 
 
@@ -378,7 +378,7 @@ document.addEventListener("DOMContentLoaded", () => {
             refreshAccess();
         }
         else {
-            window.location.replace("index.html");
+           window.location.replace("index.html");
         }
     }
     else {
@@ -447,11 +447,12 @@ document.addEventListener("DOMContentLoaded", () => {
         fetch(`http://localhost:9000/assignment`, {
             method: "PUT",
             headers: {
-                "Authorization": "Bearer " + accessToken
+                "Authorization": "Bearer " + accessToken,
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                id: id,
-                ejercicios: ejercicios
+                id: parseInt(id),
+                ejercicios: parseInt(ejercicios)
             })
         })
             .then(response => {
@@ -466,12 +467,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     window.location.replace("reg.html");
                 }
                 else {//error interno
-                    console.log(id);
-                    console.log(ejercicios);
-                    //window.location.replace("index.html");
-                    //aca hay un error de blanco, dado que tira siempre error 400 y segun los console.log
-                    //los parametros estan bien
+                    window.location.replace("index.html");
                 }
+            })
+            .then(data => {
+                console.log(data);
             })
     }
 
