@@ -1,0 +1,14 @@
+:root{
+    --color-principal: #4990e7;
+    --color-body: #6db1ff;
+    
+    --color-texto: #000;
+    --color-texto: #fff;
+
+    --color-bordes: #000;
+    /*colores config-only*/
+    --color-generico: whitesmoke;
+
+    /*colores index-only*/
+    --color-seccion: #cfe4ff;
+}

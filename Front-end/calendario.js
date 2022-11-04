@@ -232,7 +232,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    enviar.addEventListener("click", () => {
+    enviar.addEventListener("click", (e) => {
+        e.preventDefault();
         fetch("http://localhost:9000/assignment", {
             method: "POST",
             headers: {
@@ -378,7 +379,7 @@ document.addEventListener("DOMContentLoaded", () => {
             refreshAccess();
         }
         else {
-           window.location.replace("index.html");
+            window.location.replace("index.html");
         }
     }
     else {
@@ -431,6 +432,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         let padre = (C.parentNode).parentNode;
                         ejerciciosCompletados = (padre.childNodes[5].innerText.split(" ")[0]);
                         parent = elemento.target.id.split('-')[1];
+                        console.log(padre);
                         completado(parent, ejerciciosCompletados);
                     })
                 })
@@ -459,6 +461,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (response.status === 201) {
                     document.querySelector("#confetti").style.display = "flex";
                     setTimeout(festejo, 4000);
+                    setTimeout(refrescar, 5000);
                 }
                 else if (response.status === 403) {
                     refreshAccess();
@@ -477,6 +480,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function festejo(){
         document.querySelector("#confetti").style.display = "none";
+    }
+
+    function refrescar(){
+        location.reload();
     }
 
     //confetti

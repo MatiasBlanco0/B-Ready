@@ -169,10 +169,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             })
             .then(data => {
-                
+
             })
     }
-    
+
     let estiloSelected = "";
     let temaSelected = "";
 
@@ -228,4 +228,39 @@ document.addEventListener("DOMContentLoaded", () => {
                 })
         });
     })
+
+    let selectores = document.getElementsByClassName("selectores");
+    let elementos = document.getElementsByTagName("*");
+    //estilo de la pagina >:)
+    fetch("http://localhost:9000/style", {
+        method: "GET",
+        headers: {
+            "Authorization": "Bearer " + accessToken,
+            "Content-Type": "application/json"
+        }
+    })
+        .then(response => {
+            if (response.status === 200) { //recive un estilo con exito
+                return response.json();
+            }
+            //no hay un else dado que si no recibe un estilo el default deberia aplicarse solo
+        })
+        .then(data => {
+            console.log(data.estilo);
+            if (data.estilo === "Claro-Default") {//si es null o literalmente default
+                document.querySelector("header").style.backgroundColor = "#4990e7";
+                document.querySelector("section").style.backgroundColor = "#6db1ff";
+                document.querySelector("#sectores").style.backgroundColor = "whitesmoke";
+                // for (var i = 0; i < selectores.length; i++) {
+                //     selectores[i].style.backgroundColor = "whitesmoke";
+                //     selectores[i].addEventListener("click", (boton) => {
+                //         boton.target.style.backgroundColor = "grey";
+                //         selectores[i].style.color = "#000";
+                //     })
+                // }
+                for (var i = 0; i < elementos.length; i++){
+                    elementos[i].style.color = "#000";
+                }
+            }
+        })
 });
