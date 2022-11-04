@@ -3,6 +3,9 @@
     src: url(SUNDAY.ttf);
 }
 
+/*Import del archivo css universal*/
+@import url("daltonismo.css");
+
 *{
     font-family: SundayFont, Arial, Helvetica, sans-serif;
     margin: 0;
