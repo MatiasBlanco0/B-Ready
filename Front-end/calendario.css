@@ -22,14 +22,14 @@
     padding: 40px;
     font-size: 20px;
     border-radius: 5px;
-    background-color: #2777da;
+    background-color: var(--color-tarea);
 }
 
 #tarea{
     display: none;
     flex-direction: column;
     position: fixed;
-    background-color: #2777da;
+    background-color: var(--color-tarea);
     bottom: 25%;
     width: 500px;
     height: 300px;
@@ -41,7 +41,7 @@
     flex-direction: column;
     align-items: center;
     position: fixed;
-    background-color: #cfe4ff;
+    background-color: var(--color-seccion);
     bottom: 10%;
     width: 300px;
     height: 500px;
@@ -61,7 +61,7 @@
 
 header{
     width: 100%;
-    background-color: #4990e7d0;
+    background-color: var(--color-principal);
     display: flex;
     align-items: center;
     padding: 7px 10px 7px 5px;
@@ -80,7 +80,7 @@ header{
 }
 
 body{
-    background-color: #6db1ff;
+    background-color: var(--color-body);
 }
 
 nav{
@@ -104,7 +104,7 @@ nav{
 }
 
 section{
-    background-color: #6db1ff;
+    background-color: var(--color-body);
     padding-top: 15px;
     padding-bottom: 15px;
     align-items: center;
@@ -119,7 +119,7 @@ section{
     align-items: center;
     display: flex;
     justify-content: center;
-    background-color: #6db1ff;
+    background-color: var(--color-body);
     height: 100vh;
     padding-top: 100px;
 }
@@ -152,7 +152,7 @@ section{
 }
 
 .calendario{
-    background-color: #cfe4ff;
+    background-color: var(--color-seccion);
     width: 800px;
     padding-bottom: 3px;
     box-shadow: 0px 1px 5px #000;
@@ -163,7 +163,7 @@ section{
     height: 70px;
     display: flex;
     justify-content: space-between;
-    background-color: #4990e7d0;
+    background-color: var(--color-principal);
     align-items: center;
     text-align: center;
     padding: 0 36px;    
@@ -239,7 +239,7 @@ section{
 }
 
 .hoy {
-    background-color: #8cabe6;
+    background-color: var(--color-hoy);
 }
 
 .top{
@@ -279,7 +279,7 @@ section{
     flex-direction: column;
     display: none;
     position: fixed;
-    background-color: #4990e7;
+    background-color: var(--color-principal);
     width: 500px;
     height: 400px;
     z-index: 4;
@@ -325,7 +325,7 @@ section{
     width: 200px;
     height: 40px;
     border-radius: 5px;
-    background-color: #cfe4ff;
+    background-color: var(--color-seccion);
     border: none;
 }
 
@@ -437,7 +437,7 @@ form img{
 }
 
 .dificil{
-    background-color: #ff6161;
+    background-color: var(--color-dificil);
     text-align: left;
     justify-content: center;
     padding: 10px;
@@ -445,7 +445,7 @@ form img{
 }
 
 .medio{
-    background-color: #eeff00;
+    background-color: var(--color-medio);
     text-align: left;
     justify-content: center;
     padding: 10px;
@@ -453,7 +453,7 @@ form img{
 }
 
 .facil{
-    background-color: #2ee420;
+    background-color: var(--color-facil);
     text-align: left;
     justify-content: center;
     padding: 10px;
@@ -503,7 +503,7 @@ form img{
 
 @media all and (max-width: 720px) {
     body{
-        background-color: #6db1ff;
+        background-color: var(--color-body);
     }
     
     .contenedor{
@@ -511,7 +511,7 @@ form img{
     }
 
     section{
-        background-color: #6db1ff;
+        background-color: var(--color-body);
     }
 
     .calendario{
