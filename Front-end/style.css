@@ -173,10 +173,10 @@ section {
 }
 
 .texto * {
-    color: #fff;
+    color: var(--color-texto2);
     text-align: center;
     padding-top: 20px;
-    text-shadow: 3px 4px #000;
+    text-shadow: 3px 4px var(--color-texto);
 }
 
 .formulario {

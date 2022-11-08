@@ -231,6 +231,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let selectores = document.getElementsByClassName("selectores");
     let elementos = document.getElementsByTagName("*");
+    var r = document.querySelector(':root');
     //estilo de la pagina >:)
     fetch("http://localhost:9000/style", {
         method: "GET",
@@ -247,20 +248,41 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then(data => {
             console.log(data.estilo);
-            if (data.estilo === "Claro-Default") {//si es null o literalmente default
-                document.querySelector("header").style.backgroundColor = "#4990e7";
-                document.querySelector("section").style.backgroundColor = "#6db1ff";
-                document.querySelector("#sectores").style.backgroundColor = "whitesmoke";
-                // for (var i = 0; i < selectores.length; i++) {
-                //     selectores[i].style.backgroundColor = "whitesmoke";
-                //     selectores[i].addEventListener("click", (boton) => {
-                //         boton.target.style.backgroundColor = "grey";
-                //         selectores[i].style.color = "#000";
-                //     })
-                // }
-                for (var i = 0; i < elementos.length; i++){
-                    elementos[i].style.color = "#000";
-                }
+            if (data.estilo === "Oscuro-Default") {//si es null o literalmente default
+                r.style.setProperty("--color-principal", "#083163");
+                r.style.setProperty("--color-body", "#4C7AAF");
+                r.style.setProperty("--color-generico", "#000000");
+                r.style.setProperty("--color-texto", "#ffff");
+            }
+            else if(data.estilo === "Claro-Protanopia"){
+                r.style.setProperty("--color-principal", "#890BD4");
+                r.style.setProperty("--color-body", "#EBE300");
+            }
+            else if(data.estilo === "Oscuro-Protanopia"){
+                r.style.setProperty("--color-principal", "#370555");
+                r.style.setProperty("--color-body", "#AAD500");
+                r.style.setProperty("--color-generico", "#000000");
+                r.style.setProperty("--color-texto", "#ffff");
+            }
+            else if(data.estilo === "Claro-Deuteranopia"){
+                r.style.setProperty("--color-principal", "#0B43D4");
+                r.style.setProperty("--color-body", "#EBE300");
+            }
+            else if(data.estilo === "Oscuro-Deuteranopia"){
+                r.style.setProperty("--color-principal", "#072163");
+                r.style.setProperty("--color-body", "#CC7800");
+                r.style.setProperty("--color-generico", "#000000");
+                r.style.setProperty("--color-texto", "#ffff");
+            }
+            else if(data.estilo === "Claro-Tritanopia"){
+                r.style.setProperty("--color-principal", "#05E0E6");
+                r.style.setProperty("--color-body", "#EE0092");
+            }
+            else if(data.estilo === "Oscuro-Tritanopia"){
+                r.style.setProperty("--color-principal", "#007E81");
+                r.style.setProperty("--color-body", "#A70066");
+                r.style.setProperty("--color-generico", "#000000");
+                r.style.setProperty("--color-texto", "#ffff");
             }
         })
 });

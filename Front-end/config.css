@@ -96,6 +96,7 @@ section{
     font-size: 20px;
     padding: 10px;
     background-color: var(--color-generico);;
+    color: var(--color-texto);
 }
 
 #sectores button:hover{
