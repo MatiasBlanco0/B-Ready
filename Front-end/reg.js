@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //LA VARIABLE MAS IMPORTANTE :O
     let loggeado = false;
-    
+
     imgI.addEventListener("click", () => {
         window.location.replace("https://campus.ort.edu.ar/");
     });
@@ -232,7 +232,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             alertaT.innerHTML = "Error desconocido, porfavor intentarlo mas tarde";
                         }
                     }
-                    else if(data.accessToken && data.refreshToken){
+                    else if (data.accessToken && data.refreshToken) {
                         window.location.replace(`calendario.html?at=${data.accessToken}&rt=${data.refreshToken}`);
                     }
                 }
@@ -262,25 +262,79 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(data => {
             console.log(data.estilo);
             if (data.estilo === "Oscuro-Default") {//si es null o literalmente default
-                
-            }
-            else if(data.estilo === "Claro-Protanopia"){
 
             }
-            else if(data.estilo === "Oscuro-Protanopia"){
+            else if (data.estilo === "Claro-Protanopia") {
 
             }
-            else if(data.estilo === "Claro-Deuteranopia"){
+            else if (data.estilo === "Oscuro-Protanopia") {
 
             }
-            else if(data.estilo === "Oscuro-Deuteranopia"){
-                
+            else if (data.estilo === "Claro-Deuteranopia") {
+
             }
-            else if(data.estilo === "Claro-Tritanopia"){
-                
+            else if (data.estilo === "Oscuro-Deuteranopia") {
+
             }
-            else if(data.estilo === "Oscuro-Tritanopia"){
-                
+            else if (data.estilo === "Claro-Tritanopia") {
+
+            }
+            else if (data.estilo === "Oscuro-Tritanopia") {
+
+            }
+        })
+
+    var r = document.querySelector(':root');
+    //estilo de la pagina >:)
+    fetch("http://localhost:9000/style", {
+        method: "GET",
+        headers: {
+            "Authorization": "Bearer " + accessToken,
+            "Content-Type": "application/json"
+        }
+    })
+        .then(response => {
+            if (response.status === 200) { //recive un estilo con exito
+                return response.json();
+            }
+            //no hay un else dado que si no recibe un estilo el default deberia aplicarse solo
+        })
+        .then(data => {
+            console.log(data.estilo);
+            if (data.estilo === "Oscuro-Default") {//si es null o literalmente default
+                r.style.setProperty("--color-principal", "#083163");
+                r.style.setProperty("--color-body", "#4C7AAF");
+                r.style.setProperty("--color-seccion", "#8AA2BD");
+            }
+            else if (data.estilo === "Claro-Protanopia") {
+                r.style.setProperty("--color-principal", "#890BD4");
+                r.style.setProperty("--color-body", "#EBE300");
+                r.style.setProperty("--color-seccion", "#d68fff");
+            }
+            else if (data.estilo === "Oscuro-Protanopia") {
+                r.style.setProperty("--color-principal", "#370555");
+                r.style.setProperty("--color-body", "#AAD500");
+                r.style.setProperty("--color-seccion", "#7B3AA1");
+            }
+            else if (data.estilo === "Claro-Deuteranopia") {
+                r.style.setProperty("--color-principal", "#0B43D4");
+                r.style.setProperty("--color-body", "#EBE300");
+                r.style.setProperty("--color-seccion", "#4D75DB");
+            }
+            else if (data.estilo === "Oscuro-Deuteranopia") {
+                r.style.setProperty("--color-principal", "#072163");
+                r.style.setProperty("--color-body", "#CC7800");
+                r.style.setProperty("--color-seccion", "#4161B0");
+            }
+            else if (data.estilo === "Claro-Tritanopia") {
+                r.style.setProperty("--color-principal", "#05E0E6");
+                r.style.setProperty("--color-body", "#EE0092");
+                r.style.setProperty("--color-seccion", "#1FF8FF");
+            }
+            else if (data.estilo === "Oscuro-Tritanopia") {
+                r.style.setProperty("--color-principal", "#007E81");
+                r.style.setProperty("--color-body", "#A70066");
+                r.style.setProperty("--color-seccion", "#2D9597");
             }
         })
 });
