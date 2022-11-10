@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.querySelector(".slider").addEventListener("input", () => {
         document.getElementById("valor").innerHTML = "Dificultad: " + document.querySelector(".slider").value;
-        dificultadN = document.querySelector(".slider").value / 100 * 255 - 128;
+        dificultadN = document.querySelector(".slider").value / 100 * 256 - 128;
     });
 
     let tareasDiarias = "";
@@ -161,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                     document.querySelector(".Descripcion").innerHTML = data.descripcion;
                                     document.querySelector(".EjerciciosTotales").innerHTML = "Ejercicios: " + data.ejercicios;
                                     document.querySelector(".EjerciciosHechos").innerHTML = "Ejercicios hechos: " + data.ejerciciosHechos;
-                                    document.querySelector(".Dificultad").innerHTML = "Dificultad: " + Math.floor((data.dificultad + 128) / 255 * 100);
+                                    document.querySelector(".Dificultad").innerHTML = "Dificultad: " + Math.floor((data.dificultad + 128) / 256 * 100);
                                     document.querySelector(".FechaEntrega").innerHTML = data.fechaEntrega.split('T')[0];
                                 })
 
@@ -251,7 +251,6 @@ document.addEventListener("DOMContentLoaded", () => {
             })
         })
             .then(response => {
-                console.log(response.status);
                 if (response.status === 201) { //todo joya
                     location.reload();
                 }
