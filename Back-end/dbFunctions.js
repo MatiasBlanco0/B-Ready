@@ -200,10 +200,10 @@ async function addAssignment(userEmail, name, description, excercices, doneExcer
     if (!checkString(subject)) {
         return new Error(subject + " is not a valid subject");
     }
-    if (!checkNumber(excercices)) {
+    if (typeof excercices != "number") {
         return new Error(excercices + " is not valid number of excercices");
     }
-    if (!checkNumber(doneExcercices)) {
+    if (typeof doneExcercices != "number") {
         return new Error(doneExcercices + " is not a valid number of done excercices");
     }
     if (!checkNumber(difficulty)) {
