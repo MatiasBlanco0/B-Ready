@@ -130,25 +130,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 r.style.setProperty("--color-body", "#EBE300");
                 r.style.setProperty("--color-seccion", "#FFFFFF");
                 r.style.setProperty("--color-texto", "#000");
-                r.style.setProperty("--color-texto2", "FFFFFF");
+                r.style.setProperty("--color-texto2", "#FFFFFF");
             }
             else if(data.estilo === "Oscuro-Protanopia"){
                 r.style.setProperty("--color-principal", "#370555");
                 r.style.setProperty("--color-body", "#AAD500");
                 r.style.setProperty("--color-seccion", "#FFFFFF");
                 r.style.setProperty("--color-texto", "#000");
-                r.style.setProperty("--color-texto2", "FFFFFF");
+                r.style.setProperty("--color-texto2", "#FFFFFF");
             }
             else if(data.estilo === "Claro-Deuteranopia"){
                 r.style.setProperty("--color-principal", "#0B43D4");
                 r.style.setProperty("--color-body", "#EBE300");
                 r.style.setProperty("--color-seccion", "#FFFFFF");
                 r.style.setProperty("--color-texto", "#000");
-                r.style.setProperty("--color-texto2", "FFFFFF");
+                r.style.setProperty("--color-texto2", "#FFFFFF");
             }
             else if(data.estilo === "Oscuro-Deuteranopia"){
-                r.style.setProperty("--color-principal", "#0B43D4");
-                r.style.setProperty("--color-body", "#EBE300");
+                r.style.setProperty("--color-principal", "#072163");
+                r.style.setProperty("--color-body", "#CC7800");
                 r.style.setProperty("--color-seccion", "#FFFFFF");
             }
             else if(data.estilo === "Claro-Tritanopia"){

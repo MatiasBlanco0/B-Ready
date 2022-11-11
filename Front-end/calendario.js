@@ -443,6 +443,73 @@ document.addEventListener("DOMContentLoaded", () => {
             });
     }
 
+    var r = document.querySelector(':root');
+    //estilo de la pagina >:)
+    fetch("http://localhost:9000/style", {
+        method: "GET",
+        headers: {
+            "Authorization": "Bearer " + accessToken,
+            "Content-Type": "application/json"
+        }
+    })
+        .then(response => {
+            if (response.status === 200) { //recive un estilo con exito
+                return response.json();
+            }
+            //no hay un else dado que si no recibe un estilo el default deberia aplicarse solo
+        })
+        .then(data => {
+            console.log(data.estilo);
+            if (data.estilo === "Oscuro-Default") {//si es null o literalmente default
+                r.style.setProperty("--color-principal", "#083163");
+                r.style.setProperty("--color-body", "#4C7AAF");
+                r.style.setProperty("--color-seccion", "#8AA2BD");
+                r.style.setProperty("--color-hoy", "#5c76a7");
+            }
+            else if (data.estilo === "Claro-Protanopia") {
+                r.style.setProperty("--color-principal", "#890BD4");
+                r.style.setProperty("--color-body", "#EBE300");
+                r.style.setProperty("--color-seccion", "#d68fff");
+                r.style.setProperty("--color-hoy", "#b251c7");
+                r.style.setProperty("--color-tarea", "#a270d3");
+            }
+            else if (data.estilo === "Oscuro-Protanopia") {
+                r.style.setProperty("--color-principal", "#370555");
+                r.style.setProperty("--color-body", "#AAD500");
+                r.style.setProperty("--color-seccion", "#7B3AA1");
+                r.style.setProperty("--color-hoy", "#5f0d7c");
+                r.style.setProperty("--color-tarea", "#640cad");
+            }
+            else if (data.estilo === "Claro-Deuteranopia") {
+                r.style.setProperty("--color-principal", "#0B43D4");
+                r.style.setProperty("--color-body", "#EBE300");
+                r.style.setProperty("--color-seccion", "#4D75DB");
+                r.style.setProperty("--color-hoy", "#0c3d99");
+                r.style.setProperty("--color-tarea", "#0f18b7");
+            }
+            else if (data.estilo === "Oscuro-Deuteranopia") {
+                r.style.setProperty("--color-principal", "#072163");
+                r.style.setProperty("--color-body", "#CC7800");
+                r.style.setProperty("--color-seccion", "#4161B0");
+                r.style.setProperty("--color-hoy", "#19366e");
+                r.style.setProperty("--color-tarea", "#063a7a");
+            }
+            else if (data.estilo === "Claro-Tritanopia") {
+                r.style.setProperty("--color-principal", "#05E0E6");
+                r.style.setProperty("--color-body", " #EE0092");
+                r.style.setProperty("--color-seccion", "#1FF8FF");
+                r.style.setProperty("--color-hoy", "#21a2cf");
+                r.style.setProperty("--color-tarea", "#41b9c9");
+            }
+            else if (data.estilo === "Oscuro-Tritanopia") {
+                r.style.setProperty("--color-principal", "#007E81");
+                r.style.setProperty("--color-body", "#A70066");
+                r.style.setProperty("--color-seccion", "#2D9597");
+                r.style.setProperty("--color-hoy", "#00605e");
+                r.style.setProperty("--color-tarea", "#02505a");
+            }
+        })
+
     //ejercicios completados
     function completado(id, ejercicios) {
         fetch(`http://localhost:9000/assignment`, {
