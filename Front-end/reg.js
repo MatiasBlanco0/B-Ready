@@ -246,44 +246,6 @@ document.addEventListener("DOMContentLoaded", () => {
             });
     });
 
-    fetch("http://localhost:9000/style", {
-        method: "GET",
-        headers: {
-            "Authorization": "Bearer " + accessToken,
-            "Content-Type": "application/json"
-        }
-    })
-        .then(response => {
-            if (response.status === 200) { //recive un estilo con exito
-                return response.json();
-            }
-            //no hay un else dado que si no recibe un estilo el default deberia aplicarse solo
-        })
-        .then(data => {
-            console.log(data.estilo);
-            if (data.estilo === "Oscuro-Default") {//si es null o literalmente default
-
-            }
-            else if (data.estilo === "Claro-Protanopia") {
-
-            }
-            else if (data.estilo === "Oscuro-Protanopia") {
-
-            }
-            else if (data.estilo === "Claro-Deuteranopia") {
-
-            }
-            else if (data.estilo === "Oscuro-Deuteranopia") {
-
-            }
-            else if (data.estilo === "Claro-Tritanopia") {
-
-            }
-            else if (data.estilo === "Oscuro-Tritanopia") {
-
-            }
-        })
-
     var r = document.querySelector(':root');
     //estilo de la pagina >:)
     fetch("http://localhost:9000/style", {
