@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let refreshToken = urlParams.get("rt");
 
     document.querySelector("#logo").addEventListener("click", () => {
-        window.location.replace("index.html");
+        window.location.replace(`index.html?at=${accessToken}&rt=${refreshToken}`);
     });
 
     visibilidad.addEventListener("focus", () => {
@@ -163,6 +163,9 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(response => {
                 if (response.status === 200) { //agarro el estilo bien
                     return response.json();
+                }
+                else if(response.status === 403){
+                    refreshAccess();
                 }
                 else {
                     window.location.replace("reg.html");
