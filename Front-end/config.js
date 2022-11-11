@@ -14,9 +14,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const urlParams = new URLSearchParams(window.location.search);
     let accessToken = urlParams.get("at");
     let refreshToken = urlParams.get("rt");
+    let estiloParam = urlParams.get("estilo");
 
     document.querySelector("#logo").addEventListener("click", () => {
-        window.location.replace(`index.html?at=${accessToken}&rt=${refreshToken}`);
+        window.location.replace(`index.html?at=${accessToken}&rt=${refreshToken}&estilo=${estiloParam}`);
     });
 
     visibilidad.addEventListener("focus", () => {
@@ -123,22 +124,22 @@ document.addEventListener("DOMContentLoaded", () => {
         })
             .then(response => {
                 if (response.status === 401 || response.status === 400) { //la refresh token es invalida
-                    window.location.replace("reg.html");
+                    window.location.replace(`reg.html?estilo=${estilo}`);
                 }
                 else if (response.status === 403) { //la refresh token no es la correcta
-                    window.location.replace("reg.html");
+                    window.location.replace(`reg.html?estilo=${estilo}`);
                 }
                 else if (response.status === 200) { //todo esta bien
                     response.json();
                 }
                 else { //Error interno
-                    window.location.replace("reg.html");
+                    window.location.replace(`reg.html?estilo=${estilo}`);
                 }
             })
             .then(data => {
                 if (data !== undefined) {
                     if (data.accessToken !== undefined) {
-                        window.location.replace(`config.html?at=${data.accessToken}&rt=${refreshToken}`);
+                        window.location.replace(`config.html?at=${data.accessToken}&rt=${refreshToken}&estilo=${estiloParam}`);
                     }
                 }
             })
@@ -153,6 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
             refreshAccess();
         }
     }
+<<<<<<< Updated upstream
     else {
         fetch("http://localhost:9000/style", {
             method: "GET",
@@ -175,6 +177,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             })
     }
+=======
+>>>>>>> Stashed changes
 
     let estiloSelected = "";
     let temaSelected = "";
@@ -203,6 +207,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             else if (estiloSelected != "" && temaSelected == "") {
                 temaSelected = "Claro";
+            }
+            if(accessToken == null){
+                window.location.replace(`index.html?estilo=${temaSelected + '-' + estiloSelected}`);
             }
             fetch("http://localhost:9000/style", {
                 method: "PUT",
@@ -236,6 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let elementos = document.getElementsByTagName("*");
     var r = document.querySelector(':root');
     //estilo de la pagina >:)
+    if(accessToken != null) {
     fetch("http://localhost:9000/style", {
         method: "GET",
         headers: {
@@ -288,4 +296,49 @@ document.addEventListener("DOMContentLoaded", () => {
                 r.style.setProperty("--color-texto", "#ffff");
             }
         })
+    }
+    else {
+        console.log(estiloParam);
+        if (estiloParam === "Oscuro-Default") {//si es null o literalmente default
+            r.style.setProperty("--color-principal", "#083163");
+            r.style.setProperty("--color-body", "#4C7AAF");
+            r.style.setProperty("--color-seccion", "#FFFFFF");
+        }
+        else if(estiloParam === "Claro-Protanopia"){
+            r.style.setProperty("--color-principal", "#890BD4");
+            r.style.setProperty("--color-body", "#EBE300");
+            r.style.setProperty("--color-seccion", "#FFFFFF");
+            r.style.setProperty("--color-texto", "#000");
+            r.style.setProperty("--color-texto2", "FFFFFF");
+        }
+        else if(estiloParam === "Oscuro-Protanopia"){
+            r.style.setProperty("--color-principal", "#370555");
+            r.style.setProperty("--color-body", "#AAD500");
+            r.style.setProperty("--color-seccion", "#FFFFFF");
+            r.style.setProperty("--color-texto", "#000");
+            r.style.setProperty("--color-texto2", "FFFFFF");
+        }
+        else if(estiloParam === "Claro-Deuteranopia"){
+            r.style.setProperty("--color-principal", "#0B43D4");
+            r.style.setProperty("--color-body", "#EBE300");
+            r.style.setProperty("--color-seccion", "#FFFFFF");
+            r.style.setProperty("--color-texto", "#000");
+            r.style.setProperty("--color-texto2", "FFFFFF");
+        }
+        else if(estiloParam === "Oscuro-Deuteranopia"){
+            r.style.setProperty("--color-principal", "#0B43D4");
+            r.style.setProperty("--color-body", "#EBE300");
+            r.style.setProperty("--color-seccion", "#FFFFFF");
+        }
+        else if(estiloParam === "Claro-Tritanopia"){
+            r.style.setProperty("--color-principal", "#05E0E6");
+            r.style.setProperty("--color-body", "#EE0092");
+            r.style.setProperty("--color-seccion", "#FFFFFF");
+        }
+        else if(estiloParam === "Oscuro-Tritanopia"){
+            r.style.setProperty("--color-principal", "#007E81");
+            r.style.setProperty("--color-body", "#A70066");
+            r.style.setProperty("--color-seccion", "#FFFFFF");
+        }
+    }
 });
