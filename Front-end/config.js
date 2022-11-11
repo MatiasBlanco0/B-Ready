@@ -149,8 +149,8 @@ document.addEventListener("DOMContentLoaded", () => {
             });
     }
 
-    if (accessToken == null) {
-        if (refreshToken != null) {
+    if (accessToken == null || accessToken == "null") {
+        if (refreshToken != null && refreshToken != "null") {
             refreshAccess();
         }
     }
