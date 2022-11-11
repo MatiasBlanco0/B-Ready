@@ -154,7 +154,6 @@ document.addEventListener("DOMContentLoaded", () => {
             refreshAccess();
         }
     }
-<<<<<<< Updated upstream
     else {
         fetch("http://localhost:9000/style", {
             method: "GET",
@@ -177,8 +176,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             })
     }
-=======
->>>>>>> Stashed changes
 
     let estiloSelected = "";
     let temaSelected = "";
