@@ -124,16 +124,16 @@ document.addEventListener("DOMContentLoaded", () => {
         })
             .then(response => {
                 if (response.status === 401 || response.status === 400) { //la refresh token es invalida
-                    window.location.replace(`reg.html?estilo=${estilo}`);
+                    window.location.replace(`reg.html?estilo=${estiloParam}`);
                 }
                 else if (response.status === 403) { //la refresh token no es la correcta
-                    window.location.replace(`reg.html?estilo=${estilo}`);
+                    window.location.replace(`reg.html?estilo=${estiloParam}`);
                 }
                 else if (response.status === 200) { //todo esta bien
                     response.json();
                 }
                 else { //Error interno
-                    window.location.replace(`reg.html?estilo=${estilo}`);
+                    window.location.replace(`reg.html?estilo=${estiloParam}`);
                 }
             })
             .then(data => {
@@ -165,11 +165,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (response.status === 200) { //agarro el estilo bien
                     return response.json();
                 }
-                else if(response.status === 403){
+                else if (response.status === 403) {
                     refreshAccess();
                 }
                 else {
-                    window.location.replace("reg.html");
+                    window.location.replace(`reg.html?estilo=${estiloParam}`);
                 }
             })
             .then(data => {
@@ -205,8 +205,8 @@ document.addEventListener("DOMContentLoaded", () => {
             else if (estiloSelected != "" && temaSelected == "") {
                 temaSelected = "Claro";
             }
-            if(accessToken == null){
-                window.location.replace(`index.html?estilo=${temaSelected + '-' + estiloSelected}`);
+            if (accessToken == null || accessToken == "null") {
+                window.location.replace(`config.html?estilo=${temaSelected + '-' + estiloSelected}`);
             }
             fetch("http://localhost:9000/style", {
                 method: "PUT",
@@ -240,59 +240,59 @@ document.addEventListener("DOMContentLoaded", () => {
     let elementos = document.getElementsByTagName("*");
     var r = document.querySelector(':root');
     //estilo de la pagina >:)
-    if(accessToken != null) {
-    fetch("http://localhost:9000/style", {
-        method: "GET",
-        headers: {
-            "Authorization": "Bearer " + accessToken,
-            "Content-Type": "application/json"
-        }
-    })
-        .then(response => {
-            if (response.status === 200) { //recive un estilo con exito
-                return response.json();
-            }
-            //no hay un else dado que si no recibe un estilo el default deberia aplicarse solo
-        })
-        .then(data => {
-            console.log(data.estilo);
-            if (data.estilo === "Oscuro-Default") {//si es null o literalmente default
-                r.style.setProperty("--color-principal", "#083163");
-                r.style.setProperty("--color-body", "#4C7AAF");
-                r.style.setProperty("--color-generico", "#000000");
-                r.style.setProperty("--color-texto", "#ffff");
-            }
-            else if(data.estilo === "Claro-Protanopia"){
-                r.style.setProperty("--color-principal", "#890BD4");
-                r.style.setProperty("--color-body", "#EBE300");
-            }
-            else if(data.estilo === "Oscuro-Protanopia"){
-                r.style.setProperty("--color-principal", "#370555");
-                r.style.setProperty("--color-body", "#AAD500");
-                r.style.setProperty("--color-generico", "#000000");
-                r.style.setProperty("--color-texto", "#ffff");
-            }
-            else if(data.estilo === "Claro-Deuteranopia"){
-                r.style.setProperty("--color-principal", "#0B43D4");
-                r.style.setProperty("--color-body", "#EBE300");
-            }
-            else if(data.estilo === "Oscuro-Deuteranopia"){
-                r.style.setProperty("--color-principal", "#072163");
-                r.style.setProperty("--color-body", "#CC7800");
-                r.style.setProperty("--color-generico", "#000000");
-                r.style.setProperty("--color-texto", "#ffff");
-            }
-            else if(data.estilo === "Claro-Tritanopia"){
-                r.style.setProperty("--color-principal", "#05E0E6");
-                r.style.setProperty("--color-body", "#EE0092");
-            }
-            else if(data.estilo === "Oscuro-Tritanopia"){
-                r.style.setProperty("--color-principal", "#007E81");
-                r.style.setProperty("--color-body", "#A70066");
-                r.style.setProperty("--color-generico", "#000000");
-                r.style.setProperty("--color-texto", "#ffff");
+    if (accessToken != null && accessToken != "null") {
+        fetch("http://localhost:9000/style", {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + accessToken,
+                "Content-Type": "application/json"
             }
         })
+            .then(response => {
+                if (response.status === 200) { //recive un estilo con exito
+                    return response.json();
+                }
+                //no hay un else dado que si no recibe un estilo el default deberia aplicarse solo
+            })
+            .then(data => {
+                console.log(data.estilo);
+                if (data.estilo === "Oscuro-Default") {//si es null o literalmente default
+                    r.style.setProperty("--color-principal", "#083163");
+                    r.style.setProperty("--color-body", "#4C7AAF");
+                    r.style.setProperty("--color-generico", "#000000");
+                    r.style.setProperty("--color-texto", "#ffff");
+                }
+                else if (data.estilo === "Claro-Protanopia") {
+                    r.style.setProperty("--color-principal", "#890BD4");
+                    r.style.setProperty("--color-body", "#EBE300");
+                }
+                else if (data.estilo === "Oscuro-Protanopia") {
+                    r.style.setProperty("--color-principal", "#370555");
+                    r.style.setProperty("--color-body", "#AAD500");
+                    r.style.setProperty("--color-generico", "#000000");
+                    r.style.setProperty("--color-texto", "#ffff");
+                }
+                else if (data.estilo === "Claro-Deuteranopia") {
+                    r.style.setProperty("--color-principal", "#0B43D4");
+                    r.style.setProperty("--color-body", "#EBE300");
+                }
+                else if (data.estilo === "Oscuro-Deuteranopia") {
+                    r.style.setProperty("--color-principal", "#072163");
+                    r.style.setProperty("--color-body", "#CC7800");
+                    r.style.setProperty("--color-generico", "#000000");
+                    r.style.setProperty("--color-texto", "#ffff");
+                }
+                else if (data.estilo === "Claro-Tritanopia") {
+                    r.style.setProperty("--color-principal", "#05E0E6");
+                    r.style.setProperty("--color-body", "#EE0092");
+                }
+                else if (data.estilo === "Oscuro-Tritanopia") {
+                    r.style.setProperty("--color-principal", "#007E81");
+                    r.style.setProperty("--color-body", "#A70066");
+                    r.style.setProperty("--color-generico", "#000000");
+                    r.style.setProperty("--color-texto", "#ffff");
+                }
+            })
     }
     else {
         console.log(estiloParam);
@@ -301,38 +301,38 @@ document.addEventListener("DOMContentLoaded", () => {
             r.style.setProperty("--color-body", "#4C7AAF");
             r.style.setProperty("--color-seccion", "#FFFFFF");
         }
-        else if(estiloParam === "Claro-Protanopia"){
+        else if (estiloParam === "Claro-Protanopia") {
             r.style.setProperty("--color-principal", "#890BD4");
             r.style.setProperty("--color-body", "#EBE300");
             r.style.setProperty("--color-seccion", "#FFFFFF");
             r.style.setProperty("--color-texto", "#000");
             r.style.setProperty("--color-texto2", "FFFFFF");
         }
-        else if(estiloParam === "Oscuro-Protanopia"){
+        else if (estiloParam === "Oscuro-Protanopia") {
             r.style.setProperty("--color-principal", "#370555");
             r.style.setProperty("--color-body", "#AAD500");
             r.style.setProperty("--color-seccion", "#FFFFFF");
             r.style.setProperty("--color-texto", "#000");
             r.style.setProperty("--color-texto2", "FFFFFF");
         }
-        else if(estiloParam === "Claro-Deuteranopia"){
+        else if (estiloParam === "Claro-Deuteranopia") {
             r.style.setProperty("--color-principal", "#0B43D4");
             r.style.setProperty("--color-body", "#EBE300");
             r.style.setProperty("--color-seccion", "#FFFFFF");
             r.style.setProperty("--color-texto", "#000");
             r.style.setProperty("--color-texto2", "FFFFFF");
         }
-        else if(estiloParam === "Oscuro-Deuteranopia"){
+        else if (estiloParam === "Oscuro-Deuteranopia") {
             r.style.setProperty("--color-principal", "#0B43D4");
             r.style.setProperty("--color-body", "#EBE300");
             r.style.setProperty("--color-seccion", "#FFFFFF");
         }
-        else if(estiloParam === "Claro-Tritanopia"){
+        else if (estiloParam === "Claro-Tritanopia") {
             r.style.setProperty("--color-principal", "#05E0E6");
             r.style.setProperty("--color-body", "#EE0092");
             r.style.setProperty("--color-seccion", "#FFFFFF");
         }
-        else if(estiloParam === "Oscuro-Tritanopia"){
+        else if (estiloParam === "Oscuro-Tritanopia") {
             r.style.setProperty("--color-principal", "#007E81");
             r.style.setProperty("--color-body", "#A70066");
             r.style.setProperty("--color-seccion", "#FFFFFF");
