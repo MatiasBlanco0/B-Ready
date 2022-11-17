@@ -108,6 +108,11 @@ section{
     color: var(--color-generico);;
 }
 
+.estiloIMG{
+    width: 400px;
+    height: 200px;
+}
+
 .opciones{
     display: inline-flex;
     padding-top: 20px;

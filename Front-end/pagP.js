@@ -10,6 +10,16 @@ document.addEventListener("DOMContentLoaded", () => {
     let refreshToken = urlParams.get("rt");
     let estilo = urlParams.get("estilo");
 
+    
+    const successCallback = (position) => {
+        console.log(position);
+    };
+      
+    const errorCallback = (error) => {
+        console.log(error);
+    };
+    navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+    
     document.querySelector('.log').href = `calendario.html?at=${accessToken}&rt=${refreshToken}$estilo=${estilo}`;
     document.querySelector('#configuracion').href = `config.html?at=${accessToken}&rt=${refreshToken}&estilo=${estilo}`;
     document.querySelector('#register').href = `reg.html?at=${accessToken}&rt=${refreshToken}$estilo=${estilo}`;
